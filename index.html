@@ -123,10 +123,98 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
 
-@media(max-width:768px){#sb{display:none}.g2,.g3,.g22{grid-template-columns:1fr}.chat-side{display:none}}
+@media(max-width:768px){
+  /* HIDE SIDEBAR BY DEFAULT, ADD HAMBURGER */
+  #sb{position:fixed;left:-240px;top:52px;bottom:46px;width:240px;z-index:150;transition:left .3s;box-shadow:4px 0 20px rgba(0,0,0,.5)}
+  #sb.open{left:0}
+  #sb .ni{font-size:14px;padding:10px 14px 10px 24px}
+  #sb .sh{font-size:11px;padding:12px 16px 4px}
+
+  /* HAMBURGER BUTTON */
+  #hb{display:flex!important;position:fixed;left:8px;top:58px;z-index:160;width:36px;height:36px;background:var(--card);border:1px solid var(--brd);border-radius:6px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--txt)}
+  
+  /* OVERLAY WHEN SIDEBAR OPEN */
+  #sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:145}
+  #sb-overlay.show{display:block}
+
+  /* TOP BAR */
+  #tb{height:44px;padding:0 10px;gap:6px}
+  #tb .ttl{font-size:13px}
+  #tb .st{display:none}
+  #tb .qa{font-size:10px;padding:4px 8px}
+  #tb .sp{flex:1}
+
+  /* BOTTOM BAR */
+  #bb{height:40px;padding:0 8px;gap:6px}
+  #bb input{font-size:12px;padding:6px 8px}
+  #bb .cx{font-size:9px}
+  #suggestBox{left:10px!important;right:10px!important;bottom:44px!important;font-size:12px!important}
+
+  /* LAYOUT */
+  #mn{padding:10px;margin-left:0}
+  .g2,.g3,.g22{grid-template-columns:1fr;gap:8px}
+  .kr{grid-template-columns:repeat(2,1fr);gap:6px}
+  .kpi{padding:12px}
+  .kpi .v{font-size:20px}
+  .kpi .l{font-size:8px}
+  
+  /* CARDS */
+  .card{padding:12px;margin-bottom:8px}
+  .card h3{font-size:11px}
+
+  /* TABLES SCROLLABLE */
+  .tb{font-size:11px;display:block;overflow-x:auto}
+  .tb td{padding:5px 6px;white-space:nowrap}
+
+  /* CHARTS */
+  .cw{height:200px}.cw.tl{height:240px}
+
+  /* CHAT */
+  .chat-box{flex-direction:column;height:calc(100vh - 140px)}
+  .chat-side{display:none}
+  .chat-main{flex:1}
+  .chat-msgs .msg{max-width:95%}
+  .chat-msgs .msg .bb{font-size:13px}
+  .chat-inp textarea{font-size:13px;height:38px}
+  .chat-inp button{padding:0 12px;font-size:13px}
+  .msg .av{width:26px;height:26px;font-size:13px}
+
+  /* PASSWORD */
+  #gate h2{font-size:17px;text-align:center;padding:0 20px}
+  #gate input{width:90%;max-width:280px;font-size:15px}
+  #gate button{font-size:15px}
+
+  /* FONTS */
+  body{font-size:14px}
+  .card h3{font-size:11px}
+
+  /* KANBAN */
+  .kanban{flex-direction:column}
+  .kanban .col{min-width:auto}
+
+  /* VOICE CARDS */
+  .tb tr.hd td{font-size:9px}
+}
+
+/* VERY SMALL SCREENS */
+@media(max-width:400px){
+  .kr{grid-template-columns:1fr 1fr}
+  .kpi .v{font-size:17px}
+  #tb .ttl{font-size:11px}
+  #gate .logo{font-size:36px}
+  #gate h2{font-size:15px}
+}
+
+/* ADD HAMBURGER HTML VIA JS ONLY ON MOBILE */
+#hb{display:none}
+#sb-overlay{display:none}
 </style>
 </head>
 <body>
+
+<!-- HAMBURGER (mobile only) -->
+<button id="hb" onclick="toggleSb()">☰</button>
+<div id="sb-overlay" onclick="toggleSb()"></div>
 
 <!-- PASSWORD -->
 <div id="gate">
@@ -680,6 +768,11 @@ function nav(v){
   const nv=document.querySelector('.ni[data-v="'+v+'"]');if(nv)nv.classList.add('ac');
   if(v==='chat'){rChat();setTimeout(()=>{const m=document.getElementById('cmsgs');if(m)m.scrollTop=m.scrollHeight},100)}
   setTimeout(drawCharts,200);
+  if(window.innerWidth<768)toggleSb(); // Auto-close sidebar on mobile
+}
+function toggleSb(){
+  const sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
+  sb.classList.toggle('open');ov.classList.toggle('show');
 }
 
 // === CHAT ===
