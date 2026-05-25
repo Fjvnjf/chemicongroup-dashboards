@@ -365,6 +365,7 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="ni" onclick="nav('currency')" data-v="currency">💱 Currency & Commodities</div>
 <div class="ni" onclick="nav('suppliers')" data-v="suppliers">🏗 Supplier Comparison</div>
 <div class="ni" onclick="nav('crm')" data-v="crm">📝 CRM Lite</div>
+<div class="ni" onclick="nav('alerts')" data-v="alerts">🚨 Alerts</div>
 <div class="ni" onclick="nav('livemetrics')" data-v="livemetrics">📊 Live Metrics</div>
 </div>
 
@@ -1236,49 +1237,71 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 
 <!-- LOGISTICS -->
 <div id="v-logistics" class="vw">
-<div class="kr"><div class="kpi"><div class="v">Chittagong</div><div class="l">Origin Port</div></div><div class="kpi"><div class="v">Shanghai</div><div class="l">Primary Destination</div></div><div class="kpi"><div class="v">14-18d</div><div class="l">Transit Time</div></div><div class="kpi"><div class="v">$1,850</div><div class="l">20ft Container</div></div><div class="kpi"><div class="v">$2,950</div><div class="l">40ft Container</div></div><div class="kpi"><div class="v">6.5%</div><div class="l">Import Duty</div></div></div>
+<div class="kr"><div class="kpi"><div class="v">Chittagong</div><div class="l">Origin Port</div></div><div class="kpi"><div class="v">Shanghai</div><div class="l">Primary Dest</div></div><div class="kpi"><div class="v">14-18d</div><div class="l">Transit Time</div></div><div class="kpi"><div class="v">$1,850</div><div class="l">20ft Container</div></div><div class="kpi"><div class="v">$2,950</div><div class="l">40ft Container</div></div><div class="kpi"><div class="v">6.5%</div><div class="l">Import Duty</div></div></div>
 
 <div class="g2">
-<div class="card"><h3>🚢 Shipping Routes & Costs</h3>
-<table class="tb"><tr class="hd"><td>Route</td><td>Transit</td><td>20ft (23t)</td><td>40ft (27t)</td><td>$/ton (40ft)</td><td>Carrier</td></tr>
-<tr><td>🇧🇩 Chittagong → 🇨🇳 Shanghai</td><td>14-18d</td><td>$1,850</td><td>$2,950</td><td>$109/t</td><td>Maersk / COSCO</td></tr>
-<tr><td>🇧🇩 Chittagong → 🇨🇳 Ningbo</td><td>16-20d</td><td>$1,950</td><td>$3,100</td><td>$115/t</td><td>MSC / OOCL</td></tr>
-<tr><td>🇧🇩 Chittagong → 🇨🇳 Guangzhou</td><td>18-22d</td><td>$2,250</td><td>$3,600</td><td>$133/t</td><td>Evergreen</td></tr>
-<tr class="tt"><td>Avg / Container</td><td>16-20d</td><td>$2,017</td><td>$3,217</td><td>$119/t</td><td></td></tr>
+<div class="card"><h3>Shipping Routes & Costs</h3>
+<table class="tb"><tr class="hd"><td>Route</td><td>Transit</td><td>20ft</td><td>40ft</td><td>$/ton</td><td>Carrier</td></tr>
+<tr><td>Chittagong-Shanghai</td><td>14-18d</td><td>$1,850</td><td>$2,950</td><td>$109</td><td>Maersk/COSCO</td></tr>
+<tr><td>Chittagong-Ningbo</td><td>16-20d</td><td>$1,950</td><td>$3,100</td><td>$115</td><td>MSC/OOCL</td></tr>
+<tr><td>Chittagong-Guangzhou</td><td>18-22d</td><td>$2,250</td><td>$3,600</td><td>$133</td><td>Evergreen</td></tr>
+<tr><td>Chittagong-HCMC (Vietnam)</td><td>7-10d</td><td>$1,200</td><td>$1,900</td><td>$70</td><td>Maersk</td></tr>
+<tr class="tt"><td>Avg (China routes)</td><td>16-20d</td><td>$2,017</td><td>$3,217</td><td>$119</td><td></td></tr>
 </table></div>
 
-<div class="card"><h3>📦 Container Planning</h3>
-<table class="tb"><tr class="hd"><td>Year</td><td>Volume (t)</td><td>40ft Containers</td><td>Shipments/Month</td><td>Est. Freight Cost</td></tr>
-<tr><td>Y1</td><td>3,000</td><td>111</td><td>9</td><td>$357K</td></tr>
-<tr><td>Y2</td><td>9,500</td><td>352</td><td>29</td><td>$1.13M</td></tr>
-<tr><td>Y3</td><td>25,000</td><td>926</td><td>77</td><td>$2.98M</td></tr>
-<tr class="tt"><td>Total (3yr)</td><td>37,500</td><td>1,389</td><td>—</td><td>$4.47M</td></tr>
+<div class="card"><h3>Container Planning - 5 Year</h3>
+<table class="tb"><tr class="hd"><td>Year</td><td>Volume (t)</td><td>40ft Ctrs</td><td>Shipments/Mo</td><td>Freight Cost</td><td>Cumulative</td></tr>
+<tr><td>Y1</td><td>3,000</td><td>111</td><td>9</td><td>$357K</td><td>$357K</td></tr>
+<tr><td>Y2</td><td>9,500</td><td>352</td><td>29</td><td>$1.13M</td><td>$1.49M</td></tr>
+<tr><td>Y3</td><td>25,000</td><td>926</td><td>77</td><td>$2.98M</td><td>$4.47M</td></tr>
+<tr><td>Y4</td><td>35,000</td><td>1,296</td><td>108</td><td>$4.17M</td><td>$8.64M</td></tr>
+<tr><td>Y5</td><td>45,000</td><td>1,667</td><td>139</td><td>$5.37M</td><td>$14.01M</td></tr>
 </table></div>
 </div>
+
+<div class="card"><h3>Supplier Scorecards - Key Raw Materials</h3>
+<table class="tb"><tr class="hd"><td>Supplier</td><td>Material</td><td>Price/t</td><td>Quality</td><td>Reliability</td><td>Payment</td><td>Score</td></tr>
+<tr><td>Wilmar (MY)</td><td>Stearic Acid TP</td><td>$1,180</td><td><span class="bg g">9/10</span></td><td><span class="bg g">9/10</span></td><td>LC 60d</td><td style="color:var(--grn)">9.0</td></tr>
+<tr><td>KLK Oleo (MY)</td><td>Stearic Acid TP</td><td>$1,210</td><td><span class="bg g">9/10</span></td><td><span class="bg g">8/10</span></td><td>LC 60d</td><td style="color:var(--grn)">8.5</td></tr>
+<tr><td>BASF (DE/SG)</td><td>Triethanolamine</td><td>$1,450</td><td><span class="bg g">10/10</span></td><td><span class="bg g">10/10</span></td><td>LC 90d</td><td style="color:var(--grn)">10.0</td></tr>
+<tr><td>Dow Chemical</td><td>PDMS Silicone Oil</td><td>$3,200</td><td><span class="bg g">10/10</span></td><td><span class="bg g">9/10</span></td><td>LC 60d</td><td style="color:var(--grn)">9.5</td></tr>
+<tr><td>Wacker (DE/CN)</td><td>PDMS Silicone Oil</td><td>$3,350</td><td><span class="bg g">10/10</span></td><td><span class="bg g">9/10</span></td><td>LC 60d</td><td style="color:var(--grn)">9.0</td></tr>
+<tr><td>Nantong (CN)</td><td>Dimethyl Sulfate</td><td>$890</td><td><span class="bg g">8/10</span></td><td><span class="bg y">7/10</span></td><td>TT 30d</td><td style="color:var(--amb)">7.0</td></tr>
+<tr><td>Local BD Supplier</td><td>Acetic Acid</td><td>$650</td><td><span class="bg g">8/10</span></td><td><span class="bg g">9/10</span></td><td>TT 15d</td><td style="color:var(--grn)">8.5</td></tr>
+</table></div>
 
 <div class="g22">
-<div class="card"><h3>🏷 Incoterms Comparison</h3>
-<table class="tb"><tr class="hd"><td>Term</td><td>Risk Transfer</td><td>Chemicon Pays</td><td>Best For</td></tr>
-<tr><td><strong>FOB Chittagong</strong></td><td>At vessel</td><td>Inland + port BD</td><td><span class="bg g">Phase 1-2</span></td></tr>
-<tr><td><strong>CIF Shanghai ⭐</strong></td><td>At destination port</td><td>Freight + insurance</td><td><span class="bg g">Recommended</span></td></tr>
-<tr><td><strong>DAP Customer</strong></td><td>At buyer warehouse</td><td>All except duty</td><td><span class="bg y">Key accounts</span></td></tr>
-</table></div>
+<div class="card"><h3>Inventory Safety Stock Model</h3>
+<table class="tb"><tr class="hd"><td>Material</td><td>Monthly Use</td><td>Lead Time</td><td>Safety Stock</td><td>Current</td><td>Status</td></tr>
+<tr><td>Stearic Acid</td><td>85t</td><td>21d</td><td>60t</td><td>62t</td><td><span class="bg y">Low</span></td></tr>
+<tr><td>Triethanolamine</td><td>18t</td><td>30d</td><td>18t</td><td>22t</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>PDMS Silicone</td><td>78t</td><td>25d</td><td>65t</td><td>28t</td><td><span class="bg r">ORDER!</span></td></tr>
+<tr><td>Dimethyl Sulfate</td><td>20t</td><td>14d</td><td>10t</td><td>15t</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>Acetic Acid</td><td>5t</td><td>7d</td><td>2t</td><td>4t</td><td><span class="bg g">OK</span></td></tr>
+</table>
+<div class="al y" style="margin-top:8px"><b>Action:</b> PDMS Silicone 28t stock vs 65t safety - ORDER IMMEDIATELY. Stearic Acid barely above minimum.</div></div>
 
-<div class="card"><h3>📊 Landed Cost Calculator</h3>
-<table class="tb"><tr class="hd"><td>Cost Component</td><td>$/ton (CWAS)</td><td>$/ton (MASC)</td></tr>
-<tr><td>Ex-Factory Bangladesh</td><td>$2,800</td><td>$4,500</td></tr>
-<tr><td>Inland Transport (to port)</td><td>$45</td><td>$45</td></tr>
-<tr><td>Port Handling (Chittagong)</td><td>$55</td><td>$55</td></tr>
-<tr><td>Ocean Freight (40ft avg)</td><td>$119</td><td>$119</td></tr>
-<tr><td>Insurance (0.3% CIF)</td><td>$9</td><td>$14</td></tr>
-<tr><td>Import Duty (6.5%)</td><td>$197</td><td>$308</td></tr>
-<tr><td>Port Handling (Shanghai)</td><td>$60</td><td>$60</td></tr>
-<tr><td>Inland Distribution (China)</td><td>$115</td><td>$115</td></tr>
-<tr class="tt"><td><strong>TOTAL LANDED</strong></td><td style="color:var(--red)"><strong>$3,400</strong></td><td style="color:var(--red)"><strong>$5,216</strong></td></tr>
-<tr class="tt"><td>Selling Price (China)</td><td style="color:var(--grn)"><strong>$4,500</strong></td><td style="color:var(--grn)"><strong>$7,000</strong></td></tr>
-<tr class="tt"><td>Gross Margin</td><td style="color:var(--grn)"><strong>24.4%</strong></td><td style="color:var(--grn)"><strong>25.5%</strong></td></tr>
-</table></div>
+<div class="card"><h3>Incoterms Strategy</h3>
+<table class="tb"><tr class="hd"><td>Term</td><td>Risk Transfer</td><td>Chemicon Pays</td><td>Best For</td></tr>
+<tr><td>FOB Chittagong</td><td>At vessel</td><td>Inland + port BD</td><td><span class="bg g">Phase 1-2</span></td></tr>
+<tr><td>CIF Shanghai</td><td>At dest port</td><td>Freight + insurance</td><td><span class="bg g">Recommended</span></td></tr>
+<tr><td>DAP Customer</td><td>At buyer warehouse</td><td>All except duty</td><td><span class="bg y">Key accounts</span></td></tr>
+</table>
+<p style="font-size:11px;color:var(--mut);margin-top:6px">Landed Cost (CWAS): Ex-Factory $2,800 + Inland $45 + Port $55 + Freight $119 + Insurance $9 + Duty $197 + CN Port $60 + Distribution $115 = <strong style="color:var(--red)">$3,400/t</strong></p>
 </div>
+</div>
+
+<div class="card"><h3>Customs Clearance Timeline</h3>
+<table class="tb"><tr class="hd"><td>Step</td><td>Responsible</td><td>Timeline</td><td>Documents</td></tr>
+<tr><td>1. Shipping docs prep</td><td>Chemicon BD</td><td>3d before sailing</td><td>Commercial invoice, packing list, COO</td></tr>
+<tr><td>2. Bill of Lading</td><td>Carrier</td><td>1-2d after sailing</td><td>B/L, sea waybill</td></tr>
+<tr><td>3. Arrival notice</td><td>Carrier</td><td>3d before arrival</td><td>AN, delivery order</td></tr>
+<tr><td>4. Customs declaration</td><td>CN Customs Broker</td><td>1-2d after arrival</td><td>CI, PL, B/L, COO, COA</td></tr>
+<tr><td>5. Duty payment</td><td>Chemicon CN</td><td>Same day</td><td>Payment receipt</td></tr>
+<tr><td>6. CIQ inspection</td><td>CIQ</td><td>1-3d if selected</td><td>Sample, COA, SDS (Chinese)</td></tr>
+<tr><td>7. Release & delivery</td><td>CN Distributor</td><td>1-2d</td><td>Release order</td></tr>
+<tr class="tt"><td><strong>Total Door-to-Door</strong></td><td></td><td><strong>18-28 days</strong></td><td></td></tr>
+</table></div>
 </div>
 
 <!-- CURRENCY -->
@@ -1513,20 +1536,50 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 </div>
 
 <!-- R&D PIPELINE -->
-<div id="v-randd" class="vw">
-<div class="kr"><div class="kpi"><div class="v">8</div><div class="l">Active Projects</div></div><div class="kpi"><div class="v">3</div><div class="l">In Formulation</div></div><div class="kpi"><div class="v">2</div><div class="l">In Trial</div></div><div class="kpi"><div class="v">2</div><div class="l">Scale-Up</div></div><div class="kpi"><div class="v">1</div><div class="l">Commercialized</div></div><div class="kpi"><div class="v">$450K</div><div class="l">R&D Budget Y1</div></div></div>
+<<div id="v-randd" class="vw">
+<div class="kr"><div class="kpi"><div class="v">8</div><div class="l">Active Projects</div></div><div class="kpi"><div class="v">$450K</div><div class="l">R&D Budget Y1</div></div><div class="kpi"><div class="v">3</div><div class="l">Lab Staff</div></div><div class="kpi"><div class="v">2026-29</div><div class="l">Roadmap Horizon</div></div></div>
 
-<div class="card"><h3>🔬 R&D Pipeline — New Product Development</h3>
-<table class="tb"><tr class="hd"><td>Project</td><td>Target</td><td>Stage</td><td>Timeline</td><td>Priority</td><td>Next Milestone</td></tr>
-<tr><td><strong>China-Localized CWAS</strong></td><td>Lower temp variant for Chinese mills (30°C)</td><td><span class="bg y">Formulation</span></td><td>Q2-Q3 2026</td><td><span class="bg r">Critical</span></td><td>5 candidate formulas ready</td></tr>
-<tr><td><strong>Ultra-Concentrate Silicone</strong></td><td>3:1 concentration for lower shipping cost</td><td><span class="bg y">Trial</span></td><td>Q2-Q4 2026</td><td><span class="bg y">High</span></td><td>Stability testing at 40°C</td></tr>
-<tr><td><strong>VOC-Free Softener</strong></td><td>GB 38508-2020 compliant, zero VOC</td><td><span class="bg y">Formulation</span></td><td>Q3 2026-Q1 2027</td><td><span class="bg y">High</span></td><td>Solvent replacement screening</td></tr>
-<tr><td><strong>Bio-Based Ester Quat</strong></td><td>100% plant-derived, EU Ecolabel ready</td><td><span style="color:var(--mut)">Research</span></td><td>Q4 2026-Q2 2027</td><td><span class="bg b">Medium</span></td><td>Literature review complete</td></tr>
-<tr><td><strong>One-Pack Pretreatment</strong></td><td>Scour + bleach + level in one product</td><td><span class="bg y">Trial</span></td><td>Q3-Q4 2026</td><td><span class="bg b">Medium</span></td><td>Compatibility testing</td></tr>
-<tr><td><strong>Anti-Pilling Silicone</strong></td><td>Silicone + anti-pilling for cotton knits</td><td><span style="color:var(--mut)">Research</span></td><td>Q1-Q3 2027</td><td><span style="color:var(--amb)">Low</span></td><td>Patent search</td></tr>
-<tr><td><strong>Cold-Water Soaping Agent</strong></td><td>Effective at 40°C (energy saving)</td><td><span class="bg y">Formulation</span></td><td>Q2-Q3 2026</td><td><span class="bg y">High</span></td><td>3 surfactants shortlisted</td></tr>
-<tr><td><strong>Recycled Polyester Softener</strong></td><td>Specific for rPET fabric hand feel</td><td><span style="color:var(--mut)">Ideation</span></td><td>Q1-Q2 2027</td><td><span style="color:var(--amb)">Low</span></td><td>Customer need validation</td></tr>
+<div class="card"><h3>R&D Pipeline - 8 Active Projects</h3>
+<table class="tb"><tr class="hd"><td>Pri</td><td>Project</td><td>Phase</td><td>Timeline</td><td>Budget</td><td>Status</td></tr>
+<tr><td>P0</td><td>China-Localized CWAS (30C variant)</td><td>Formulation</td><td>Q2-Q3 2026</td><td>$80K</td><td><span class="bg y">In Progress</span></td></tr>
+<tr><td>P0</td><td>VOC-Free Softener (GB 38508)</td><td>Solvent screening</td><td>Q3-Q4 2026</td><td>$60K</td><td><span class="bg y">In Progress</span></td></tr>
+<tr><td>P1</td><td>Ultra-Concentrate Silicone (3:1)</td><td>Trial/Stability</td><td>Q2-Q4 2026</td><td>$50K</td><td><span class="bg y">Testing</span></td></tr>
+<tr><td>P1</td><td>Cold-Water Soaping (40C)</td><td>Surfactant screening</td><td>Q2-Q4 2026</td><td>$40K</td><td><span class="bg y">In Progress</span></td></tr>
+<tr><td>P1</td><td>Bio-Based Ester Quat</td><td>Research</td><td>Q4 2026-Q2 2027</td><td>$100K</td><td><span class="bg b">Research</span></td></tr>
+<tr><td>P2</td><td>One-Pack Pretreatment</td><td>Compatibility</td><td>Q3 2026-Q1 2027</td><td>$35K</td><td><span class="bg b">Planning</span></td></tr>
+<tr><td>P3</td><td>Anti-Pilling Silicone</td><td>Patent search</td><td>Q1-Q3 2027</td><td>$45K</td><td><span style="color:var(--mut)">Ideation</span></td></tr>
+<tr><td>P3</td><td>Recycled PET Softener</td><td>Ideation</td><td>Q2-Q4 2027</td><td>$40K</td><td><span style="color:var(--mut)">Ideation</span></td></tr>
 </table></div>
+
+<div class="card"><h3>Formulation Matrix - Key Products x Raw Materials</h3>
+<table class="tb"><tr class="hd"><td>Product</td><td>Stearic Acid</td><td>TEA</td><td>PDMS</td><td>DMS</td><td>Acetic Acid</td><td>Other</td></tr>
+<tr><td>CWAS Flakes</td><td>65%</td><td>20%</td><td>-</td><td>10%</td><td>3%</td><td>Preservative 2%</td></tr>
+<tr><td>CWAS Cold Prill</td><td>60%</td><td>22%</td><td>-</td><td>12%</td><td>3%</td><td>Dispersant 3%</td></tr>
+<tr><td>CWMS 161</td><td>55%</td><td>25%</td><td>-</td><td>15%</td><td>3%</td><td>Emulsifier 2%</td></tr>
+<tr><td>NSLN (Near-Nonionic)</td><td>50%</td><td>30%</td><td>-</td><td>10%</td><td>5%</td><td>Nonionic 5%</td></tr>
+<tr><td>HS 200 (Hydrophilic)</td><td>-</td><td>5%</td><td>70%</td><td>-</td><td>2%</td><td>Emulsifier 23%</td></tr>
+<tr><td>1800 CON (Amino PDMS)</td><td>-</td><td>3%</td><td>75%</td><td>-</td><td>2%</td><td>Amino-fluid 20%</td></tr>
+<tr><td>MASC (Macro Emulsion)</td><td>-</td><td>5%</td><td>65%</td><td>-</td><td>3%</td><td>Thickener 27%</td></tr>
+</table>
+<div style="font-size:10px;color:var(--mut);margin-top:6px">Percentages are approximate. TEA = Triethanolamine. PDMS = Polydimethylsiloxane. DMS = Dimethyl Sulfate.</div></div>
+
+<div class="g2">
+<div class="card"><h3>Product Roadmap 2026-2029</h3>
+<table class="tb"><tr class="hd"><td>Year</td><td>New Products</td><td>Target Market</td><td>Est. Revenue</td></tr>
+<tr><td>2026</td><td>CWAS Cold, GB-VOC Softener</td><td>China entry portfolio</td><td>$18M</td></tr>
+<tr><td>2027</td><td>Ultra-Concentrate Silicone, Cold Soaping</td><td>Premium China mills</td><td>$57M</td></tr>
+<tr><td>2028</td><td>Bio-Based EQ, One-Pack Pretreatment</td><td>EU/Green buyers</td><td>$120M</td></tr>
+<tr><td>2029</td><td>Anti-Pilling Silicone, Recycled PET</td><td>Sustainability premium</td><td>$180M</td></tr>
+</table></div>
+
+<div class="card"><h3>Testing Schedule - Q2-Q3 2026</h3>
+<table class="tb"><tr class="hd"><td>Test</td><td>Product</td><td>Lab</td><td>Timeline</td><td>Status</td></tr>
+<tr><td>GB 38508 VOC Content</td><td>CWAS, NSLN, MASC</td><td>SGS Shanghai</td><td>Jun 2026</td><td><span class="bg y">Scheduled</span></td></tr>
+<tr><td>30C Performance</td><td>CWAS Cold Prill</td><td>Gazipur QC</td><td>Jun-Jul 2026</td><td><span class="bg y">In Progress</span></td></tr>
+<tr><td>Concentrate Stability</td><td>Silicone 3:1</td><td>Gazipur R&D</td><td>Jul-Aug 2026</td><td><span class="bg b">Planned</span></td></tr>
+<tr><td>Biodegradability (OECD 301B)</td><td>Bio-Based EQ</td><td>External lab</td><td>Q4 2026</td><td><span class="bg b">Planned</span></td></tr>
+</table></div>
+</div>
 </div>
 
 <!-- CERTIFICATION TRACKER -->
@@ -1735,38 +1788,65 @@ init=function(){
 
 
 <!-- BANGLADESH OPERATIONS -->
-<div id="v-bangladesh" class="vw">
+<div <div id="v-bangladesh" class="vw">
 <div class="kr"><div class="kpi"><div class="v">$90M</div><div class="l">BD Revenue (Est.)</div></div><div class="kpi"><div class="v">200+</div><div class="l">Active Customers</div></div><div class="kpi"><div class="v">6,500t</div><div class="l">Monthly Output</div></div><div class="kpi"><div class="v">~10%</div><div class="l">Market Share BD</div></div><div class="kpi"><div class="v">~93%</div><div class="l">BD Import Dependence</div></div><div class="kpi"><div class="v">$50B</div><div class="l">BD RMG Exports</div></div></div>
 
-<div class="card"><h3>🇧🇩 Bangladesh Market — Textile Chemical Landscape</h3>
+<div class="card"><h3>Bangladesh Market - Textile Chemical Landscape</h3>
 <table class="tb"><tr class="hd"><td>Metric</td><td>2023</td><td>2024</td><td>2025 Est.</td></tr>
 <tr><td>RMG Export Value</td><td>$46.9B</td><td>$50.3B</td><td>$54B</td></tr>
 <tr><td>Washing/Dyeing Factories</td><td>1,850</td><td>1,920</td><td>2,000+</td></tr>
-<tr><td>LEED Green Factories</td><td>198</td><td>210</td><td>225</td></tr>
 <tr><td>Textile Chemical Market</td><td>$780M</td><td>$850M</td><td>$920M</td></tr>
 <tr><td>Softener Segment</td><td>$310M</td><td>$340M</td><td>$375M</td></tr>
-<tr><td>Cationic Softener Demand</td><td>38 kt</td><td>44 kt</td><td>50 kt</td></tr>
 <tr style="background:rgba(201,168,76,0.08)"><td><strong>Chemicon Market Share</strong></td><td><strong>~8%</strong></td><td><strong>~10%</strong></td><td><strong>~12%</strong></td></tr>
 </table></div>
 
 <div class="g2">
-<div class="card"><h3>🏭 Local Supply Chain</h3>
-<table class="tb"><tr class="hd"><td>Supplier</td><td>Material</td><td>Annual Volume</td><td>Payment</td></tr>
-<tr><td>Wilmar/KLK (MY import)</td><td>Stearic Acid TP</td><td>1,020 t/yr</td><td>LC 60d</td></tr>
-<tr><td>BASF (DE/SG import)</td><td>Triethanolamine</td><td>220 t/yr</td><td>LC 90d</td></tr>
+<div class="card"><h3>Factory Performance - Gazipur</h3>
+<table class="tb"><tr class="hd"><td>KPI</td><td>Target</td><td>Actual (May)</td><td>Status</td></tr>
+<tr><td>Monthly Production</td><td>670t</td><td>648t</td><td><span class="bg y">96.7%</span></td></tr>
+<tr><td>Yield Rate</td><td>88%</td><td>85.2%</td><td><span class="bg y">-2.8%</span></td></tr>
+<tr><td>QC Pass Rate</td><td>99%</td><td>98.2%</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>Downtime (hrs)</td><td>&lt;8h/mo</td><td>12.5h</td><td><span class="bg r">High</span></td></tr>
+<tr><td>Energy Cost/t</td><td>$42</td><td>$45</td><td><span class="bg y">+7%</span></td></tr>
+<tr><td>OTIF Delivery</td><td>95%</td><td>93%</td><td><span class="bg y">-2%</span></td></tr>
+</table></div>
+
+<div class="card"><h3>Monthly Production by Line (May 2026)</h3>
+<table class="tb"><tr class="hd"><td>Production Line</td><td>Product Group</td><td>Capacity</td><td>Actual</td><td>Util</td></tr>
+<tr><td>Line 1 - Softeners</td><td>Cationic, Weak Cat, Near-Nonionic</td><td>350t</td><td>338t</td><td>96.6%</td></tr>
+<tr><td>Line 2 - Silicones</td><td>HS, CON, MASC, Macro</td><td>180t</td><td>172t</td><td>95.6%</td></tr>
+<tr><td>Line 3 - Auxiliaries</td><td>Enzymes, Fixing, Scouring</td><td>140t</td><td>138t</td><td>98.6%</td></tr>
+<tr class="tt"><td><strong>Total</strong></td><td></td><td><strong>670t</strong></td><td><strong>648t</strong></td><td><strong>96.7%</strong></td></tr>
+</table></div>
+</div>
+
+<div class="g22">
+<div class="card"><h3>Supply Chain - BD Factory</h3>
+<table class="tb"><tr class="hd"><td>Supplier</td><td>Material</td><td>Annual Vol</td><td>Payment</td></tr>
+<tr><td>Wilmar/KLK (MY)</td><td>Stearic Acid TP</td><td>1,020 t/yr</td><td>LC 60d</td></tr>
+<tr><td>BASF (DE/SG)</td><td>Triethanolamine</td><td>220 t/yr</td><td>LC 90d</td></tr>
 <tr><td>Local Synthesis</td><td>Imidazoline Base</td><td>210 t/yr</td><td>TT 30d</td></tr>
-<tr><td>Dow/Wacker (import)</td><td>PDMS Silicone Oil</td><td>940 t/yr</td><td>LC 60d</td></tr>
+<tr><td>Dow/Wacker</td><td>PDMS Silicone Oil</td><td>940 t/yr</td><td>LC 60d</td></tr>
 <tr><td>Local Suppliers</td><td>Acetic Acid, Preservatives</td><td>60 t/yr</td><td>TT 15d</td></tr>
 </table></div>
 
-<div class="card"><h3>👥 Key BD Customer Segments</h3>
-<table class="tb"><tr class="hd"><td>Segment</td><td>Customers</td><td>Volume Share</td><td>Growth</td></tr>
-<tr><td>Large Export-Oriented Mills</td><td>40</td><td>55%</td><td>+12%</td></tr>
-<tr><td>Mid-Tier Dyeing Units</td><td>85</td><td>30%</td><td>+8%</td></tr>
-<tr><td>Small/Local Finishers</td><td>75+</td><td>10%</td><td>+5%</td></tr>
-<tr><td>Garment Washers</td><td>20+</td><td>5%</td><td>+15%</td></tr>
+<div class="card"><h3>Customer Segments - BD</h3>
+<table class="tb"><tr class="hd"><td>Segment</td><td>Customers</td><td>Volume Share</td><td>Growth</td><td>Margin</td></tr>
+<tr><td>Large Export Mills</td><td>40</td><td>55%</td><td>+12%</td><td>18%</td></tr>
+<tr><td>Mid-Tier Dyeing Units</td><td>85</td><td>30%</td><td>+8%</td><td>15%</td></tr>
+<tr><td>Small/Local Finishers</td><td>75+</td><td>10%</td><td>+5%</td><td>12%</td></tr>
+<tr><td>Garment Washers</td><td>20+</td><td>5%</td><td>+15%</td><td>22%</td></tr>
 </table></div>
 </div>
+
+<div class="card"><h3>BD to China Knowledge Transfer Tracker</h3>
+<table class="tb"><tr class="hd"><td>Knowledge Area</td><td>Source (BD)</td><td>Target (CN)</td><td>Method</td><td>Status</td></tr>
+<tr><td>Product formulations</td><td>R&D Lead</td><td>CN Tech Service</td><td>Secure DB + NDA</td><td><span class="bg y">Q3 2026</span></td></tr>
+<tr><td>QC testing protocols</td><td>QC Manager</td><td>CN Warehouse QC</td><td>SOP document + video</td><td><span class="bg y">Q3 2026</span></td></tr>
+<tr><td>Customer application know-how</td><td>Sales Director</td><td>CN Distributor</td><td>Training sessions</td><td><span class="bg b">Q4 2026</span></td></tr>
+<tr><td>Batch production records</td><td>Plant Manager</td><td>CN Tech Service</td><td>Digital archive</td><td><span class="bg y">Q3 2026</span></td></tr>
+<tr><td>Supplier relationships</td><td>Procurement Head</td><td>CN Country Mgr</td><td>Introduction + handover</td><td><span class="bg b">Q4 2026</span></td></tr>
+</table></div>
 </div>
 
 <!-- COMPANY FINANCIALS -->
@@ -1897,6 +1977,40 @@ init=function(){
 </div>
 
 <!-- THEMES -->
+
+<!-- ALERTS DASHBOARD -->
+<div id="v-alerts" class="vw">
+<div class="kr"><div class="kpi"><div class="v" style="color:var(--red)">3</div><div class="l">Critical</div></div><div class="kpi"><div class="v" style="color:var(--amb)">5</div><div class="l">Warnings</div></div><div class="kpi"><div class="v" style="color:var(--grn)">8</div><div class="l">Normal</div></div><div class="kpi"><div class="v">16</div><div class="l">Total Checks</div></div></div>
+
+<div class="card"><h3>CRITICAL ALERTS - Action Required</h3>
+<div class="al r"><b>OEKO-TEX Eco Passport - EXPIRES JUNE 2026 (this month!)</b><br>Start renewal immediately. Without this, EU-bound customers lose OEKO-TEX chain of custody. Estimated impact: $5-8M in at-risk revenue.</div>
+<div class="al r"><b>PDMS Silicone Oil - Stock CRITICAL (28t vs 65t safety)</b><br>Place order with Dow/Wacker immediately. Lead time 25 days. Running below minimum safety stock will halt silicone production in ~10 days. Est. production loss: $120K/day.</div>
+<div class="al r"><b>MEE Order 12 Filing - Not Yet Submitted (60-90d processing)</b><br>Critical path for China market entry. Without this, no legal sales in China. Engage Chinese regulatory agent within 7 days. Delay costs: $1.5M/month in lost Y1 revenue.</div>
+</div>
+
+<div class="card"><h3>WARNINGS - Monitor Closely</h3>
+<div class="al y"><b>Stearic Acid stock low (62t vs 85t monthly use, 60t safety)</b><br>Place next order within 5 days. Wilmar and KLK both available. Order 100t minimum.</div>
+<div class="al y"><b>BDT Depreciation Risk - 119.50/USD and weakening</b><br>Every 1 BDT/USD depreciation = $8/ton margin loss on CWAS. Current hedge covers only $8M of $16M exposure. Recommend increasing to $12M forward coverage.</div>
+<div class="al y"><b>Distributor Agreement - Not Yet Signed</b><br>Target signing: Q2 2026 (now delayed). Dual-distributor strategy needed. Without signed distributor, no China commercial operations.</div>
+<div class="al y"><b>Trademark CNIPA - Filing pending</b><br>China is first-to-file. File CHEMISOFT trademark NOW - cost ~$2,000. Litigation after someone else registers it: $50-200K+.</div>
+<div class="al y"><b>Sample pipeline - 3 samples in transit, no contract conversions yet</b><br>Shaoxing Yongli positive but no signed contract. Sample-to-contract should be <30 days. Track aggressively.</div>
+</div>
+
+<div class="card"><h3>NORMAL - On Track</h3>
+<table class="tb"><tr class="hd"><td>Check</td><td>Status</td><td>Last Verified</td></tr>
+<tr><td>GOTS 7.0 Certification</td><td><span class="bg g">Active (Jan 2027)</span></td><td>May 2026</td></tr>
+<tr><td>ZDHC MRSL Level 3</td><td><span class="bg g">Active (Mar 2027)</span></td><td>May 2026</td></tr>
+<tr><td>Production Lines</td><td><span class="bg g">3/3 Running</span></td><td>Today</td></tr>
+<tr><td>QC Pass Rate</td><td><span class="bg g">98.2% (30d)</span></td><td>Today</td></tr>
+<tr><td>Gateway Service</td><td><span class="bg g">Running</span></td><td>Today</td></tr>
+<tr><td>Cron Jobs</td><td><span class="bg g">8/8 Active</span></td><td>Today</td></tr>
+<tr><td>Freight Rates</td><td><span class="bg g">Stable</span></td><td>May 2026</td></tr>
+<tr><td>Customer Payments</td><td><span class="bg g">No overdue</span></td><td>Today</td></tr>
+</table></div>
+</div>
+
+
+
 <div id="v-themes" class="vw"><div class="card"><h3>🎨 Theme Selector (6 Built-in)</h3>
 <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
 <div class="theme-opt active" style="background:#080c14;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid var(--gold)" onclick="setTheme('dark',this)" title="Hermes Dark (default)"><div style="color:#c9a84c;text-align:center;padding-top:18px;font-size:9px">Hermes<br>Dark</div></div>
