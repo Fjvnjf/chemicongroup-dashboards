@@ -124,97 +124,155 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
 
 @media(max-width:768px){
-  /* HIDE SIDEBAR BY DEFAULT, ADD HAMBURGER */
-  #sb{position:fixed;left:-240px;top:52px;bottom:46px;width:240px;z-index:150;transition:left .3s;box-shadow:4px 0 20px rgba(0,0,0,.5)}
-  #sb.open{left:0}
-  #sb .ni{font-size:14px;padding:10px 14px 10px 24px}
-  #sb .sh{font-size:11px;padding:12px 16px 4px}
+  /* ===== MOBILE NAVIGATION ===== */
+  /* Hide desktop sidebar */
+  #sb{display:none!important}
+  #hb{display:none!important}
+  #sb-overlay{display:none!important}
 
-  /* HAMBURGER BUTTON */
-  #hb{display:flex!important;position:fixed;left:8px;top:58px;z-index:160;width:36px;height:36px;background:var(--card);border:1px solid var(--brd);border-radius:6px;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--txt)}
-  
-  /* OVERLAY WHEN SIDEBAR OPEN */
-  #sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:145}
-  #sb-overlay.show{display:block}
+  /* Bottom tab bar */
+  #mob-nav{display:flex!important;position:fixed;bottom:0;left:0;right:0;height:56px;background:var(--surf);border-top:2px solid var(--gold);z-index:200;display:flex;justify-content:space-around;align-items:center;padding:0 4px;padding-bottom:env(safe-area-inset-bottom,0)}
+  #mob-nav .mt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex:1;height:100%;cursor:pointer;color:var(--mut);font-size:9px;border:none;background:none;-webkit-tap-highlight-color:transparent;transition:.15s;min-width:44px;min-height:44px}
+  #mob-nav .mt .mi{font-size:18px;line-height:1}
+  #mob-nav .mt.ac{color:var(--blue)}
+  #mob-nav .mt.ac .mi{filter:drop-shadow(0 0 4px var(--blue))}
 
-  /* TOP BAR */
-  #tb{height:44px;padding:0 10px;gap:6px}
-  #tb .ttl{font-size:13px}
+  /* More slide-up panel */
+  #mob-more{position:fixed;bottom:-100%;left:0;right:0;background:var(--surf);border-top:2px solid var(--gold);border-radius:16px 16px 0 0;z-index:210;max-height:70vh;overflow-y:auto;transition:bottom .3s;padding:16px;padding-bottom:env(safe-area-inset-bottom,16px)}
+  #mob-more.open{bottom:56px}
+  #mob-more .mh{font-size:12px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
+  #mob-more .mi2{display:block;width:100%;padding:12px 8px;font-size:14px;color:var(--txt);text-align:left;background:none;border:none;border-bottom:1px solid var(--brd);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  #mob-more .mi2:active{background:var(--card)}
+  #more-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:205}
+  #more-overlay.show{display:block}
+
+  /* ===== LAYOUT ===== */
+  #lo{flex-direction:column}
+  #mn{padding:8px;margin-bottom:56px}
+  body{overflow-y:auto}
+
+  /* ===== TOP BAR ===== */
+  #tb{height:44px;padding:0 8px;gap:4px;position:sticky;top:0}
+  #tb .ttl{font-size:13px;letter-spacing:0}
   #tb .st{display:none}
-  #tb .qa{font-size:10px;padding:4px 8px}
-  #tb .sp{flex:1}
+  #tb .qa{padding:6px 8px;font-size:10px;min-width:44px;min-height:32px;display:flex;align-items:center;justify-content:center}
+  #tb .qa:nth-child(7),#tb .qa:nth-child(8){display:none} /* Hide Terminal and Sync on mobile */
 
-  /* BOTTOM BAR */
-  #bb{height:40px;padding:0 8px;gap:6px}
-  #bb input{font-size:12px;padding:6px 8px}
-  #bb .cx{font-size:9px}
-  #suggestBox{left:10px!important;right:10px!important;bottom:44px!important;font-size:12px!important}
+  /* ===== BOTTOM COMMAND BAR ===== */
+  #bb{display:none!important} /* Bottom bar replaced by mobile nav */
 
-  /* LAYOUT */
-  #mn{padding:10px;margin-left:0}
-  .g2,.g3,.g22{grid-template-columns:1fr;gap:8px}
+  /* ===== KPI CARDS ===== */
   .kr{grid-template-columns:repeat(2,1fr);gap:6px}
-  .kpi{padding:12px}
-  .kpi .v{font-size:20px}
-  .kpi .l{font-size:8px}
-  
-  /* CARDS */
-  .card{padding:12px;margin-bottom:8px}
-  .card h3{font-size:11px}
+  .kpi{padding:10px 8px;border-radius:8px}
+  .kpi .v{font-size:18px}
+  .kpi .l{font-size:9px}
 
-  /* TABLES SCROLLABLE */
-  .tb{font-size:11px;display:block;overflow-x:auto}
-  .tb td{padding:5px 6px;white-space:nowrap}
+  /* ===== CARDS ===== */
+  .card{padding:10px;margin-bottom:6px;border-radius:8px}
+  .card h3{font-size:12px;margin-bottom:6px;padding-bottom:4px}
 
-  /* CHARTS */
-  .cw{height:200px}.cw.tl{height:240px}
+  /* ===== GRIDS ===== */
+  .g2,.g3,.g22{grid-template-columns:1fr;gap:6px}
 
-  /* CHAT */
-  .chat-box{flex-direction:column;height:calc(100vh - 140px)}
+  /* ===== TABLES → CARD STACKS ===== */
+  .tb{display:block;font-size:12px;border:none}
+  .tb thead,.tb tr.hd{display:none} /* Hide header row */
+  .tb tr{display:block;padding:8px 0;border-bottom:1px solid var(--brd)}
+  .tb tr:last-child{border-bottom:none}
+  .tb td{display:flex;justify-content:space-between;align-items:center;padding:5px 0;white-space:normal;text-align:left;border:none}
+  .tb td:first-child{color:var(--mut);font-weight:600;font-size:11px;min-width:90px}
+  .tb td:last-child{text-align:right;font-weight:400;color:var(--txt);font-family:inherit;flex:1}
+  .tb tr.tt td:first-child{color:var(--gold)}
+  .tb tr.tt td:last-child{color:var(--gold);font-weight:700}
+  /* Restore header for comparison tables */
+  .tb.compare-restore thead,.tb.compare-restore tr.hd{display:table-header-group}
+
+  /* ===== CHARTS ===== */
+  .cw{height:180px}.cw.tl{height:200px}
+  .chart-full{display:none}
+  .chart-full.open{display:block;position:fixed;inset:44px 0 56px 0;background:var(--bg);z-index:180;padding:16px;overflow-y:auto}
+  .chart-full.open canvas{height:60vh!important}
+
+  /* ===== CHAT ===== */
+  .chat-box{flex-direction:column;height:calc(100vh - 108px)}
   .chat-side{display:none}
   .chat-main{flex:1}
-  .chat-msgs .msg{max-width:95%}
-  .chat-msgs .msg .bb{font-size:13px}
-  .chat-inp textarea{font-size:13px;height:38px}
-  .chat-inp button{padding:0 12px;font-size:13px}
-  .msg .av{width:26px;height:26px;font-size:13px}
+  .chat-msgs{padding:8px}
+  .chat-msgs .msg{max-width:92%}
+  .chat-msgs .msg .bb{font-size:13px;padding:8px 10px}
+  .chat-inp textarea{font-size:14px;height:40px;padding:8px 10px}
+  .chat-inp button{padding:0 14px;font-size:14px;min-width:44px;min-height:44px}
+  .msg .av{width:28px;height:28px;font-size:14px}
 
-  /* PASSWORD */
-  #gate h2{font-size:17px;text-align:center;padding:0 20px}
-  #gate input{width:90%;max-width:280px;font-size:15px}
-  #gate button{font-size:15px}
+  /* ===== PASSWORD ===== */
+  #gate h2{font-size:16px;text-align:center;padding:0 16px}
+  #gate input{width:85%;max-width:260px;font-size:15px;padding:14px 18px}
+  #gate button{font-size:15px;min-width:200px;min-height:48px;padding:14px 24px}
 
-  /* FONTS */
+  /* ===== TOUCH TARGETS ===== */
+  button,.qa,.ni,.mt,.mi2{min-height:44px;min-width:44px}
+  input,textarea,select{min-height:40px;font-size:16px!important} /* 16px prevents iOS zoom */
+
+  /* ===== FONTS ===== */
   body{font-size:14px}
-  .card h3{font-size:11px}
+  .al{font-size:13px}
 
-  /* KANBAN */
-  .kanban{flex-direction:column}
-  .kanban .col{min-width:auto}
+  /* ===== COLLAPSIBLE SECTIONS ===== */
+  .mob-collapse{overflow:hidden;max-height:0;transition:max-height .4s}
+  .mob-collapse.open{max-height:2000px}
+  .mob-toggle{display:flex;align-items:center;gap:6px;cursor:pointer;font-size:12px;color:var(--blue);padding:8px 0;-webkit-tap-highlight-color:transparent;min-height:44px}
+  .mob-toggle .ar2{transition:.2s;font-size:10px}
+  .mob-toggle.open .ar2{transform:rotate(90deg)}
 
-  /* VOICE CARDS */
-  .tb tr.hd td{font-size:9px}
+  /* ===== KANBAN ===== */
+  .kanban{flex-direction:column;gap:6px}
+  .kanban .col{min-width:auto;padding:8px}
 }
 
-/* VERY SMALL SCREENS */
+/* ===== VERY SMALL SCREENS ===== */
 @media(max-width:400px){
-  .kr{grid-template-columns:1fr 1fr}
-  .kpi .v{font-size:17px}
+  .kr{grid-template-columns:1fr 1fr;gap:4px}
+  .kpi .v{font-size:16px}
+  .kpi .l{font-size:8px}
   #tb .ttl{font-size:11px}
-  #gate .logo{font-size:36px}
-  #gate h2{font-size:15px}
+  #gate .logo{font-size:32px}
+  #gate h2{font-size:14px}
 }
 
-/* ADD HAMBURGER HTML VIA JS ONLY ON MOBILE */
-#hb{display:none}
-#sb-overlay{display:none}
+/* Mobile elements hidden on desktop */
+#mob-nav{display:none}
+#mob-more{display:none}
+#more-overlay{display:none}
+@media(min-width:769px){#mob-nav,#mob-more,#more-overlay{display:none!important}}
 </style>
 </head>
 <body>
 
-<!-- HAMBURGER (mobile only) -->
-<button id="hb" onclick="toggleSb()">☰</button>
-<div id="sb-overlay" onclick="toggleSb()"></div>
+<!-- MOBILE BOTTOM NAV -->
+<nav id="mob-nav">
+<button class="mt ac" onclick="mobNav('exec')"><span class="mi">🏠</span>Home</button>
+<button class="mt" onclick="mobNav('products')"><span class="mi">📦</span>Products</button>
+<button class="mt" onclick="mobNav('chat')"><span class="mi">💬</span>Chat</button>
+<button class="mt" onclick="mobNav('financials')"><span class="mi">📈</span>Finance</button>
+<button class="mt" onclick="toggleMore()"><span class="mi">☰</span>More</button>
+</nav>
+
+<!-- MORE SLIDE-UP PANEL -->
+<div id="mob-more">
+<div class="mh">🌏 Market & Intelligence</div>
+<button class="mi2" onclick="mobNav('market')">🌏 Market Intelligence</button>
+<button class="mi2" onclick="mobNav('competitors')">🕵️ Competitor Analysis</button>
+<button class="mi2" onclick="mobNav('pricing')">💰 Cost & Pricing</button>
+<div class="mh" style="margin-top:12px">📋 Operations</div>
+<button class="mi2" onclick="mobNav('regulatory')">📋 Regulatory Playbook</button>
+<button class="mi2" onclick="mobNav('timeline')">🗂 Action Plan</button>
+<button class="mi2" onclick="mobNav('kanban')">📋 Kanban Board</button>
+<div class="mh" style="margin-top:12px">⚡ System</div>
+<button class="mi2" onclick="mobNav('terminal')">🖥 Terminal</button>
+<button class="mi2" onclick="mobNav('health')">🩺 System Health</button>
+<button class="mi2" onclick="mobNav('themes')">🎨 Themes</button>
+</div>
+<div id="more-overlay" onclick="toggleMore()"></div>
 
 <!-- PASSWORD -->
 <div id="gate">
@@ -773,6 +831,19 @@ function nav(v){
 function toggleSb(){
   const sb=document.getElementById('sb'),ov=document.getElementById('sb-overlay');
   sb.classList.toggle('open');ov.classList.toggle('show');
+}
+// Mobile navigation
+function mobNav(v){
+  nav(v);
+  document.querySelectorAll('#mob-nav .mt').forEach(b=>b.classList.remove('ac'));
+  const btn=document.querySelector('#mob-nav .mt[onclick*="'+v+'"]');
+  if(btn)btn.classList.add('ac');
+  toggleMore(true);
+}
+function toggleMore(force){
+  const m=document.getElementById('mob-more'),o=document.getElementById('more-overlay');
+  if(force===true){m.classList.remove('open');o.classList.remove('show');return}
+  m.classList.toggle('open');o.classList.toggle('show');
 }
 
 // === CHAT ===
