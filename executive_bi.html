@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive BI — Chemicon Investor Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#080c14;color:#d0d6e0;font-family:'Segoe UI',system-ui,sans-serif}
+.header{background:linear-gradient(135deg,#0a0f1e 0%,#162040 100%);padding:20px 32px;border-bottom:2px solid #c9a84c;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:24px;color:#c9a84c;font-weight:300;letter-spacing:2px}
+.header .sub{font-size:11px;color:#6a7a9a;text-transform:uppercase;letter-spacing:2px}
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;padding:20px 32px}
+.kpi-card{background:linear-gradient(180deg,#111827 0%,#0d1525 100%);border:1px solid #1e3050;border-radius:14px;padding:24px;text-align:center}
+.kpi-card .label{font-size:10px;color:#5a7a9a;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px}
+.kpi-card .value{font-size:42px;font-weight:700;color:#c9a84c;line-height:1}
+.kpi-card .delta{font-size:12px;margin-top:6px}
+.kpi-card .delta.up{color:#66bb6a}
+.kpi-card .delta.down{color:#ef5350}
+.grid-main{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;padding:0 32px 20px}
+.card{background:#111827;border:1px solid #1e3050;border-radius:14px;padding:24px}
+.card h3{font-size:13px;color:#7a8a9a;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #1a2744}
+.chart-wrap{position:relative;height:280px}
+.chart-wrap.tall{height:340px}
+canvas{width:100%!important}
+.metric-table{width:100%;font-size:13px;border-collapse:collapse}
+.metric-table td{padding:8px 12px;border-bottom:1px solid #152033}
+.metric-table td:first-child{color:#7a8a9a}
+.metric-table td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-family:monospace}
+.sensitivity-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12px}
+.sens-item{background:#0d1525;padding:12px;border-radius:8px;text-align:center}
+.sens-item .var{color:#7a8a9a;margin-bottom:4px}
+.sens-item .impact{font-weight:600}
+.sens-item .impact.pos{color:#66bb6a}
+.sens-item .impact.neg{color:#ef5350}
+.footer{text-align:center;padding:16px;color:#3a4a5a;font-size:10px;border-top:1px solid #152033;margin:0 32px}
+.phase-tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:10px;margin-left:8px}
+.phase-tag.construction{background:#3a2010;color:#ffa726}
+.phase-tag.operational{background:#103a20;color:#66bb6a}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>CHEMICON GROUP</h1>
+    <div class="sub">Investor Relations — Bio-Succinic Acid Plant | Nanjing, China</div>
+  </div>
+  <div style="text-align:right">
+    <div style="font-size:24px;color:#c9a84c">$415.8M</div>
+    <div style="font-size:11px;color:#5a7a9a">Project NPV @ 12% WACC</div>
+  </div>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi-card">
+    <div class="label">Total Investment</div>
+    <div class="value">$202M</div>
+    <div class="delta up">▼ 8% vs industry avg</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Project IRR</div>
+    <div class="value">48.1%</div>
+    <div class="delta up">▲ 2.3x hurdle rate</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Payback Period</div>
+    <div class="value">4.0yr</div>
+    <div class="delta up">▼ 2yr below benchmark</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">Annual Revenue</div>
+    <div class="value">$221M</div>
+    <div class="delta up">▲ EBITDA 56% margin</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">MPSP / Market Price</div>
+    <div class="value">$1,262</div>
+    <div class="delta up">43% below market ($2,200)</div>
+  </div>
+</div>
+
+<div class="grid-main">
+  <div>
+    <div class="card">
+      <h3>15-Year Cash Flow Projection (USD Millions)</h3>
+      <div class="chart-wrap tall"><canvas id="cashflowChart"></canvas></div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Sensitivity Analysis — NPV Impact by Variable</h3>
+      <div class="chart-wrap"><canvas id="sensitivityChart"></canvas></div>
+    </div>
+  </div>
+  <div>
+    <div class="card">
+      <h3>CAPEX Breakdown</h3>
+      <table class="metric-table">
+        <tr><td>Equipment (delivered)</td><td>$45,500,000</td></tr>
+        <tr><td>Installation</td><td>$21,385,000</td></tr>
+        <tr><td>Piping</td><td>$13,650,000</td></tr>
+        <tr><td>Instrumentation & Controls</td><td>$8,190,000</td></tr>
+        <tr><td>Electrical</td><td>$5,005,000</td></tr>
+        <tr><td>Buildings & Civil</td><td>$8,190,000</td></tr>
+        <tr><td>Other Direct Costs</td><td>$25,480,000</td></tr>
+        <tr><td>Indirect + Contingency</td><td>$60,446,750</td></tr>
+        <tr style="border-top:2px solid #c9a84c"><td><strong>Fixed Capital</strong></td><td><strong>$187,846,750</strong></td></tr>
+        <tr><td>Working Capital</td><td>$14,472,239</td></tr>
+        <tr style="border-top:2px solid #c9a84c"><td><strong>TOTAL INVESTMENT</strong></td><td><strong style="color:#4fc3f7">$202,318,989</strong></td></tr>
+      </table>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Annual OPEX Breakdown</h3>
+      <table class="metric-table">
+        <tr><td>Feedstock (180k tons)</td><td>$63,000,000</td></tr>
+        <tr><td>Utilities</td><td>$6,500,000</td></tr>
+        <tr><td>Labor (120+ staff)</td><td>$2,800,000</td></tr>
+        <tr><td>Maintenance</td><td>$7,513,870</td></tr>
+        <tr><td>Overhead / Admin / Insurance</td><td>$12,248,724</td></tr>
+        <tr><td>R&D (2% revenue)</td><td>$4,419,000</td></tr>
+        <tr style="border-top:2px solid #c9a84c"><td><strong>TOTAL OPEX</strong></td><td><strong style="color:#ef5350">$96,481,594</strong></td></tr>
+      </table>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3>Project Timeline</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;font-size:12px">
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>FEED & Basic Engineering</span><span>Months 1-8 <span class="phase-tag construction">In Progress</span></span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>Detailed Engineering</span><span>Months 9-16</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>Procurement</span><span>Months 12-22</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>Construction</span><span>Months 17-28</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>Commissioning & Start-up</span><span>Months 29-36</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:8px;background:#0d1525;border-radius:6px">
+          <span>Full Capacity <span class="phase-tag operational">Target</span></span><span>Month 36+</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Chemicon Group | Uttara, Dhaka-1230 | info@chemicongroup.com | Data source: DCF Model v2.0 | Generated by Hermes Agent
+</div>
+
+<script>
+Chart.defaults.color = '#6a7a9a';
+Chart.defaults.borderColor = '#1e3050';
+Chart.defaults.plugins.legend.labels.color = '#7a8a9a';
+
+// Cash Flow Chart
+const years = ['Y1','Y2','Y3','Y4','Y5','Y6','Y7','Y8','Y9','Y10','Y11','Y12','Y13','Y14','Y15'];
+const fcf = [-80.9,-121.4,124.7,124.7,111.2,111.2,111.2,97.8,97.8,97.8,97.8,97.8,93.5,93.5,126.8];
+const cum = [-80.9,-202.3,-77.6,47.1,158.4,269.6,380.8,478.6,576.4,674.1,771.9,869.7,963.2,1056.7,1183.5];
+
+new Chart(document.getElementById('cashflowChart'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [{
+      label: 'Free Cash Flow ($M)',
+      data: fcf,
+      backgroundColor: fcf.map(v => v >= 0 ? 'rgba(102,187,106,0.6)' : 'rgba(239,83,80,0.6)'),
+      borderColor: fcf.map(v => v >= 0 ? '#66bb6a' : '#ef5350'),
+      borderWidth: 1, borderRadius: 4,
+      order: 2
+    },{
+      label: 'Cumulative FCF ($M)',
+      data: cum,
+      type: 'line',
+      borderColor: '#4fc3f7', backgroundColor: 'rgba(79,195,247,0.05)',
+      fill: true, tension: .3, borderWidth: 2, pointRadius: 2,
+      order: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {grid:{color:'#1a2744'}, ticks:{callback:v=>'$'+v+'M'}},
+      x: {grid:{display:false}}
+    }
+  }
+});
+
+// Sensitivity Tornado
+new Chart(document.getElementById('sensitivityChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Product Price','Capacity','Discount Rate','Feedstock Cost'],
+    datasets: [{
+      label: '-20%',
+      data: [-199.2,-139.7,90.7,59.6],
+      backgroundColor: '#ef5350', borderRadius: 4
+    },{
+      label: '+20%',
+      data: [199.2,139.7,-73.2,-59.6],
+      backgroundColor: '#66bb6a', borderRadius: 4
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: {legend:{position:'top'}},
+    scales: {
+      x: {grid:{color:'#1a2744'}, ticks:{callback:v=>'$'+v+'M'}},
+      y: {grid:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>

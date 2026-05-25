@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manufacturing KPI — Chemicon Operations</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0c1018;color:#d0d6e0;font-family:'Segoe UI',system-ui,sans-serif}
+.header{background:#111827;padding:16px 24px;border-bottom:1px solid #1e3a5f;display:flex;justify-content:space-between}
+.header h1{font-size:20px;color:#66bb6a}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:16px}
+.grid-3{display:grid;grid-template-columns:2fr 1fr;gap:12px;padding:0 16px 16px}
+.card{background:#111827;border:1px solid #1e3050;border-radius:12px;padding:20px}
+.card h3{font-size:13px;color:#7a8a9a;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.oee-ring{text-align:center;padding:20px}
+.oee-ring .big{font-size:64px;font-weight:700;color:#66bb6a}
+.oee-ring .label{font-size:11px;color:#5a7a9a;margin-top:4px}
+.oee-breakdown{display:flex;justify-content:space-around;margin-top:12px}
+.oee-breakdown .item{text-align:center}
+.oee-breakdown .item .val{font-size:24px;font-weight:600}
+.oee-breakdown .item .val.g{color:#66bb6a}
+.oee-breakdown .item .val.y{color:#ffa726}
+.oee-breakdown .item .lbl{font-size:9px;color:#5a7a9a;text-transform:uppercase}
+.milestone{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #1a2744;font-size:13px}
+.milestone .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+.milestone .dot.done{background:#66bb6a;box-shadow:0 0 8px #66bb6a}
+.milestone .dot.active{background:#ffa726;box-shadow:0 0 8px #ffa726;animation:pulse 2s infinite}
+.milestone .dot.pending{background:#3a4a5a}
+.milestone .info{flex:1}
+.milestone .info .title{font-weight:600}
+.milestone .info .detail{font-size:11px;color:#5a7a9a}
+.milestone .date{font-size:11px;color:#5a7a9a;white-space:nowrap}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+.chart-wrap{position:relative;height:220px}
+.gauge{position:relative;width:120px;height:60px;margin:0 auto;overflow:hidden}
+.gauge .fill{position:absolute;bottom:0;width:100%;border-radius:120px 120px 0 0;background:linear-gradient(90deg,#ef5350,#ffa726,#66bb6a)}
+.status-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #152033;font-size:12px}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🏭 Manufacturing Operations Dashboard</h1>
+    <span style="font-size:11px;color:#5a7a9a">Chemicon Bio-Succinic Acid Plant | Shift: Day | Supervisor: Li Wei</span>
+  </div>
+  <div style="display:flex;gap:16px;align-items:center;font-size:12px">
+    <div><span class="status-dot green"></span>Line 1: 82.4 t/h</div>
+    <div><span class="status-dot green"></span>Line 2: 81.9 t/h</div>
+    <div style="color:#5a7a9a">📅 2026-05-25 14:32 CST</div>
+  </div>
+</div>
+<style>.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}.status-dot.green{background:#66bb6a}</style>
+
+<div class="grid">
+  <div class="card">
+    <h3>Overall Equipment Effectiveness</h3>
+    <div class="oee-ring">
+      <div class="big">87.3%</div>
+      <div class="label">OEE — Today</div>
+      <div class="oee-breakdown">
+        <div class="item"><div class="val g">94.2%</div><div class="lbl">Availability</div></div>
+        <div class="item"><div class="val g">95.1%</div><div class="lbl">Performance</div></div>
+        <div class="item"><div class="val y">97.5%</div><div class="lbl">Quality</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Production vs Target (MTD)</h3>
+    <div style="text-align:center;padding:12px">
+      <div style="font-size:48px;font-weight:700;color:#66bb6a">62,847</div>
+      <div style="font-size:11px;color:#5a7a9a">tons produced (May) / 75,000 target</div>
+      <div style="margin-top:8px;background:#1a2744;border-radius:8px;height:8px;overflow:hidden">
+        <div style="width:83.8%;height:100%;background:linear-gradient(90deg,#66bb6a,#4fc3f7);border-radius:8px"></div>
+      </div>
+      <div style="font-size:10px;color:#5a7a9a;margin-top:4px">83.8% of monthly target | 6 days remaining</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Downtime Today</h3>
+    <div style="text-align:center;padding:12px">
+      <div style="font-size:48px;font-weight:700;color:#ef5350">47</div>
+      <div style="font-size:11px;color:#5a7a9a">minutes downtime today</div>
+      <div style="margin-top:12px;font-size:12px;text-align:left">
+        <div class="status-row"><span>🔧 Centrifuge cleaning</span><span style="color:#ffa726">22 min</span></div>
+        <div class="status-row"><span>⚡ Power dip recovery</span><span style="color:#ffa726">15 min</span></div>
+        <div class="status-row"><span>🔄 Feedstock changeover</span><span style="color:#66bb6a">10 min</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Quality Metrics</h3>
+    <div style="padding:8px">
+      <div class="status-row"><span>Purity (target ≥99.5%)</span><span style="color:#66bb6a">99.72%</span></div>
+      <div class="status-row"><span>Moisture (target <0.1%)</span><span style="color:#66bb6a">0.04%</span></div>
+      <div class="status-row"><span>Color (APHA <10)</span><span style="color:#66bb6a">6.2</span></div>
+      <div class="status-row"><span>Heavy metals (<5 ppm)</span><span style="color:#66bb6a">1.2 ppm</span></div>
+      <div class="status-row"><span>pH (4.0-4.5)</span><span style="color:#66bb6a">4.28</span></div>
+      <div class="status-row"><span>Batch rejection rate</span><span style="color:#66bb6a">0.3%</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-3">
+  <div class="card">
+    <h3>Production Rate — Last 7 Days (tons/day)</h3>
+    <div class="chart-wrap" style="height:260px"><canvas id="productionChart"></canvas></div>
+  </div>
+  <div class="card">
+    <h3>Project Milestones</h3>
+    <div style="max-height:260px;overflow-y:auto">
+      <div class="milestone"><div class="dot done"></div><div class="info"><div class="title">Site Selection</div><div class="detail">Nanjing Chemical Park approved</div></div><div class="date">✅ Jan 2026</div></div>
+      <div class="milestone"><div class="dot done"></div><div class="info"><div class="title">FEED Package</div><div class="detail">Process design complete</div></div><div class="date">✅ Mar 2026</div></div>
+      <div class="milestone"><div class="dot done"></div><div class="info"><div class="title">Environmental Permit</div><div class="detail">Jiangsu EPB approved</div></div><div class="date">✅ Apr 2026</div></div>
+      <div class="milestone"><div class="dot active"></div><div class="info"><div class="title">Detailed Engineering</div><div class="detail">P&IDs 65% complete</div></div><div class="date">⏳ Sep 2026</div></div>
+      <div class="milestone"><div class="dot pending"></div><div class="info"><div class="title">Long-Lead Procurement</div><div class="detail">Fermenters, columns</div></div><div class="date">📅 Dec 2026</div></div>
+      <div class="milestone"><div class="dot pending"></div><div class="info"><div class="title">Construction Start</div><div class="detail">Civil works begin</div></div><div class="date">📅 May 2027</div></div>
+      <div class="milestone"><div class="dot pending"></div><div class="info"><div class="title">Mechanical Completion</div><div class="detail">Equipment installed</div></div><div class="date">📅 Apr 2028</div></div>
+      <div class="milestone"><div class="dot pending"></div><div class="info"><div class="title">First Product</div><div class="detail">Commercial production</div></div><div class="date">🎯 Sep 2028</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+Chart.defaults.color = '#7a8a9a';
+Chart.defaults.borderColor = '#1e3050';
+
+new Chart(document.getElementById('productionChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Mon 19','Tue 20','Wed 21','Thu 22','Fri 23','Sat 24','Sun 25'],
+    datasets: [{
+      label: 'Actual',
+      data: [2478,2510,2489,2467,2540,2501,2498],
+      backgroundColor: '#66bb6a', borderRadius: 6
+    },{
+      label: 'Target (2,500 t/d)',
+      data: [2500,2500,2500,2500,2500,2500,2500],
+      type: 'line', borderColor: '#4fc3f7', borderDash: [5,5],
+      borderWidth: 1.5, pointRadius: 0, fill: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {min:2400, max:2600, grid:{color:'#1a2744'}},
+      x: {grid:{display:false}}
+    }
+  }
+});
+</script>
+</body>
+</html>

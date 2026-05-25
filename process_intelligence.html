@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Process Intelligence — Chemicon Digital Twin</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0e17;color:#e0e6ed;font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden}
+.header{background:linear-gradient(135deg,#0d1525 0%,#1a2744 100%);padding:16px 24px;border-bottom:1px solid #1e3a5f;display:flex;justify-content:space-between;align-items:center}
+.header h1{font-size:20px;font-weight:600;color:#4fc3f7}
+.header .badge{background:#1e3a5f;color:#4fc3f7;padding:4px 12px;border-radius:12px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px;padding:16px}
+.card{background:#111827;border:1px solid #1e3a5f;border-radius:12px;padding:20px;transition:border-color .2s}
+.card:hover{border-color:#4fc3f7}
+.card h3{font-size:14px;color:#8899aa;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px}
+.card .value{font-size:36px;font-weight:700;color:#4fc3f7;margin-bottom:4px}
+.card .sub{font-size:12px;color:#5a7a9a}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.metric{text-align:center;padding:12px;background:#0d1525;border-radius:8px}
+.metric .val{font-size:22px;font-weight:700;color:#66bb6a}
+.metric .label{font-size:10px;color:#5a7a9a;text-transform:uppercase;margin-top:4px}
+.metric.warn .val{color:#ffa726}
+.metric.danger .val{color:#ef5350}
+.chart-wrap{position:relative;height:240px;width:100%}
+canvas{width:100%!important;height:100%!important}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.status-dot.green{background:#66bb6a;box-shadow:0 0 8px #66bb6a}
+.status-dot.yellow{background:#ffa726;box-shadow:0 0 8px #ffa726}
+.alert-bar{background:#1a0a0a;border:1px solid #5a2020;border-radius:8px;padding:12px;margin-top:12px}
+.alert-bar .alert-title{color:#ef5350;font-weight:600;font-size:13px}
+.alert-bar .alert-msg{color:#b07070;font-size:12px;margin-top:4px}
+.equipment-list{font-size:12px}
+.equipment-list .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1a2744}
+.equipment-list .row .name{color:#8899aa}
+.equipment-list .row .status{font-weight:600}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>⚙ Process Intelligence Dashboard</h1>
+    <span style="font-size:12px;color:#5a7a9a">Chemicon Bio-Succinic Acid Plant — Nanjing, Jiangsu</span>
+  </div>
+  <div style="display:flex;gap:12px">
+    <span class="badge">🟢 4D Digital Twin Active</span>
+    <span class="badge">📡 1,247 sensors online</span>
+    <span class="badge">⏱ Updated: just now</span>
+  </div>
+</div>
+
+<div class="grid">
+
+  <!-- KPI Row -->
+  <div class="card">
+    <h3>Plant Overview</h3>
+    <div class="metric-grid">
+      <div class="metric"><div class="val">87.3%</div><div class="label">OEE Today</div></div>
+      <div class="metric"><div class="val">99.8%</div><div class="label">Uptime (MTD)</div></div>
+      <div class="metric"><div class="val">82.4 t/h</div><div class="label">Production Rate</div></div>
+      <div class="metric warn"><div class="val">99.2%</div><div class="label">Quality (Purity)</div></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Reactor Section — Real-Time</h3>
+    <div class="metric-grid">
+      <div class="metric"><div class="val">37.2°C</div><div class="label">Fermenter Temp</div></div>
+      <div class="metric"><div class="val">5.82</div><div class="label">pH</div></div>
+      <div class="metric"><div class="val">78.4%</div><div class="label">DO Saturation</div></div>
+      <div class="metric"><div class="val">0.84</div><div class="label">Yield (g/g)</div></div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:#5a7a9a">
+      <span class="status-dot green"></span>Fermenter F-107: Normal | Batch #B-2847 | 34.2h elapsed | 38.8h remaining
+    </div>
+  </div>
+
+  <div class="card">
+    <h3>Predictive Maintenance Alerts</h3>
+    <div style="max-height:200px;overflow-y:auto">
+      <div class="alert-bar">
+        <div class="alert-title">⚠ P-203A Centrifuge — Bearing Wear Detected</div>
+        <div class="alert-msg">Vibration trending up (4.2→8.7 mm/s). RUL: 14 days. Schedule maintenance before May 30.</div>
+      </div>
+      <div class="alert-bar" style="margin-top:8px;border-color:#5a3a20;background:#1a100a">
+        <div class="alert-title" style="color:#ffa726">⚡ HX-112 — Fouling Detected</div>
+        <div class="alert-msg" style="color:#b09070">Heat transfer coefficient dropped 12%. Clean during next turnaround (June 15).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="card" style="grid-column:span 2">
+    <h3>Production Rate — Last 24 Hours (tons/hour)</h3>
+    <div class="chart-wrap"><canvas id="productionChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h3>Energy Consumption (MW)</h3>
+    <div class="chart-wrap"><canvas id="energyChart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h3>Yield Trending — Last 7 Days</h3>
+    <div class="chart-wrap"><canvas id="yieldChart"></canvas></div>
+  </div>
+
+  <!-- Equipment Status -->
+  <div class="card">
+    <h3>Critical Equipment Status</h3>
+    <div class="equipment-list">
+      <div class="row"><span class="name">🟢 Fermenter F-101</span><span class="status" style="color:#66bb6a">Running</span></div>
+      <div class="row"><span class="name">🟢 Fermenter F-107</span><span class="status" style="color:#66bb6a">Running</span></div>
+      <div class="row"><span class="name">🟡 Extraction Col C-301</span><span class="status" style="color:#ffa726">Reduced Rate</span></div>
+      <div class="row"><span class="name">🟢 Distillation T-401</span><span class="status" style="color:#66bb6a">Running</span></div>
+      <div class="row"><span class="name">🟢 Crystallizer CR-501</span><span class="status" style="color:#66bb6a">Running</span></div>
+      <div class="row"><span class="name">🔴 Centrifuge P-203A</span><span class="status" style="color:#ef5350">Alert — Vibration</span></div>
+      <div class="row"><span class="name">🟢 CHP Turbine GT-601</span><span class="status" style="color:#66bb6a">38.5 MW</span></div>
+      <div class="row"><span class="name">🟢 Cooling Tower CT-701</span><span class="status" style="color:#66bb6a">18,200 m³/h</span></div>
+    </div>
+  </div>
+
+  <!-- Simulation Results -->
+  <div class="card">
+    <h3>DWSIM Simulation — Current Run</h3>
+    <div class="metric-grid">
+      <div class="metric"><div class="val">99.7%</div><div class="label">Mass Balance</div></div>
+      <div class="metric"><div class="val">98.2%</div><div class="label">Energy Balance</div></div>
+      <div class="metric"><div class="val">0.852</div><div class="label">Model Yield</div></div>
+      <div class="metric"><div class="val">82.1</div><div class="label">Titer (g/L)</div></div>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:#5a7a9a">
+      NRTL Thermodynamic Model | Convergence: 0.001 | 847 streams | 1,204 unit ops
+    </div>
+  </div>
+
+</div>
+
+<script>
+// Dark theme for all charts
+Chart.defaults.color = '#8899aa';
+Chart.defaults.borderColor = '#1e3a5f';
+Chart.defaults.plugins.legend.labels.color = '#8899aa';
+
+// Production Rate Chart
+new Chart(document.getElementById('productionChart'), {
+  type: 'line',
+  data: {
+    labels: ['00','02','04','06','08','10','12','14','16','18','20','22','24'],
+    datasets: [{
+      label: 'Actual (t/h)',
+      data: [78,81,83,79,85,82,84,80,86,83,81,84,82],
+      borderColor: '#4fc3f7',
+      backgroundColor: 'rgba(79,195,247,0.1)',
+      fill: true, tension: .3, borderWidth: 2
+    },{
+      label: 'Target',
+      data: [82,82,82,82,82,82,82,82,82,82,82,82,82],
+      borderColor: '#66bb6a',
+      borderDash: [5,5], borderWidth: 1, fill: false
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {min:70, max:90, grid:{color:'#1a2744'}},
+      x: {grid:{color:'#1a2744'}}
+    }
+  }
+});
+
+// Energy Chart
+new Chart(document.getElementById('energyChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Electric','Steam','Gas','CW','Air','N2'],
+    datasets: [{
+      data: [24.5,38.2,8.0,4.2,1.5,0.8],
+      backgroundColor: ['#4fc3f7','#ffa726','#ef5350','#66bb6a','#ab47bc','#42a5f5'],
+      borderRadius: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: {legend:{display:false}},
+    scales: {y:{title:{display:true,text:'MW'},grid:{color:'#1a2744'}},x:{grid:{display:false}}}
+  }
+});
+
+// Yield Chart
+new Chart(document.getElementById('yieldChart'), {
+  type: 'line',
+  data: {
+    labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    datasets: [{
+      label: 'Yield (g/g)',
+      data: [0.83,0.84,0.85,0.84,0.86,0.85,0.84],
+      borderColor: '#66bb6a', backgroundColor: 'rgba(102,187,106,0.1)',
+      fill: true, tension: .3, borderWidth: 2
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    scales: {
+      y: {min:0.80, max:0.88, grid:{color:'#1a2744'}},
+      x: {grid:{color:'#1a2744'}}
+    }
+  }
+});
+</script>
+</body>
+</html>
