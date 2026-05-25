@@ -45,7 +45,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 
 /* MAIN */
 #mn{flex:1;overflow-y:auto;padding:20px;background:var(--bg)}
-.vw{display:none}.vw.ac{display:block}
+.vw{display:none !important}.vw.ac{display:block !important}
 
 /* BOTTOM BAR */
 #bb{height:46px;background:var(--surf);border-top:2px solid var(--gold);display:flex;align-items:center;padding:0 14px;gap:10px;flex-shrink:0}
@@ -125,7 +125,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 
 /* ===== PERFORMANCE OPTIMIZATIONS (from 7 ref repos) ===== */
 /* Contain paint on scrollable containers */
-.chat-msgs,.vw,#mn{contain:layout style paint}
+.chat-msgs,#mn{contain:layout style paint}
 .card,.kpi{contain:layout style paint}
 /* GPU acceleration for animated elements */
 .msg,.kpi,.card,#mob-nav .mt,.typing span{will-change:transform}
