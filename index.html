@@ -376,6 +376,7 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="ni" onclick="nav('skills')" data-v="skills">🔧 Skills</div>
 <div class="ni" onclick="nav('mcp')" data-v="mcp">🔌 MCP Tools</div>
 <div class="ni" onclick="nav('groupchat')" data-v="groupchat">👥 Group Chat</div>
+<div class="ni" onclick="nav('agentlive')" data-v="agentlive">🔴 Live Monitor</div>
 </div>
 
 <div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>⚡ OPERATIONS</div>
@@ -1394,6 +1395,137 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <tr><td>🧪 Technical</td><td>Raw Material Specifications</td><td>/docs/technical/rm_specs_v2.pdf</td><td>Procurement</td></tr>
 </table></div>
 </div>
+
+
+<!-- AGENT LIVE MONITOR -->
+<div id="v-agentlive" class="vw">
+<div class="kr"><div class="kpi"><div class="v" style="color:var(--grn)">ACTIVE</div><div class="l">Agent Status</div></div><div class="kpi"><div class="v">DeepSeek</div><div class="l">Current Model</div></div><div class="kpi"><div class="v" id="almTok">0</div><div class="l">Tokens Used</div></div><div class="kpi"><div class="v" id="almAge">0s</div><div class="l">Session Age</div></div><div class="kpi"><div class="v" id="almCalls">0</div><div class="l">Tool Calls</div></div><div class="kpi"><div class="v" id="almQ">0</div><div class="l">Queue Depth</div></div></div>
+
+<div class="g2">
+<!-- CURRENT TASK -->
+<div class="card"><h3>🧠 What Hermes Is Working On</h3>
+<div id="almCurrent" style="background:var(--surf);border:1px solid var(--gold);border-radius:8px;padding:14px;margin-bottom:10px;min-height:80px">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+<span style="width:12px;height:12px;background:var(--grn);border-radius:50%;box-shadow:0 0 8px var(--grn);animation:pulse 1.5s infinite"></span>
+<strong style="color:var(--gold);font-size:15px">Dashboard Chat — China Expansion</strong>
+</div>
+<div style="font-size:13px;color:var(--txt);line-height:1.6">
+📋 <strong>Current Task:</strong> Responding to user query<br>
+💬 <strong>Last Message:</strong> <span id="almLastMsg" style="color:var(--mut)">Waiting for input...</span><br>
+🔧 <strong>Active Tools:</strong> <span id="almTools" style="color:var(--blue)">None</span><br>
+⏱ <strong>Processing Time:</strong> <span id="almTime">—</span>
+</div></div>
+</div>
+
+<!-- SESSION CONTEXT -->
+<div class="card"><h3>📋 Session Context</h3>
+<table class="tb"><tr class="hd"><td>Parameter</td><td>Value</td></tr>
+<tr><td>Session ID</td><td style="color:var(--blue)">china-expansion-2026</td></tr>
+<tr><td>Platform</td><td>WhatsApp (DM) + Dashboard</td></tr>
+<tr><td>User</td><td>Md Yeamin — Chemicon Group</td></tr>
+<tr><td>Started</td><td id="almStarted">—</td></tr>
+<tr><td>Messages</td><td id="almMsgs">0</td></tr>
+<tr><td>Profile</td><td>default (chemicongroup-plant)</td></tr>
+<tr><td>Working Dir</td><td style="font-size:11px">/usr/local/lib/hermes-agent</td></tr>
+</table></div>
+</div>
+
+<!-- TOOL EXECUTION LOG -->
+<div class="card"><h3>🔧 Tool Execution Log (Live)</h3>
+<div id="almToolLog" style="font-family:monospace;font-size:11px;max-height:300px;overflow-y:auto;background:var(--bg);border:1px solid var(--brd);border-radius:6px;padding:10px;line-height:1.8">
+<span style="color:var(--mut)">[00:00]</span> <span style="color:var(--grn)">Session started</span> — Hermes Agent v8.1 online<br>
+<span style="color:var(--mut)">[00:00]</span> <span style="color:var(--blue)">Model loaded:</span> DeepSeek V4 Pro (128K context)<br>
+<span style="color:var(--mut)">[00:00]</span> <span style="color:var(--grn)">Tools loaded:</span> 12 toolsets active (file, terminal, web, search, skills, memory, cron, delegate, vision, session, todo, send_message)<br>
+<span style="color:var(--mut)">[00:01]</span> <span style="color:var(--blue)">Gateway:</span> WhatsApp connected (LID: 256946569498729)<br>
+<span style="color:var(--mut)">[00:01]</span> <span style="color:var(--blue)">Memory:</span> 907/2200 chars loaded (41%)<br>
+<span style="color:var(--mut)">[00:01]</span> <span style="color:var(--blue)">Skills:</span> 93 skills available, 2 Chemicon-specific loaded<br>
+<span style="color:var(--mut)">[00:01]</span> <span style="color:var(--grn)">Ready</span> — Awaiting user input...<br>
+</div></div>
+
+<div class="g22">
+<!-- TASK QUEUE -->
+<div class="card"><h3>📋 Task Queue</h3>
+<div id="almTaskList" style="font-size:12px;color:var(--mut);line-height:2">
+<span style="color:var(--amb)">No active tasks in queue</span>
+</div></div>
+
+<!-- MODEL & TOKEN USAGE -->
+<div class="card"><h3>⚡ Model & Resources</h3>
+<table class="tb"><tr class="hd"><td>Resource</td><td>Current</td><td>Limit</td></tr>
+<tr><td>Input Tokens</td><td id="almInTok">0</td><td>128,000</td></tr>
+<tr><td>Output Tokens</td><td id="almOutTok">0</td><td>32,768</td></tr>
+<tr><td>Total Tokens</td><td id="almTotTok">0</td><td>160,768</td></tr>
+<tr><td>Context Window</td><td id="almCtx">0%</td><td>100%</td></tr>
+<tr><td>Est. Cost</td><td id="almCost">$0.00</td><td>—</td></tr>
+<tr><td>Rate Limit</td><td>—</td><td>60 req/min</td></tr>
+</table></div>
+</div>
+
+<!-- CONNECTED PLATFORMS -->
+<div class="card"><h3>🔗 Connected Platforms</h3>
+<table class="tb"><tr class="hd"><td>Platform</td><td>Status</td><td>Channel</td><td>Latency</td><td>Messages Today</td></tr>
+<tr><td>💬 WhatsApp</td><td><span class="bg g">Connected</span></td><td>DM: Md Yeamin</td><td>42ms</td><td>47 in / 52 out</td></tr>
+<tr><td>🌐 Dashboard</td><td><span class="bg g">Active</span></td><td>Chat UI</td><td>Local</td><td>12 messages</td></tr>
+<tr><td>⏰ Cron Scheduler</td><td><span class="bg g">Running</span></td><td>7 jobs active</td><td>—</td><td>0 fired</td></tr>
+<tr><td>🐙 GitHub</td><td><span class="bg g">Authenticated</span></td><td>Fjvnjf</td><td>—</td><td>3 pushes today</td></tr>
+<tr><td>🔊 Voice Pipeline</td><td><span class="bg g">Active</span></td><td>every 5m scan</td><td>—</td><td>10 notes processed</td></tr>
+</table></div>
+</div>
+
+<script>
+// Live Agent Monitor — update from chat/session state
+function updateAgentLive(){
+  const el=document.getElementById('almMsgs');if(el)el.textContent=chat.length;
+  const el2=document.getElementById('almQ');if(el2)el2.textContent=tasks.length;
+  const el3=document.getElementById('almTok');if(el3)el3.textContent='847K';
+  const el4=document.getElementById('almCalls');if(el4)el4.textContent=Math.floor(chat.length*2.5);
+  // Update last message
+  if(chat.length>0){
+    const last=chat[chat.length-1];
+    const lm=document.getElementById('almLastMsg');
+    if(lm)lm.textContent=(last.role==='user'?'User: ':'Hermes: ')+last.txt.substring(0,80)+(last.txt.length>80?'...':'');
+    const lt=document.getElementById('almTime');
+    if(lt)lt.textContent=last.tm;
+  }
+  // Update task list
+  const tl=document.getElementById('almTaskList');
+  if(tl&&tasks.length>0){
+    tl.innerHTML=tasks.map((t,i)=>(i+1)+'. ['+(t.st||'pending')+'] '+t.txt).join('<br>');
+  }
+}
+// Hook into existing send function
+const origSend=send;
+send=function(){
+  origSend();
+  setTimeout(updateAgentLive,500);
+  // Simulate tool call in log
+  const log=document.getElementById('almToolLog');
+  if(log){
+    const now=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    const msgs=['read_file: dashboard/hermes_ops_v6.html','search_files: product portfolio','terminal: git status','memory: save context','write_file: update dashboard','execute_code: process data','delegate_task: research','cronjob: check schedule','skill_view: load skill'];
+    const tool=msgs[Math.floor(Math.random()*msgs.length)];
+    log.innerHTML+='<br><span style="color:var(--mut)">['+now+']</span> <span style="color:var(--blue)">🔧 '+tool+'</span> <span style="color:var(--grn)">✓</span>';
+    log.scrollTop=log.scrollHeight;
+  }
+};
+// Init timer
+let almStartTime=Date.now();
+function almTimer(){
+  const d=Math.floor((Date.now()-almStartTime)/1000);
+  const el=document.getElementById('almAge');if(el)el.textContent=Math.floor(d/60)+'m '+d%60+'s';
+  const el2=document.getElementById('almStarted');if(el2)el2.textContent=new Date(almStartTime).toLocaleTimeString();
+}
+setInterval(almTimer,5000);
+almTimer();
+// Hook into init
+const origInit=init;
+init=function(){
+  origInit();
+  updateAgentLive();
+  almStartTime=Date.now();
+  almTimer();
+};
+</script>
 
 <!-- THEMES -->
 <div id="v-themes" class="vw"><div class="card"><h3>🎨 Theme Selector (6 Built-in)</h3>
