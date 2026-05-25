@@ -89,6 +89,33 @@ table.data tr.total td{border-top:2px solid #c9a84c;font-weight:700}
 </head>
 <body>
 
+<div id="loginGate" style="position:fixed;top:0;left:0;width:100%;height:100%;background:#060a12;z-index:9999;display:flex;align-items:center;justify-content:center;flex-direction:column">
+  <div style="text-align:center">
+    <div style="font-size:48px;margin-bottom:16px">🏭</div>
+    <h1 style="color:#c9a84c;font-weight:300;letter-spacing:3px;margin-bottom:8px">CHEMICON GROUP</h1>
+    <p style="color:#5a7a9a;font-size:14px;margin-bottom:32px">Digital Command Center — Authorized Access Only</p>
+    <input type="password" id="pwdInput" placeholder="Enter access code" style="background:#111827;border:2px solid #1e3050;color:#d0d6e0;padding:14px 24px;border-radius:8px;font-size:16px;width:280px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPwd()" autofocus>
+    <br><br>
+    <button onclick="checkPwd()" style="background:linear-gradient(135deg,#c9a84c,#a68a3c);color:#060a12;border:none;padding:12px 40px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;letter-spacing:1px">ACCESS DASHBOARD</button>
+    <p id="pwdError" style="color:#ef5350;font-size:12px;margin-top:12px;display:none">Invalid access code</p>
+  </div>
+</div>
+<script>
+function checkPwd(){
+  var p=document.getElementById('pwdInput').value;
+  if(p==='chemicongroup2026'||p==='chemicon2026'||p==='investor2026'){
+    document.getElementById('loginGate').style.display='none';
+    localStorage.setItem('chemicon_auth','1');
+  }else{
+    document.getElementById('pwdError').style.display='block';
+  }
+}
+if(localStorage.getItem('chemicon_auth')==='1'){
+  document.getElementById('loginGate').style.display='none';
+}
+</script>
+
+
 <div class="topbar">
   <div>
     <h1>CHEMICON DIGITAL COMMAND CENTER</h1>
