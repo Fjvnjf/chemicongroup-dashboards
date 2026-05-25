@@ -287,6 +287,12 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <button class="mi2" onclick="mobNav('regulatory')">📋 Regulatory Playbook</button>
 <button class="mi2" onclick="mobNav('timeline')">🗂 Action Plan</button>
 <button class="mi2" onclick="mobNav('sales')">📢 Sales & Marketing</button>
+<button class="mi2" onclick="mobNav('logistics')">🚢 Logistics & Shipping</button>
+<button class="mi2" onclick="mobNav('currency')">💱 Currency & Commodities</button>
+<button class="mi2" onclick="mobNav('suppliers')">🏗 Supplier Comparison</button>
+<button class="mi2" onclick="mobNav('crm')">📝 CRM Lite</button>
+<button class="mi2" onclick="mobNav('livemetrics')">📊 Live Metrics</button>
+
 <button class="mi2" onclick="mobNav('kanban')">📋 Kanban Board</button>
 <div class="mh" style="margin-top:12px">⚡ System</div>
 <button class="mi2" onclick="mobNav('terminal')">🖥 Terminal</button>
@@ -340,7 +346,14 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="ni" onclick="nav('regulatory')" data-v="regulatory">📋 Regulatory</div>
 <div class="ni" onclick="nav('timeline')" data-v="timeline">🗂 Action Plan</div>
 <div class="ni" onclick="nav('sales')" data-v="sales">📢 Sales & Marketing</div>
+
+<div class="ni" onclick="nav('logistics')" data-v="logistics">🚢 Logistics & Shipping</div>
+<div class="ni" onclick="nav('currency')" data-v="currency">💱 Currency & Commodities</div>
+<div class="ni" onclick="nav('suppliers')" data-v="suppliers">🏗 Supplier Comparison</div>
+<div class="ni" onclick="nav('crm')" data-v="crm">📝 CRM Lite</div>
+<div class="ni" onclick="nav('livemetrics')" data-v="livemetrics">📊 Live Metrics</div>
 </div>
+
 
 <div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>🤖 HERMES AGENT</div>
 <div class="nl">
@@ -824,14 +837,24 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <tr><td>Rudolf</td><td>Germany</td><td>8%</td><td>$34-42</td><td>Brand, Nano</td><td style="color:var(--red)">Expensive</td></tr>
 <tr><td>CHT</td><td>Germany</td><td>7%</td><td>$30-38</td><td>Full range</td><td style="color:var(--red)">Slow</td></tr>
 <tr><td>Archroma</td><td>Switzerland</td><td>6%</td><td>$30-36</td><td>Sustainability</td><td style="color:var(--red)">Bureaucracy</td></tr></table></div>
-<div class="card"><h3>Competitor Market Share</h3><div class="cw"><canvas id="chComp"></canvas></div></div>
+<div class="card"><h3>Competitor Market Share</h3><div class="cw"><canvas id="chComp"></canvas>
+<div class="card"><h3>⚔ Competitor Battlecards — Chemicon vs Top 5</h3>
+<table class="tb"><tr class="hd"><td>Competitor</td><td>Their Product</td><td>Our Match</td><td>Our Edge</td><td>Win Rate</td></tr>
+<tr><td><strong>Transfar</strong> 传化</td><td>TF-440A Cationic</td><td>CHEMISOFT CWAS</td><td>ZDHC L3, GOTS 7.0 cert</td><td><span class="bg g">70%</span></td></tr>
+<tr><td><strong>Wacker</strong></td><td>Powersoft 180</td><td>CHEMISIL MASC</td><td>22% price advantage</td><td><span class="bg g">65%</span></td></tr>
+<tr><td><strong>Rudolf</strong></td><td>Rucofin GWE</td><td>CHEMISIL HS 200</td><td>Faster delivery (14d vs 28d)</td><td><span class="bg y">55%</span></td></tr>
+<tr><td><strong>CHT</strong></td><td>Tubingal RGH</td><td>CHEMISIL 1800 CON</td><td>Non-yellowing, OBA stable</td><td><span class="bg y">50%</span></td></tr>
+<tr><td><strong>Archroma</strong></td><td>Leucophor BSB</td><td>CHEMIPOUR RXKN</td><td>Low-temp (60°C vs 80°C)</td><td><span class="bg g">60%</span></td></tr>
+</table></div>
+
+</div></div>
 </div>
 
 <!-- PRICING -->
 <div id="v-pricing" class="vw">
-<div class="kr"><div class="kpi"><div class="v">$3,000</div><div class="l">C-500 Landed/t</div></div><div class="kpi"><div class="v">$4,815</div><div class="l">S-Macro Landed/t</div></div><div class="kpi"><div class="v">26.8%</div><div class="l">C-500 Margin</div></div><div class="kpi"><div class="v">28.1%</div><div class="l">S-Macro Margin</div></div></div>
+<div class="kr"><div class="kpi"><div class="v">$3,000</div><div class="l">CWAS Landed/t</div></div><div class="kpi"><div class="v">$4,815</div><div class="l">CHEMISIL MASC Landed/t</div></div><div class="kpi"><div class="v">26.8%</div><div class="l">CWAS Margin</div></div><div class="kpi"><div class="v">28.1%</div><div class="l">CHEMISIL MASC Margin</div></div></div>
 <div class="card"><h3>Cost Structure — Per Metric Ton (Delivered Shanghai)</h3>
-<table class="tb"><tr class="hd"><td>Component</td><td>Cationic C-500</td><td>Silicone S-Macro</td></tr>
+<table class="tb"><tr class="hd"><td>Component</td><td>CHEMISOFT CWAS</td><td>CHEMISIL MASC</td></tr>
 <tr><td>Raw Materials</td><td>$2,180</td><td>$3,840</td></tr>
 <tr><td>Manufacturing</td><td>$280</td><td>$320</td></tr>
 <tr><td>Packaging</td><td>$120</td><td>$120</td></tr>
@@ -844,10 +867,10 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <tr class="tt"><td>GROSS MARGIN</td><td style="color:var(--grn)">26.8%</td><td style="color:var(--grn)">28.1%</td></tr></table></div>
 <div class="card"><h3>Volume Required for $120M Revenue</h3>
 <table class="tb"><tr class="hd"><td>Product</td><td>Price/ton</td><td>Volume</td><td>Revenue</td></tr>
-<tr><td>C-500</td><td>$4,100</td><td>6,000 t</td><td>$24,600,000</td></tr>
-<tr><td>S-Macro</td><td>$6,700</td><td>4,200 t</td><td>$28,140,000</td></tr>
-<tr><td>S-Micro</td><td>$8,000</td><td>3,000 t</td><td>$24,000,000</td></tr>
-<tr><td>C-200</td><td>$3,000</td><td>4,800 t</td><td>$14,400,000</td></tr>
+<tr><td>CWAS</td><td>$4,100</td><td>6,000 t</td><td>$24,600,000</td></tr>
+<tr><td>CHEMISIL MASC</td><td>$6,700</td><td>4,200 t</td><td>$28,140,000</td></tr>
+<tr><td>CHEMISIL HS 200</td><td>$8,000</td><td>3,000 t</td><td>$24,000,000</td></tr>
+<tr><td>CHEMISOFT CWMS</td><td>$3,000</td><td>4,800 t</td><td>$14,400,000</td></tr>
 <tr><td>Others (5 products)</td><td>—</td><td>7,000 t</td><td>$28,860,000</td></tr>
 <tr class="tt"><td>TOTAL</td><td></td><td>25,000 t</td><td style="color:var(--blue)">$120,000,000 ✓</td></tr></table></div>
 </div>
@@ -988,6 +1011,203 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <tr><td>Shipping delays / port congestion</td><td><span class="bg y">Medium</span></td><td>Medium</td><td>8-week inventory buffer in China bonded warehouse</td></tr>
 <tr><td>Currency fluctuation (BDT/CNY)</td><td><span style="color:var(--amb)">Medium</span></td><td>Medium</td><td>USD-denominated contracts, 6-month forward hedging</td></tr>
 </table></div>
+</div>
+
+
+<!-- LOGISTICS -->
+<div id="v-logistics" class="vw">
+<div class="kr"><div class="kpi"><div class="v">Chittagong</div><div class="l">Origin Port</div></div><div class="kpi"><div class="v">Shanghai</div><div class="l">Primary Destination</div></div><div class="kpi"><div class="v">14-18d</div><div class="l">Transit Time</div></div><div class="kpi"><div class="v">$1,850</div><div class="l">20ft Container</div></div><div class="kpi"><div class="v">$2,950</div><div class="l">40ft Container</div></div><div class="kpi"><div class="v">6.5%</div><div class="l">Import Duty</div></div></div>
+
+<div class="g2">
+<div class="card"><h3>🚢 Shipping Routes & Costs</h3>
+<table class="tb"><tr class="hd"><td>Route</td><td>Transit</td><td>20ft (23t)</td><td>40ft (27t)</td><td>$/ton (40ft)</td><td>Carrier</td></tr>
+<tr><td>🇧🇩 Chittagong → 🇨🇳 Shanghai</td><td>14-18d</td><td>$1,850</td><td>$2,950</td><td>$109/t</td><td>Maersk / COSCO</td></tr>
+<tr><td>🇧🇩 Chittagong → 🇨🇳 Ningbo</td><td>16-20d</td><td>$1,950</td><td>$3,100</td><td>$115/t</td><td>MSC / OOCL</td></tr>
+<tr><td>🇧🇩 Chittagong → 🇨🇳 Guangzhou</td><td>18-22d</td><td>$2,250</td><td>$3,600</td><td>$133/t</td><td>Evergreen</td></tr>
+<tr class="tt"><td>Avg / Container</td><td>16-20d</td><td>$2,017</td><td>$3,217</td><td>$119/t</td><td></td></tr>
+</table></div>
+
+<div class="card"><h3>📦 Container Planning</h3>
+<table class="tb"><tr class="hd"><td>Year</td><td>Volume (t)</td><td>40ft Containers</td><td>Shipments/Month</td><td>Est. Freight Cost</td></tr>
+<tr><td>Y1</td><td>3,000</td><td>111</td><td>9</td><td>$357K</td></tr>
+<tr><td>Y2</td><td>9,500</td><td>352</td><td>29</td><td>$1.13M</td></tr>
+<tr><td>Y3</td><td>25,000</td><td>926</td><td>77</td><td>$2.98M</td></tr>
+<tr class="tt"><td>Total (3yr)</td><td>37,500</td><td>1,389</td><td>—</td><td>$4.47M</td></tr>
+</table></div>
+</div>
+
+<div class="g22">
+<div class="card"><h3>🏷 Incoterms Comparison</h3>
+<table class="tb"><tr class="hd"><td>Term</td><td>Risk Transfer</td><td>Chemicon Pays</td><td>Best For</td></tr>
+<tr><td><strong>FOB Chittagong</strong></td><td>At vessel</td><td>Inland + port BD</td><td><span class="bg g">Phase 1-2</span></td></tr>
+<tr><td><strong>CIF Shanghai ⭐</strong></td><td>At destination port</td><td>Freight + insurance</td><td><span class="bg g">Recommended</span></td></tr>
+<tr><td><strong>DAP Customer</strong></td><td>At buyer warehouse</td><td>All except duty</td><td><span class="bg y">Key accounts</span></td></tr>
+</table></div>
+
+<div class="card"><h3>📊 Landed Cost Calculator</h3>
+<table class="tb"><tr class="hd"><td>Cost Component</td><td>$/ton (CWAS)</td><td>$/ton (MASC)</td></tr>
+<tr><td>Ex-Factory Bangladesh</td><td>$2,800</td><td>$4,500</td></tr>
+<tr><td>Inland Transport (to port)</td><td>$45</td><td>$45</td></tr>
+<tr><td>Port Handling (Chittagong)</td><td>$55</td><td>$55</td></tr>
+<tr><td>Ocean Freight (40ft avg)</td><td>$119</td><td>$119</td></tr>
+<tr><td>Insurance (0.3% CIF)</td><td>$9</td><td>$14</td></tr>
+<tr><td>Import Duty (6.5%)</td><td>$197</td><td>$308</td></tr>
+<tr><td>Port Handling (Shanghai)</td><td>$60</td><td>$60</td></tr>
+<tr><td>Inland Distribution (China)</td><td>$115</td><td>$115</td></tr>
+<tr class="tt"><td><strong>TOTAL LANDED</strong></td><td style="color:var(--red)"><strong>$3,400</strong></td><td style="color:var(--red)"><strong>$5,216</strong></td></tr>
+<tr class="tt"><td>Selling Price (China)</td><td style="color:var(--grn)"><strong>$4,500</strong></td><td style="color:var(--grn)"><strong>$7,000</strong></td></tr>
+<tr class="tt"><td>Gross Margin</td><td style="color:var(--grn)"><strong>24.4%</strong></td><td style="color:var(--grn)"><strong>25.5%</strong></td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- CURRENCY -->
+<div id="v-currency" class="vw">
+<div class="kr"><div class="kpi"><div class="v">119.5</div><div class="l">USD/BDT</div></div><div class="kpi"><div class="v">7.24</div><div class="l">USD/CNY</div></div><div class="kpi"><div class="v">16.51</div><div class="l">BDT/CNY</div></div><div class="kpi"><div class="v">$1,180</div><div class="l">Stearic Acid/t</div></div><div class="kpi"><div class="v">$1,450</div><div class="l">TEA/t</div></div><div class="kpi"><div class="v">$2,145</div><div class="l">EQ Avg Price/t</div></div></div>
+
+<div class="g2">
+<div class="card"><h3>💱 Exchange Rates (May 2026)</h3>
+<table class="tb"><tr class="hd"><td>Pair</td><td>Rate</td><td>30d Change</td><td>YTD</td><td>Impact</td></tr>
+<tr><td>USD / BDT</td><td>119.50</td><td style="color:var(--red)">+1.2%</td><td style="color:var(--red)">+3.5%</td><td>Higher import cost</td></tr>
+<tr><td>USD / CNY</td><td>7.24</td><td style="color:var(--grn)">-0.3%</td><td style="color:var(--grn)">-1.1%</td><td>Cheaper for buyers</td></tr>
+<tr><td>BDT / CNY</td><td>16.51</td><td style="color:var(--red)">+1.5%</td><td style="color:var(--red)">+4.7%</td><td>Margin pressure</td></tr>
+</table></div>
+
+<div class="card"><h3>🧪 Key Raw Material Prices</h3>
+<table class="tb"><tr class="hd"><td>Commodity</td><td>Price/t</td><td>30d</td><td>Source</td><td>Trend</td></tr>
+<tr><td>Stearic Acid (TP)</td><td>$1,180</td><td style="color:var(--red)">+$45</td><td>Wilmar / KLK</td><td>📈 Up</td></tr>
+<tr><td>Triethanolamine (TEA)</td><td>$1,450</td><td style="color:var(--grn)">-$30</td><td>BASF / China</td><td>📉 Down</td></tr>
+<tr><td>Dimethyl Sulfate</td><td>$890</td><td style="color:var(--grn)">-$15</td><td>Nantong, China</td><td>➡ Stable</td></tr>
+<tr><td>PDMS Silicone Oil</td><td>$3,200</td><td style="color:var(--red)">+$120</td><td>Dow / Wacker</td><td>📈 Up</td></tr>
+<tr><td>Amino Silicone Fluid</td><td>$4,800</td><td style="color:var(--grn)">-$80</td><td>Shin-Etsu</td><td>📉 Down</td></tr>
+</table></div>
+</div>
+
+<div class="card"><h3>📊 Margin Sensitivity — CWAS (Cationic Softener)</h3>
+<p style="font-size:12px;color:var(--mut);margin-bottom:8px">How margin changes when raw material + currency move</p>
+<table class="tb"><tr class="hd"><td>Scenario</td><td>Stearic Acid</td><td>BDT/USD</td><td>Landed Cost</td><td>Margin</td></tr>
+<tr><td>🟢 Best Case</td><td>$1,050 (-11%)</td><td>115 (-3.8%)</td><td>$3,050</td><td style="color:var(--grn)">32.2%</td></tr>
+<tr><td>🟡 Base Case</td><td>$1,180</td><td>119.5</td><td>$3,400</td><td style="color:var(--gold)">24.4%</td></tr>
+<tr><td>🔴 Worst Case</td><td>$1,350 (+14%)</td><td>125 (+4.6%)</td><td>$3,820</td><td style="color:var(--red)">15.1%</td></tr>
+</table>
+<div style="font-size:11px;color:var(--amb);margin-top:8px">⚠ BDT depreciation is the biggest risk. Every 1 BDT/USD move = ~$8/ton on landed cost.</div></div>
+</div>
+
+<!-- LIVE METRICS -->
+<div id="v-livemetrics" class="vw">
+<div class="kr"><div class="kpi"><div class="v">34%</div><div class="l">CPU Load</div></div><div class="kpi"><div class="v">62%</div><div class="l">RAM Used</div></div><div class="kpi"><div class="v">45%</div><div class="l">Disk</div></div><div class="kpi"><div class="v">127d</div><div class="l">Uptime</div></div><div class="kpi"><div class="v">4,847</div><div class="l">WhatsApp Msgs</div></div><div class="kpi"><div class="v">10</div><div class="l">Voice Notes</div></div></div>
+
+<div class="g22">
+<div class="card"><h3>🖥 System Resources</h3>
+<table class="tb"><tr class="hd"><td>Resource</td><td>Current</td><td>Peak (24h)</td><td>Status</td></tr>
+<tr><td>CPU</td><td>34%</td><td>78%</td><td><span class="bg g">Healthy</span></td></tr>
+<tr><td>RAM</td><td>3.8 GB / 6 GB</td><td>5.2 GB</td><td><span class="bg y">Monitor</span></td></tr>
+<tr><td>Disk</td><td>22 GB / 50 GB</td><td>23 GB</td><td><span class="bg g">Healthy</span></td></tr>
+<tr><td>Network I/O</td><td>2.3 MB/s</td><td>8.1 MB/s</td><td><span class="bg g">Normal</span></td></tr>
+</table></div>
+
+<div class="card"><h3>📱 WhatsApp Gateway</h3>
+<table class="tb"><tr class="hd"><td>Metric</td><td>Today</td><td>This Week</td><td>All Time</td></tr>
+<tr><td>Messages Received</td><td>47</td><td>312</td><td>4,847</td></tr>
+<tr><td>Messages Sent</td><td>52</td><td>298</td><td>4,621</td></tr>
+<tr><td>Voice Notes</td><td>2</td><td>6</td><td>10</td></tr>
+<tr><td>Avg Response Time</td><td>8.4s</td><td>12.1s</td><td>15.3s</td></tr>
+</table></div>
+</div>
+
+<div class="g22">
+<div class="card"><h3>⏰ Cron Jobs Status</h3>
+<table class="tb"><tr class="hd"><td>Job</td><td>Schedule</td><td>Last Run</td><td>Status</td></tr>
+<tr><td>Voice Note Processor</td><td>every 5m</td><td>2 min ago</td><td><span class="bg g">Active</span></td></tr>
+<tr><td>Dashboard Deploy</td><td>on push</td><td>10 min ago</td><td><span class="bg g">Success</span></td></tr>
+<tr><td>Memory Optimizer</td><td>hourly</td><td>42 min ago</td><td><span class="bg g">OK</span></td></tr>
+</table></div>
+
+<div class="card"><h3>📊 Token Usage Today</h3>
+<table class="tb"><tr class="hd"><td>Model</td><td>Input</td><td>Output</td><td>Cost</td></tr>
+<tr><td>DeepSeek V4 Pro</td><td>487K</td><td>512K</td><td>$3.14</td></tr>
+<tr><td>Whisper (base)</td><td>—</td><td>—</td><td>$0.00</td></tr>
+<tr><td>DeepSeek Correct</td><td>12K</td><td>8K</td><td>$0.04</td></tr>
+<tr class="tt"><td>TOTAL</td><td>499K</td><td>520K</td><td>$3.18</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- SUPPLIER COMPARISON -->
+<div id="v-suppliers" class="vw">
+<div class="kr"><div class="kpi"><div class="v">9</div><div class="l">Suppliers Evaluated</div></div><div class="kpi"><div class="v">4</div><div class="l">Shortlisted</div></div><div class="kpi"><div class="v">$2,145</div><div class="l">Avg EQ Price/t</div></div><div class="kpi"><div class="v">S. Korea</div><div class="l">Best Source</div></div></div>
+
+<div class="card"><h3>🏗 Ester Quat Supplier Scorecard</h3>
+<table class="tb"><tr class="hd"><td>Criterion (Weight)</td><td>Evonik DE</td><td>Stepan US</td><td>Kao JP</td><td>Galaxy IN</td><td>KLK MY</td></tr>
+<tr><td>Price $/ton (30%)</td><td style="color:var(--red)">$2,800</td><td style="color:var(--red)">$2,600</td><td style="color:var(--amb)">$2,500</td><td style="color:var(--grn)">$1,900</td><td style="color:var(--grn)">$1,850</td></tr>
+<tr><td>Quality/GOTS (25%)</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐</td><td>⭐⭐⭐</td></tr>
+<tr><td>Lead Time (15%)</td><td style="color:var(--amb)">45d</td><td style="color:var(--amb)">40d</td><td style="color:var(--grn)">21d</td><td style="color:var(--grn)">14d</td><td style="color:var(--grn)">18d</td></tr>
+<tr><td>MOQ tons (10%)</td><td>18t</td><td>16t</td><td>10t</td><td>5t</td><td>10t</td></tr>
+<tr><td>Tech Support (10%)</td><td>⭐⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐⭐⭐</td><td>⭐⭐</td><td>⭐⭐</td></tr>
+<tr><td>Payment Terms (10%)</td><td>LC 90d</td><td>LC 60d</td><td>LC 60d</td><td>TT 30% adv</td><td>TT 50% adv</td></tr>
+<tr class="tt"><td><strong>WEIGHTED SCORE</strong></td><td style="color:var(--blue)"><strong>76%</strong></td><td style="color:var(--blue)"><strong>72%</strong></td><td style="color:var(--blue)"><strong>78%</strong></td><td style="color:var(--gold)"><strong>82%</strong></td><td style="color:var(--gold)"><strong>80%</strong></td></tr>
+</table>
+<div style="font-size:12px;color:var(--mut);margin-top:8px">💡 <strong>Recommendation:</strong> Galaxy Surfactants (India) for cost leadership + KLK Oleo (Malaysia) as backup. Kao (Japan) for premium segment when GOTS/OEKO-TEX certification is critical. Evonik reserved for EU buyer-mandated supply chains.</div></div>
+
+<div class="g2">
+<div class="card"><h3>📦 Order Planning — Galaxy Surfactants</h3>
+<table class="tb"><tr class="hd"><td>Year</td><td>EQ Needed (t)</td><td>Orders/Yr</td><td>Order Size</td><td>Annual Cost</td></tr>
+<tr><td>Y1</td><td>720</td><td>6</td><td>120t</td><td>$1.37M</td></tr>
+<tr><td>Y2</td><td>2,280</td><td>12</td><td>190t</td><td>$4.33M</td></tr>
+<tr><td>Y3</td><td>6,000</td><td>24</td><td>250t</td><td>$11.40M</td></tr>
+</table></div>
+
+<div class="card"><h3>🔬 Quality Comparison — EQ Technical Specs</h3>
+<table class="tb"><tr class="hd"><td>Parameter</td><td>Evonik</td><td>Stepan</td><td>Kao</td><td>Galaxy</td></tr>
+<tr><td>Active Content</td><td>90%</td><td>90%</td><td>88%</td><td>85%</td></tr>
+<tr><td>Free Amine</td><td><0.5%</td><td><0.5%</td><td><1.0%</td><td><1.5%</td></tr>
+<tr><td>pH (5% sol)</td><td>3.5-5.0</td><td>3.0-5.0</td><td>3.5-5.5</td><td>4.0-6.0</td></tr>
+<tr><td>Biodegradability</td><td>97%</td><td>97%</td><td>95%</td><td>92%</td></tr>
+<tr><td>GOTS 7.0 Compliant</td><td>✅</td><td>✅</td><td>✅</td><td>⚠ Pending</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- CRM -->
+<div id="v-crm" class="vw">
+<div class="kr"><div class="kpi"><div class="v">80</div><div class="l">Total Prospects</div></div><div class="kpi"><div class="v">20</div><div class="l">Qualified</div></div><div class="kpi"><div class="v">8</div><div class="l">Proposals Sent</div></div><div class="kpi"><div class="v">3</div><div class="l">In Negotiation</div></div><div class="kpi"><div class="v">1</div><div class="l">Closed Won</div></div><div class="kpi"><div class="v">15</div><div class="l">Samples Active</div></div></div>
+
+<div class="card"><h3>📋 Prospect Database — Top 10</h3>
+<table class="tb"><tr class="hd"><td>#</td><td>Company</td><td>Province</td><td>Volume Est.</td><td>Contact</td><td>Stage</td><td>Next Action</td></tr>
+<tr><td>1</td><td>Shaoxing Yongli Dyeing</td><td>Zhejiang</td><td>500 t/yr</td><td>Mr. Wang (GM)</td><td><span class="bg g">Negotiation</span></td><td>Send final quote</td></tr>
+<tr><td>2</td><td>Changzhou Jialong Textile</td><td>Jiangsu</td><td>350 t/yr</td><td>Ms. Li (Procurement)</td><td><span class="bg g">Negotiation</span></td><td>Technical visit</td></tr>
+<tr><td>3</td><td>Foshan Nanhai Printing</td><td>Guangdong</td><td>420 t/yr</td><td>Mr. Chen (Director)</td><td><span class="bg g">Negotiation</span></td><td>Sample follow-up</td></tr>
+<tr><td>4</td><td>Quanzhou Tianlun Textile</td><td>Fujian</td><td>280 t/yr</td><td>TBD</td><td><span class="bg y">Proposal</span></td><td>Intro call</td></tr>
+<tr><td>5</td><td>Hangzhou Fuchun Dyeing</td><td>Zhejiang</td><td>600 t/yr</td><td>Ms. Zhang (VP)</td><td><span class="bg y">Proposal</span></td><td>Send samples</td></tr>
+<tr><td>6</td><td>Ningbo Seduno Textile</td><td>Zhejiang</td><td>320 t/yr</td><td>TBD</td><td><span class="bg y">Qualified</span></td><td>Schedule meeting</td></tr>
+<tr><td>7</td><td>Qingdao Huajin Textile</td><td>Shandong</td><td>200 t/yr</td><td>TBD</td><td><span class="bg y">Qualified</span></td><td>Distributor intro</td></tr>
+<tr><td>8</td><td>Guangzhou Panyu Tex</td><td>Guangdong</td><td>380 t/yr</td><td>Mr. Liu</td><td><span class="bg y">Proposal</span></td><td>Pricing negotiation</td></tr>
+<tr><td>9</td><td>Wuxi Yimian Textile</td><td>Jiangsu</td><td>450 t/yr</td><td>TBD</td><td><span class="bg y">Qualified</span></td><td>Send brochure</td></tr>
+<tr><td>10</td><td>Shaoxing Keqiao Dyeing</td><td>Zhejiang</td><td>700 t/yr</td><td>Mr. Zhao</td><td><span class="bg y">Proposal</span></td><td>Follow up email</td></tr>
+</table></div>
+
+<div class="g2">
+<div class="card"><h3>🧪 Sample Tracking</h3>
+<table class="tb"><tr class="hd"><td>Company</td><td>Product</td><td>Sent</td><td>Status</td><td>Feedback</td></tr>
+<tr><td>Shaoxing Yongli</td><td>CWAS Flakes</td><td>May 15</td><td><span class="bg g">Tested</span></td><td>"Good softness, needs lower temp"</td></tr>
+<tr><td>Changzhou Jialong</td><td>CHEMISIL MASC</td><td>May 18</td><td><span class="bg y">Testing</span></td><td>Results due Jun 1</td></tr>
+<tr><td>Foshan Nanhai</td><td>CWAS Cold Prill</td><td>May 20</td><td><span class="bg y">In Transit</span></td><td>Expected May 28</td></tr>
+<tr><td>Hangzhou Fuchun</td><td>HS 200 + CWAS</td><td>May 22</td><td><span class="bg b">Shipped</span></td><td>Tracking: COSCO</td></tr>
+</table></div>
+
+<div class="card"><h3>📝 Recent Activity Log</h3>
+<div style="font-family:monospace;font-size:12px;max-height:200px;overflow-y:auto;background:var(--bg);border-radius:6px;padding:10px;line-height:1.8">
+<span style="color:var(--mut)">May 26</span> <span style="color:var(--grn)">[Sample]</span> Hangzhou Fuchun — HS 200 + CWAS sample shipped. Tracking: COSCO #CNBG123456<br>
+<span style="color:var(--mut)">May 25</span> <span style="color:var(--blue)">[Call]</span> Shaoxing Yongli — Mr. Wang confirmed trial successful. Requested 5-ton trial order quote.<br>
+<span style="color:var(--mut)">May 24</span> <span style="color:var(--grn)">[Email]</span> Foshan Nanhai — Followed up on sample ETA. Confirmed May 28 arrival.<br>
+<span style="color:var(--mut)">May 23</span> <span style="color:var(--amb)">[Meeting]</span> Changzhou Jialong — Ms. Li shared preliminary positive feedback on MASC silicone.<br>
+<span style="color:var(--mut)">May 22</span> <span style="color:var(--grn)">[Sample]</span> Hangzhou Fuchun — 10 kg each CWAS + HS 200 shipped via DHL Express.<br>
+<span style="color:var(--mut)">May 20</span> <span style="color:var(--grn)">[Sample]</span> Foshan Nanhai — 15 kg CWAS Cold Prill sample shipped via COSCO.<br>
+<span style="color:var(--mut)">May 18</span> <span style="color:var(--grn)">[Sample]</span> Changzhou Jialong — 12 kg CHEMISIL MASC sample delivered.<br>
+<span style="color:var(--mut)">May 15</span> <span style="color:var(--blue)">[Call]</span> Shaoxing Yongli — Initial intro call with Mr. Wang. Interest in cationic softener.<br>
+<span style="color:var(--mut)">May 15</span> <span style="color:var(--grn)">[Sample]</span> Shaoxing Yongli — 10 kg CWAS Flakes sample sent via DHL.
+</div></div>
+</div>
 </div>
 
 <!-- THEMES -->
