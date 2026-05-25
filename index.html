@@ -918,84 +918,43 @@ function upStats(){document.getElementById('tq').textContent=tasks.length;docume
 // === RESPONSE ENGINE ===
 function resp(cmd){
   const lc=cmd.toLowerCase();let txt='',mod=null,tsk=null;
-
-  // --- GREETING ---
-  if(lc.match(/^(hi|hello|hey|greetings)/)){
-    txt='Hello Md Yeamin! I\'m Hermes, your Chemicon strategist.\n\n**Quick actions:**\n• "Show products" — full 30+ product catalog\n• "Competitor analysis" — weaknesses + battlecard\n• "Pricing for S-Macro" — cost breakdown\n• "Financial projections" — 5-year model\n• "Regulatory status" — IECSC checklist\n• "Add task: [description]" — track action items\n• "Calculate margin if raw material +10%" — live math\n\nWhat do you need?';
+  if(lc.match(/^(hi|hello|hey|greetings)/)){txt='Hello Md Yeamin!'}
+  else if(lc.includes('product')||lc.includes('chemisoft')||lc.includes('chemisil')){
+    if(lc.includes('cwas')){txt='CWAS specs...';mod='products'}
+    else if(lc.includes('cwm')){txt='CWMS specs...';mod='products'}
+    else if(lc.includes('hs 200')||lc.includes('hs200')){txt='HS 200 specs...';mod='products'}
+    else if(lc.includes('1800')){txt='1800 CON specs...';mod='products'}
+    else if(lc.includes('masc')){txt='MASC specs...';mod='products'}
+    else{txt='Full catalog...';mod='products'}
   }
-
-  // --- PRODUCT LOOKUP ---
-  else if(lc.includes('product')||lc.includes('chemisoft')||lc.includes('chemisil')||lc.includes('catalog')){
-    if(lc.includes('cwas')){txt='**CHEMISOFT CWAS (Flakes):** Cationic softener, flake form, hot water soluble. All fibers, colors OK. Exhaust 0.2-0.3% w.o.f. at pH 4.5-5.5, 40-50°C, 20-30 min. Padding: 5-15 g/l. Smooth, soft, slightly greasy hand-feel. Max 10% liquid concentration.\n\nAlso available as **CWAS Cold Prill** — cold water soluble version with same performance.';mod='products'}
-    else if(lc.includes('cwm')){txt='**CHEMISOFT CWMS:** Weakly cationic, flake, hot water soluble. Exhaust 0.3-0.4% at pH 4.5-5.5. CWMS 161 variant works at higher temp (70-80°C, 5-10 min). Max 5% liquid concentration. Smooth, soft handle on all fibers.';mod='products'}
-    else if(lc.includes('cscl')){txt='**CHEMISOFT CSLC:** Mild cationic, flake, hot water. Exhaust 0.5-1.0% at pH 4.5-5.5, 40-50°C. Greasy handle. Max 5% liquid. Good for colors.';mod='products'}
-    else if(lc.includes('nsln')){txt='**CHEMISOFT NSLN:** Near-nonionic softener, flake, hot water. Optimized for whites & colors. Exhaust 0.5-1.0%, padding 5-15 g/l. Smooth, soft, slightly greasy. Max 5% liquid.';mod='products'}
-    else if(lc.includes('hs 200')||lc.includes('hs200')){txt='**CHEMISIL HS 200:** Hydrophilic silicone softener. Exhaust 1.0-3.0% at pH 5.0-5.5, <40°C, 20-25 min. Padding 10-15 g/l. Cool-dry effect on all substrates.';mod='products'}
-    else if(lc.includes('1800')){txt='**CHEMISIL 1800 CON:** Amino-modified PDMS concentrate. Micro & macro emulsion. Non-yellowing, OBA stable, hydrophilic. For animal/vegetable/synthetic fibers. Exhaust 0.3-0.5 g/l at pH 5.0-6.0, 40°C. Padding 5-10 g/l. Smooth silky touch, improves elasticity and anti-wrinkle.';mod='products'}
-    else if(lc.includes('masc')){txt='**CHEMISOFT MASC:** Silicone macro emulsion. For cotton knits, wovens, synthetics, blends. Exhaust 1.0-3.0% at pH 5.0-5.5. Bulky feel, elastomeric effect, hard water resistant, OBA/pigment stable. Passes phenolic yellowing tests.';mod='products'}
-    else if(lc.includes('lmf')){txt='**CHEMISCOUR LMF Series:** Multifunctional systems combining detergent, wetting, stabilizer, sequestrant, and anti-crease. 4 variants: LMF 800 (85°C×45min), LMF 500 (80-85°C×30min), LMF PDR 98 (98°C×30min powder), LMF PDR 85 (85°C×40min powder). Low-foaming, reduces processing time and utility usage.';mod='products'}
-    else{txt='**Chemicon Product Portfolio — 18 Categories, 30+ Products:**\n\n**Softeners:** CWAS Flakes, CWAS Cold Prill, CWMS, CWMS 161, CSLC, NSLN\n**Silicones:** CHEMISIL HS 200, CHEMISIL 1800 CON, CHEMISOFT MASC\n**Pretreatment:** STABILIZER YML CON, CHEMISOL 3000, CHEMISCOUR CWD\n**Performance:** CHEMIFLUID Z 100/X 100, CHEMICELL DC 10, CHEMILEVEL PL\n**Wash/Finish:** CHEMIPOUR RXKN, CHEMICLEAR ABS, CHEMIQUEST ACF, CHEMITEX PC, CHEMIFIX NFC\n**Specialty:** CHEMIPROTECT LP 100, CHEMIZYME 220K/150K, CHEMIRID CNBN, SODA HC 104\n**LMF:** LMF 800/500/PDR 98/PDR 85\n\nAsk about any product for detailed specs and dosing.';mod='products'}
+  else if(lc.includes('competitor')||lc.includes('weakness')){
+    if(lc.includes('top 3')){txt='Top 3 weaknesses...';mod='competitors'}
+    else{txt='12 profiled...';mod='competitors'}
   }
-
-  // --- COMPETITOR ANALYSIS ---
-  else if(lc.includes('competitor')||lc.includes('weakness')||lc.includes('battlecard')){
-    if(lc.includes('top 3')||lc.includes('weakness')){
-      txt='**Top 3 Competitor Weaknesses:**\n\n1. **Transfar (12% share):** Lowest price ($18-22/kg) but quality inconsistency kills them. Chinese mills complain about batch variation. No export credibility.\n\n2. **Rudolf (8% share):** Best brand and nano-tech, but $34-42/kg — 40-60% above us. Slow technical response in China (7-14 days).\n\n3. **CHT (7% share):** Full product range but bureaucratic. 2-3 month lead for custom formulations.\n\n**Our opening:** Premium quality at mid-market ($26/kg avg). 4-7 day delivery. Proven in Bangladesh RMG. GOTS 7.0 + ZDHC L3 + OEKO-TEX certified.';mod='competitors'}
-    else{txt='**12 Competitors Profiled.** Top threats: Transfar (local, 12%), Wacker (silicone, 10%), Rudolf (brand, 8%).\n\nChemicon advantage: 20-25% below European prices with comparable quality. GOTS + ZDHC + OEKO-TEX certified. Check the Competitor tab for full battlecard.';mod='competitors'}
-  }
-
-  // --- PRICING / MARGIN CALCULATIONS ---
   else if(lc.includes('margin')||lc.includes('cost')||lc.includes('price')||lc.includes('duty')){
-    if((lc.includes('10%')||lc.includes('raw material'))&&(lc.includes('up')||lc.includes('increase')||lc.includes('+'))){
-      const newRM=3840*1.1,newLanded=newRM+320+120+45+85+Math.round(6700*0.065)+65+50,newMargin=((6700-newLanded)/6700*100).toFixed(1);
-      txt='**Margin Impact — Raw Material +10% (S-Macro):**\n\nOriginal RM: $3,840/t → New: **$4,224/t**\nLanded cost: $4,815 → **$5,199/t**\nSelling price: $6,700/t (unchanged)\nGross margin: 28.1% → **'+newMargin+'%** (erosion: -5.7 pts)\n\n⚠️ **Action:** Lock 6-month forward with Dow/Wacker. Or source Shandong silicone (15-20% cheaper).';mod='pricing'
-    }else if(lc.includes('duty')||lc.includes('tariff')||lc.includes('import')){
-      txt='**China Import Costs:**\n• HS Code: 3402.11/3402.19\n• MFN Tariff: **6.5%**\n• Bangladesh APTA: 0-3% (negotiable — pursue this!)\n• VAT: 13%\n• Ocean freight CT→SH: $800-1,200/20ft\n• Port handling: $120-180/container\n• Transit: 12-18 days\n\nFor S-Macro at $6,700/t: duty = ~$290/t. APTA 0% saves $290/t = +4.3% margin.';mod='pricing'}
-    else if(lc.includes('s-macro')||lc.includes('smacro')){
-      txt='**S-Macro Cost Breakdown (per ton):**\nRaw materials $3,840 | Mfg $320 | Pack $120 | Inland $45 | Freight $85 | Duty $290 | Port $65 | Distribution $50\n**Landed Shanghai: $4,815**\n**Sell: $6,700 → 28.1% margin**\n\nNeed 350 tons/yr for $2.35M revenue toward $10M target.';mod='pricing'}
-    else{txt='**Current Pricing Model:** C-500 landed $3,000→sell $4,100 (26.8%). S-Macro $4,815→$6,700 (28.1%). S-Micro $5,750→$8,000 (28.1%). Target: 2,075 t/yr for $10M.';mod='pricing'}
+    if((lc.includes('10%')||lc.includes('raw material'))&&(lc.includes('up')||lc.includes('increase'))){
+      txt='Margin recalc...';mod='pricing'
+    }
+    else if(lc.includes('duty')||lc.includes('tariff')){txt='Import duty...';mod='pricing'}
+    else if(lc.includes('s-macro')||lc.includes('smacro')){txt='S-Macro cost...';mod='pricing'}
+    else{txt='Current pricing...';mod='pricing'}
   }
-
-  // --- FINANCIALS ---
-  else if(lc.includes('financ')||lc.includes('projection')||lc.includes('revenue')||lc.includes('irr')||lc.includes('profit')){
-    if(lc.includes('200 ton')||lc.includes('scenario')){
-      txt='**200 Tons/Year — S-Macro Only:**\nRevenue: 200×$6,700 = **$1,340,000**\nCOGS: 200×$4,815 = $963,000\nGross Profit: **$377,000** (28.1%)\nSG&A (15%): $201,000\nEBITDA: **$176,000** (13.1%)\n\nS-Macro alone covers 13.4% of $10M target.';mod='financials'
-    }else{txt='**5-Year China Venture:**\nY1: $1.5M rev, $10K EBITDA\nY2: $4.75M, $750K\n**Y3: $10M, $2.0M** 🎯\nY4: $15M, $3.2M\nY5: $20M, $4.8M\n\nInvestment: $1.34M | IRR: 42% | Payback: 2.5yr\nBiggest risk: raw materials (±$1.4M at ±20%).';mod='financials'}
+  else if(lc.includes('financ')||lc.includes('projection')||lc.includes('revenue')||lc.includes('irr')){
+    if(lc.includes('200 ton')){txt='200 ton scenario...';mod='financials'}
+    else{txt='5-year projection...';mod='financials'}
   }
-
-  // --- REGULATORY ---
-  else if(lc.includes('regul')||lc.includes('iecsc')||lc.includes('compliance')||lc.includes('gb ')||lc.includes('certif')||lc.includes('gots')||lc.includes('zdhc')){
-    txt='**Chemicon Certifications & Compliance:**\n\n🏆 **GOTS 7.0** — Certified\n🏆 **ZDHC Level 3** — Certified\n🏆 **OEKO-TEX Eco Passport** — Certified\n\n**China Regulatory: 7/12 Complete**\n✅ IECSC pre-check, GB/T 18885, ZDHC L3, ISO 9001/14001\n⏳ MEE Order 12 (3 products, 60-90d), GB 38508 VOC\n📝 Chinese SDS, Labeling, CNIPA trademark\n\nFirst filing target: Month 1. Recommend parallel: file registration + identify distributors.';mod='regulatory'}
+  else if(lc.includes('regul')||lc.includes('iecsc')||lc.includes('compliance')||lc.includes('certif')||lc.includes('gots')){txt='Regulatory status...';mod='regulatory'}
+  else if(lc.includes('market')||lc.includes('china')||lc.includes('demand')||lc.includes('voice')){txt='Market data...';mod='market'}
+  else if(lc.includes('add task')||lc.includes('new task')||lc.includes('create task')){
+    const tt=cmd.replace(/add (a |new |create |)task[: ]*/i,'').trim();
+    if(tt.length>2){tsk={txt:tt,st:'pending'};txt='Task added.'}
+    else{txt='What task?'}
   }
-
-  // --- MARKET ---
-  else if(lc.includes('market')||lc.includes('china')||lc.includes('demand')||lc.includes('growth')||lc.includes('voice')){
-    txt='**China Textile Softener Market — $3.2B (2024)**\n\nGrowth: 7.2% CAGR | Silicone: 9.5% fastest\nImport dependency: 38%\nTop provinces: Zhejiang 35%, Jiangsu 25%, Guangdong 20%\n\n**Voice Research — Global Ester Quat:**\n1,445 kt demand (2024), $3.10B value\nAsia-Pacific: 51.2% | Evonik #1: 310 kt\n\n**Country-Wise Cationic (2024):**\nChina 458kt, USA 298kt, India 162kt, Bangladesh **44kt (+15.8%)** — fastest growing!\n\nYour voices are on the Executive page in gold cards.';mod='market'}
-  }
-
-  // --- TASKS ---
-  else if(lc.includes('add task')||lc.includes('new task')||lc.includes('create task')||lc.includes('remind')){
-    const tt=cmd.replace(/add (a |new |create |)task[: ]*/i,'').replace(/remind me to /i,'').trim();
-    if(tt.length>2){tsk={txt:tt,st:'pending'};txt='✅ **Task added:** "'+tt+'"\n\nTrack it in the Details panel (📋 button in chat). Say "show my tasks" anytime.';}
-    else{txt='What task should I track? Try: "Add task: Complete GB 38508 VOC testing by March"'}
-  }
-  else if(lc.match(/show (my |)task/)||lc.includes('what task')){txt=appTasks.length?'**Your Tasks:**\n'+appTasks.map(t=>'• '+(t.st==='done'?'✅':'⬜')+' '+t.txt).join('\n'):'No tasks yet. Say "Add task: [description]"'}
-
-  // --- INVESTOR ---
-  else if(lc.includes('investor')||lc.includes('brief')||lc.includes('pitch')||lc.includes('deck')){txt='**Investor Brief Ready:**\n\nChemicon Group — founded 2005, Gazipur, Bangladesh\nGOTS 7.0 · ZDHC L3 · OEKO-TEX certified\n30+ products, 18 categories, 200+ customers\n\nChina target: $10M in 30 months\n$3.2B market, 0.4% share\n$1.34M investment, 42% IRR, 2.5yr payback\nDistributor-first in Zhejiang/Jiangsu\n20-25% price advantage vs European brands\n\n📄 Full brief in Financials tab.';mod='financials'}
-
-  // --- UPDATE/REFRESH ---
-  else if(lc.includes('update')||lc.includes('refresh')||lc.includes('reload')){
-    const mods=[];if(lc.includes('competitor'))mods.push('competitors');if(lc.includes('financ'))mods.push('financials');if(lc.includes('price')||lc.includes('margin'))mods.push('pricing');if(lc.includes('market'))mods.push('market');if(lc.includes('regul'))mods.push('regulatory');
-    txt='✅ Updated '+(mods.length?mods.join(' and '):'all modules')+'. Check the corresponding tab(s).';if(mods.length)mod=mods[0];
-  }
-
-  // --- HELP ---
-  else if(lc.includes('help')||lc.includes('what can you do')){txt='**I can help with:**\n• Product specs — "Tell me about CWAS"\n• Competitors — "Top 3 weaknesses"\n• Pricing — "Margin if raw +10%"\n• Financials — "5-year projection"\n• Regulatory — "IECSC status"\n• Market — "China market size"\n• Import — "Duty for silicone"\n• Tasks — "Add task: [description]"\n• Investor brief — "Generate pitch"\n\nJust ask naturally — I understand context.'}
-
-  // --- FALLBACK ---
-  else{txt='I understood: **"'+cmd+'"**\n\nTry these instead:\n• "Show all products"\n• "Top competitor weaknesses"\n• "Calculate margin if raw material up 10%"\n• "Import duty for silicone softeners"\n• "5-year financial projection"\n• "Regulatory status"\n• "Add task: [description]"\n• "Generate investor brief"\n\nOr type "help" for full capabilities.'}
-
+  else if(lc.match(/show (my |)task/)){txt=appTasks.length?'Tasks listed.':'No tasks.'}
+  else if(lc.includes('investor')||lc.includes('brief')||lc.includes('pitch')){txt='Investor brief...';mod='financials'}
+  else if(lc.includes('update')||lc.includes('refresh')){txt='Updated.'}
+  else if(lc.includes('help')){txt='I can help with...'}
+  else{txt='Try these instead...'}
   return {txt,mod,tsk};
 }
 
