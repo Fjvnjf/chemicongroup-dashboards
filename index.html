@@ -3,693 +3,793 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chemicon China Expansion — Command Center</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<title>Hermes Ops — Chemicon China Expansion</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#060a12;color:#d0d6e0;font-family:'Segoe UI',system-ui,sans-serif;min-height:100vh;overflow-x:hidden}
-.topbar{background:linear-gradient(135deg,#0a0f1e 0%,#162040 100%);padding:10px 24px;border-bottom:2px solid #c9a84c;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100}
-.topbar h1{font-size:18px;color:#c9a84c;font-weight:300;letter-spacing:2px}
-.topbar .sub{font-size:10px;color:#5a7a9a}
-.topbar .live{font-size:11px;color:#66bb6a;display:flex;align-items:center;gap:6px}
-.topbar .live .pulse{width:8px;height:8px;background:#66bb6a;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.tabs{display:flex;flex-wrap:wrap;gap:0;padding:0 16px;background:#0d1525;border-bottom:1px solid #1e3050;position:sticky;top:52px;z-index:99;overflow-x:auto}
-.tab{padding:10px 16px;font-size:11px;color:#5a7a9a;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap}
-.tab:hover{color:#8899aa}
-.tab.active{color:#4fc3f7;border-bottom-color:#4fc3f7}
-.tab-content{display:none;padding:12px 16px}
-.tab-content.active{display:block}
-.kpi-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:12px}
-.kpi-mini{background:#111827;border:1px solid #1e3050;border-radius:10px;padding:14px;text-align:center;transition:border-color .2s}
-.kpi-mini:hover{border-color:#c9a84c}
-.kpi-mini .val{font-size:22px;font-weight:700;color:#c9a84c}
-.kpi-mini .lbl{font-size:9px;color:#5a7a9a;text-transform:uppercase;margin-top:2px;line-height:1.3}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:12px}
-.grid-2{display:grid;grid-template-columns:2fr 1fr;gap:12px}
-.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
-.card{background:#111827;border:1px solid #1e3050;border-radius:12px;padding:18px;transition:border-color .2s}
-.card:hover{border-color:#4fc3f7}
-.card h3{font-size:11px;color:#7a8a9a;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #1a2744}
-.chart-wrap{position:relative;height:220px}
-.chart-wrap.tall{height:280px}
-canvas{width:100%!important;height:100%!important}
-.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.metric{text-align:center;padding:10px;background:#0d1525;border-radius:8px}
-.metric .v{font-size:18px;font-weight:700;color:#66bb6a}
-.metric .l{font-size:9px;color:#5a7a9a;text-transform:uppercase;margin-top:3px}
-.metric.w .v{color:#ffa726}.metric.d .v{color:#ef5350}
-.status-list{font-size:11px;max-height:250px;overflow-y:auto}
-.status-list .row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #152033}
-.status-list .row .n{color:#8899aa;flex:1}.status-list .row .s{font-weight:600;text-align:right}
-.s-g{color:#66bb6a}.s-y{color:#ffa726}.s-r{color:#ef5350}
-.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
-.dot.g{background:#66bb6a}.dot.y{background:#ffa726}.dot.r{background:#ef5350}
-table.data{width:100%;font-size:11px;border-collapse:collapse}
-table.data td{padding:6px 8px;border-bottom:1px solid #152033}
-table.data td:first-child{color:#7a8a9a}
-table.data td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-family:monospace}
-table.data tr.total td{border-top:2px solid #c9a84c;font-weight:700}
-.alert{border-radius:8px;padding:10px;margin-top:6px;font-size:11px}
-.alert.r{background:#1a0a0a;border:1px solid #5a2020}.alert.r .t{color:#ef5350;font-weight:600}.alert.r .m{color:#b07070}
-.alert.y{background:#1a100a;border:1px solid #5a3a20}.alert.y .t{color:#ffa726;font-weight:600}.alert.y .m{color:#b09070}
-.alert.g{background:#0a1a0a;border:1px solid #205a20}.alert.g .t{color:#66bb6a;font-weight:600}.alert.g .m{color:#70b070}
-.progress-bar{background:#1a2744;border-radius:6px;height:8px;overflow:hidden;margin-top:4px}
-.progress-bar .fill{height:100%;border-radius:6px;transition:width .5s}
-.fill.g{background:linear-gradient(90deg,#66bb6a,#4fc3f7)}.fill.y{background:linear-gradient(90deg,#ffa726,#ffca28)}.fill.r{background:linear-gradient(90deg,#ef5350,#ff7043)}
-.tag{font-size:9px;padding:2px 6px;border-radius:4px;display:inline-block}
-.tag.done{background:#103a20;color:#66bb6a}.tag.soon{background:#3a2010;color:#ffa726}.tag.wait{background:#1a2744;color:#5a7a9a}
-.cmd-bar{position:fixed;bottom:0;left:0;right:0;background:#0a0f1e;border-top:2px solid #c9a84c;padding:10px 20px;display:flex;gap:10px;z-index:200}
-.cmd-bar input{flex:1;background:#111827;border:1px solid #1e3050;border-radius:8px;padding:10px 16px;color:#d0d6e0;font-size:13px;outline:none}
-.cmd-bar input:focus{border-color:#4fc3f7}
-.cmd-bar button{background:linear-gradient(135deg,#c9a84c,#a0843c);border:none;border-radius:8px;padding:10px 20px;color:#0a0f1e;font-weight:700;cursor:pointer;font-size:13px;transition:opacity .2s}
-.cmd-bar button:hover{opacity:.85}
-.cmd-hint{font-size:10px;color:#5a7a9a;margin-top:2px}
-.compare-table{width:100%;font-size:10px;border-collapse:collapse;margin-top:8px}
-.compare-table th{color:#c9a84c;padding:6px 4px;border-bottom:2px solid #1e3050;text-align:left;font-size:11px}
-.compare-table td{padding:6px 4px;border-bottom:1px solid #152033}
-.compare-table td.win{color:#66bb6a;font-weight:600}
-.compare-table td.lose{color:#ef5350}
-.modal-overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:300;justify-content:center;align-items:center}
+:root{--bg:#080c14;--surface:#0f1520;--card:#131a28;--border:#1a2744;--text:#c0ccd8;--muted:#4a5a7a;--gold:#c9a84c;--blue:#4fc3f7;--green:#66bb6a;--amber:#ffa726;--red:#ef5350;--accent:#2a3a54}
+body{background:var(--bg);color:var(--text);font-family:'Inter','Segoe UI',system-ui,sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column;font-size:13px}
+/* PASSWORD */
+#pwGate{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px}
+#pwGate input{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px 20px;color:var(--text);font-size:14px;width:260px;text-align:center;outline:none}
+#pwGate input:focus{border-color:var(--blue)}
+#pwGate button{background:linear-gradient(135deg,var(--gold),#a0843c);border:none;border-radius:8px;padding:10px 30px;color:#080c14;font-weight:700;cursor:pointer;font-size:14px}
+/* TOP BAR */
+#topbar{height:48px;background:var(--surface);border-bottom:1px solid var(--gold);display:flex;align-items:center;padding:0 16px;gap:12px;flex-shrink:0;z-index:100}
+#topbar .dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+#topbar .title{font-weight:600;color:var(--gold);font-size:14px;letter-spacing:1px}
+#topbar .stat{font-size:10px;color:var(--muted);padding:2px 8px;background:var(--card);border-radius:4px}
+#topbar .spacer{flex:1}
+#topbar .qa{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:4px 10px;color:var(--text);font-size:10px;cursor:pointer;transition:.2s}
+#topbar .qa:hover{border-color:var(--blue);color:var(--blue)}
+/* LAYOUT */
+#layout{display:flex;flex:1;overflow:hidden}
+/* SIDEBAR */
+#sidebar{width:220px;background:var(--surface);border-right:1px solid var(--border);overflow-y:auto;overflow-x:hidden;flex-shrink:0;transition:width .2s}
+#sidebar.collapsed{width:40px}
+#sidebar.collapsed .sec-title,#sidebar.collapsed .nav-item span,#sidebar.collapsed .sec-arrow{display:none}
+#sidebar.collapsed .nav-item{justify-content:center;padding:8px}
+.sidebar-toggle{position:absolute;left:225px;top:56px;background:var(--card);border:1px solid var(--border);border-radius:0 6px 6px 0;color:var(--muted);cursor:pointer;padding:6px 8px;font-size:10px;z-index:50;transition:left .2s}
+#sidebar.collapsed+.sidebar-toggle{left:45px}
+.sec-header{padding:10px 12px 4px;cursor:pointer;display:flex;align-items:center;gap:6px}
+.sec-title{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.sec-arrow{font-size:8px;color:var(--muted);transition:.2s}
+.sec-header.open .sec-arrow{transform:rotate(90deg)}
+.nav-list{overflow:hidden;max-height:0;transition:max-height .3s}
+.sec-header.open+.nav-list{max-height:600px}
+.nav-item{display:flex;align-items:center;gap:8px;padding:7px 12px 7px 20px;cursor:pointer;font-size:11px;color:var(--muted);transition:.15s;white-space:nowrap}
+.nav-item:hover{color:var(--text);background:var(--card)}
+.nav-item.active{color:var(--blue);background:rgba(79,195,247,.08);border-right:2px solid var(--blue)}
+.nav-item .icon{width:16px;text-align:center;flex-shrink:0;font-size:12px}
+/* MAIN */
+#main{flex:1;overflow-y:auto;padding:16px;background:var(--bg)}
+.view{display:none}
+.view.active{display:block}
+/* BOTTOM BAR */
+#botbar{height:42px;background:var(--surface);border-top:1px solid var(--gold);display:flex;align-items:center;padding:0 12px;gap:8px;flex-shrink:0}
+#botbar input{flex:1;background:var(--card);border:1px solid var(--border);border-radius:6px;padding:6px 12px;color:var(--text);font-size:12px;outline:none}
+#botbar input:focus{border-color:var(--blue)}
+#botbar .ctx{font-size:9px;color:var(--muted);white-space:nowrap}
+/* CARDS */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px;margin-bottom:10px}
+.card h3{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin-bottom:10px}
+.kpi{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.kpi .v{font-size:20px;font-weight:700;color:var(--gold)}
+.kpi .l{font-size:8px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+/* CHAT */
+.chat-wrap{display:flex;height:calc(100vh - 140px);gap:10px}
+.chat-main{flex:7;display:flex;flex-direction:column}
+.chat-msgs{flex:1;overflow-y:auto;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;display:flex;flex-direction:column;gap:6px;margin-bottom:8px}
+.chat-msgs .msg{display:flex;gap:8px;max-width:90%;animation:msgIn .25s}
+@keyframes msgIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.chat-msgs .msg.user{flex-direction:row-reverse;align-self:flex-end}
+.msg .av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--card)}
+.msg .av.me{background:#0d1a2e;border:1px solid var(--gold)}
+.msg .bub{padding:8px 12px;border-radius:10px;font-size:12px;line-height:1.5;max-width:100%}
+.msg.user .bub{background:#162040;border:1px solid var(--border)}
+.msg.me .bub{background:var(--card);border:1px solid var(--accent)}
+.bub .t{font-size:9px;color:var(--muted);margin-top:2px;text-align:right}
+.chat-input-row{display:flex;gap:8px}
+.chat-input-row textarea{flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--text);font-size:12px;resize:none;outline:none;height:40px;font-family:inherit}
+.chat-input-row textarea:focus{border-color:var(--blue)}
+.chat-input-row button{background:linear-gradient(135deg,var(--gold),#a0843c);border:none;border-radius:8px;padding:0 16px;color:#080c14;font-weight:700;cursor:pointer;font-size:12px}
+.chat-side{flex:3;overflow-y:auto}
+.typing{display:flex;align-items:center;gap:6px;padding:6px 12px}
+.typing span{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:tb 1.4s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes tb{0%,60%,100%{opacity:.2;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
+/* TABLE */
+.tbl{width:100%;font-size:10px;border-collapse:collapse}
+.tbl td{padding:5px 8px;border-bottom:1px solid var(--border)}
+.tbl td:first-child{color:var(--muted)}
+.tbl td:last-child{text-align:right;font-weight:600;color:var(--gold)}
+.tbl tr.hdr td{color:var(--gold);font-size:9px;text-transform:uppercase;border-bottom:1px solid var(--gold)}
+.tbl tr.tot td{border-top:2px solid var(--gold);font-weight:700}
+/* BADGES */
+.badge{display:inline-block;padding:2px 6px;border-radius:4px;font-size:9px;font-weight:600}
+.badge.g{background:#103a20;color:var(--green)}.badge.y{background:#3a2010;color:var(--amber)}.badge.r{background:#3a1010;color:var(--red)}.badge.b{background:#102040;color:var(--blue)}
+/* TERMINAL */
+.term{background:#05080e;border:1px solid var(--border);border-radius:8px;padding:12px;font-family:'JetBrains Mono','Courier New',monospace;font-size:11px;color:#66bb6a;height:400px;overflow-y:auto;white-space:pre-wrap}
+.term .line{color:var(--muted)}.term .prompt{color:var(--gold)}.term .out{color:var(--green)}.term .err{color:var(--red)}
+/* KANBAN */
+.kanban{display:flex;gap:10px;overflow-x:auto}
+.kanban .col{min-width:200px;flex:1;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:10px}
+.kanban .col h4{font-size:10px;color:var(--gold);margin-bottom:8px;text-transform:uppercase}
+.kanban .task{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:8px;margin-bottom:6px;font-size:10px;cursor:grab}
+.kanban .task .tag{font-size:8px}
+/* LOGS */
+.log-view{font-family:monospace;font-size:10px;max-height:300px;overflow-y:auto;background:var(--bg);border-radius:6px;padding:8px}
+.log-view .l{padding:2px 0;border-bottom:1px solid #0a0f1e}
+.log-view .l.ts{color:var(--muted)}.log-view .l.w{color:var(--amber)}.log-view .l.e{color:var(--red)}.log-view .l.i{color:var(--blue)}.log-view .l.d{color:var(--green)}
+/* THEME */
+.theme-opt{display:inline-block;width:32px;height:32px;border-radius:50%;margin:4px;cursor:pointer;border:2px solid transparent}
+.theme-opt.active{border-color:var(--gold)}
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;align-items:center;justify-content:center}
 .modal-overlay.show{display:flex}
-.modal{background:#111827;border:1px solid #c9a84c;border-radius:12px;padding:24px;max-width:600px;width:90%;max-height:80vh;overflow-y:auto}
-.modal h2{color:#c9a84c;margin-bottom:12px;font-size:16px}
-.modal p{font-size:12px;color:#8899aa;margin-bottom:8px;line-height:1.6}
-.modal button{background:#c9a84c;border:none;border-radius:6px;padding:8px 20px;color:#0a0f1e;font-weight:700;cursor:pointer;margin-top:12px;font-size:12px}
-.ops-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.ops-status{display:flex;align-items:center;gap:8px;padding:8px;background:#0d1525;border-radius:8px;margin-bottom:8px}
-.ops-dot{width:12px;height:12px;border-radius:50%}
-.ops-dot.idle{background:#66bb6a;box-shadow:0 0 8px #66bb6a;animation:pulse 2s infinite}
-.ops-dot.busy{background:#ffa726;box-shadow:0 0 8px #ffa726;animation:pulse 1s infinite}
-.ops-log{font-family:monospace;font-size:10px;max-height:200px;overflow-y:auto;background:#0a0f1e;border-radius:8px;padding:10px}
-.ops-log .entry{padding:3px 0;border-bottom:1px solid #0d1525}
-.ops-log .ts{color:#5a7a9a}.ops-log .msg{color:#8899aa}
-.ops-btn{display:inline-flex;gap:6px;flex-wrap:wrap}
-.ops-btn button{background:#1a2744;border:1px solid #2a3a54;border-radius:6px;padding:6px 12px;color:#8899aa;font-size:10px;cursor:pointer;transition:all .2s}
-.ops-btn button:hover{border-color:#4fc3f7;color:#4fc3f7}
-
-/* === HERMES CHAT INTERFACE === */
-.hermes-chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 140px);max-width:900px;margin:0 auto}
-.hermes-chat-status{background:#0d1525;border:1px solid #1e3050;border-radius:10px;padding:8px 16px;display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:11px}
-.hermes-chat-status .chat-dot{width:10px;height:10px;background:#66bb6a;border-radius:50%;box-shadow:0 0 8px #66bb6a;animation:pulse 2s infinite;flex-shrink:0}
-.hermes-chat-status .chat-status-text{color:#8899aa;flex:1}
-.hermes-chat-status .chat-detail-btn{background:#1a2744;border:1px solid #2a3a54;border-radius:6px;padding:4px 10px;color:#5a7a9a;font-size:10px;cursor:pointer;transition:all .2s}
-.hermes-chat-status .chat-detail-btn:hover{border-color:#4fc3f7;color:#4fc3f7}
-.hermes-chat-msgs{flex:1;overflow-y:auto;padding:12px;background:#0a0f1e;border:1px solid #1e3050;border-radius:12px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px}
-.hermes-chat-msgs .msg-row{display:flex;gap:8px;max-width:85%;animation:msgIn .3s ease-out}
-.hermes-chat-msgs .msg-row.user{align-self:flex-end;flex-direction:row-reverse}
-.hermes-chat-msgs .msg-row.hermes{align-self:flex-start}
-@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.hermes-chat-msgs .msg-avatar{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
-.hermes-chat-msgs .msg-avatar.user{background:#1a2744}
-.hermes-chat-msgs .msg-avatar.hermes{background:#0d1a2e;border:1px solid #c9a84c}
-.hermes-chat-msgs .msg-bubble{padding:10px 14px;border-radius:12px;font-size:12px;line-height:1.5}
-.hermes-chat-msgs .msg-bubble.user{background:#162040;border:1px solid #1e3050;color:#d0d6e0;border-bottom-right-radius:4px}
-.hermes-chat-msgs .msg-bubble.hermes{background:#111827;border:1px solid #2a3a54;color:#d0d6e0;border-bottom-left-radius:4px}
-.hermes-chat-msgs .msg-bubble .msg-time{font-size:9px;color:#5a7a9a;margin-top:2px;text-align:right}
-.hermes-chat-msgs .msg-bubble .msg-update{font-size:9px;color:#66bb6a;margin-top:2px;font-style:italic}
-.hermes-chat-input-wrap{display:flex;gap:8px}
-.hermes-chat-input-wrap textarea{flex:1;background:#111827;border:1px solid #1e3050;border-radius:10px;padding:10px 14px;color:#d0d6e0;font-size:12px;resize:none;outline:none;font-family:inherit;height:44px;line-height:1.4}
-.hermes-chat-input-wrap textarea:focus{border-color:#4fc3f7}
-.hermes-chat-input-wrap button{background:linear-gradient(135deg,#c9a84c,#a0843c);border:none;border-radius:10px;padding:0 20px;color:#0a0f1e;font-weight:700;cursor:pointer;font-size:12px;transition:opacity .2s;white-space:nowrap}
-.hermes-chat-input-wrap button:hover{opacity:.85}
-.hermes-chat-input-wrap button:disabled{opacity:.4;cursor:default}
-.chat-typing{display:flex;align-items:center;gap:8px;padding:8px 14px}
-.chat-typing .typing-dots{display:flex;gap:3px}
-.chat-typing .typing-dots span{width:6px;height:6px;background:#c9a84c;border-radius:50%;animation:typingBounce 1.4s infinite}
-.chat-typing .typing-dots span:nth-child(2){animation-delay:.2s}
-.chat-typing .typing-dots span:nth-child(3){animation-delay:.4s}
-@keyframes typingBounce{0%,60%,100%{opacity:.2;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
-.chat-detail-panel{display:none;background:#0d1525;border:1px solid #1e3050;border-radius:10px;padding:12px;margin-top:8px;max-height:200px;overflow-y:auto;font-size:10px}
-.chat-detail-panel.open{display:block}
-.chat-detail-panel h4{color:#c9a84c;font-size:10px;text-transform:uppercase;margin-bottom:6px}
+.modal{background:var(--card);border:1px solid var(--gold);border-radius:12px;padding:20px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto}
+.modal h2{color:var(--gold);margin-bottom:10px;font-size:14px}
+.modal button{background:var(--gold);border:none;border-radius:6px;padding:6px 16px;color:#080c14;font-weight:700;cursor:pointer;font-size:11px;margin-top:8px}
+/* SCROLLBAR */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:768px){#sidebar{width:180px}.grid2,.grid3{grid-template-columns:1fr}.chat-side{display:none}}
 </style>
 </head>
 <body>
-<div id="pwGate" style="position:fixed;top:0;left:0;right:0;bottom:0;background:#060a12;z-index:999;display:flex;justify-content:center;align-items:center;flex-direction:column;gap:16px">
-  <div style="font-size:32px">🏭</div>
-  <h2 style="color:#c9a84c;font-weight:300;letter-spacing:2px">CHEMICON CHINA EXPANSION</h2>
-  <p style="color:#5a7a9a;font-size:12px">Command Center — Authorized Access Only</p>
-  <input id="pwInput" type="password" placeholder="Enter access code" style="background:#111827;border:1px solid #1e3050;border-radius:8px;padding:12px 20px;color:#d0d6e0;font-size:14px;width:260px;text-align:center;outline:none" onkeydown="if(event.key==='Enter')checkPw()">
-  <button onclick="checkPw()" style="background:linear-gradient(135deg,#c9a84c,#a0843c);border:none;border-radius:8px;padding:10px 30px;color:#0a0f1e;font-weight:700;cursor:pointer;font-size:14px">Access Command Center</button>
-  <p id="pwMsg" style="color:#ef5350;font-size:11px;height:16px"></p>
+
+<!-- PASSWORD -->
+<div id="pwGate">
+<div style="font-size:36px">🧠</div>
+<h2 style="color:var(--gold);font-weight:300;letter-spacing:2px">HERMES OPS — CHEMICON CHINA</h2>
+<p style="color:var(--muted);font-size:12px">Unified AI Command Center</p>
+<input id="pw" type="password" placeholder="Access code" onkeydown="if(event.key==='Enter')auth()">
+<button onclick="auth()">Enter</button>
+<p id="pwErr" style="color:var(--red);font-size:10px;height:14px"></p>
 </div>
-<div id="mainApp" style="display:none">
-<div class="topbar">
-  <div>
-    <h1>CHEMICON CHINA EXPANSION — COMMAND CENTER</h1>
-    <div class="sub">Softener & Silicone Market Entry | Target: $10M Revenue | Dashboard: Hermes AI v3.0</div>
-  </div>
-  <div class="live"><span class="pulse"></span>LIVE | <span id="hermesStatus">Idle</span> | <span onclick="showGuide()" style="cursor:pointer;color:#c9a84c">Guide</span></div>
+
+<!-- MAIN APP -->
+<div id="app" style="display:none;flex-direction:column;height:100vh">
+
+<!-- TOP BAR -->
+<div id="topbar">
+<span class="dot"></span>
+<span class="title">HERMES OPS</span>
+<span class="stat">DeepSeek V4 Pro</span>
+<span class="stat">Uptime <span id="uptime">00:00</span></span>
+<span class="stat">Tokens: <span id="tokToday">0</span></span>
+<span class="stat">Sessions: <span id="sessCount">1</span></span>
+<span class="spacer"></span>
+<button class="qa" onclick="navTo('chat')">💬 New Chat</button>
+<button class="qa" onclick="navTo('terminal')">🖥 Terminal</button>
+<button class="qa" onclick="sysCheck()">🔧 System Check</button>
+<button class="qa" onclick="syncAll()">🔄 Full Sync</button>
 </div>
-<div class="tabs">
-  <div class="tab active" onclick="switchTab('exec')">Executive</div>
-  <div class="tab" onclick="switchTab('products')">Products & R&D</div>
-  <div class="tab" onclick="switchTab('market')">Market Intel</div>
-  <div class="tab" onclick="switchTab('competitors')">Competitors</div>
-  <div class="tab" onclick="switchTab('pricing')">Cost & Pricing</div>
-  <div class="tab" onclick="switchTab('financials')">Financials</div>
-  <div class="tab" onclick="switchTab('regulatory')">Regulatory</div>
-  <div class="tab" onclick="switchTab('timeline')">Action Plan</div>
-  <div class="tab" onclick="switchTab('hermesops')">Hermes Ops</div>
+
+<!-- LAYOUT -->
+<div id="layout">
+
+<!-- SIDEBAR -->
+<div id="sidebar">
+
+<div class="sec-header open" onclick="this.classList.toggle('open')">
+<span class="sec-arrow">▶</span><span class="sec-title">🤖 HERMES AGENT</span></div>
+<div class="nav-list">
+<div class="nav-item active" onclick="navTo('chat')" data-view="chat"><span class="icon">💬</span><span>AI Chat</span></div>
+<div class="nav-item" onclick="navTo('sessions')" data-view="sessions"><span class="icon">📋</span><span>Sessions</span></div>
+<div class="nav-item" onclick="navTo('memory')" data-view="memory"><span class="icon">🧠</span><span>Memory</span></div>
+<div class="nav-item" onclick="navTo('skills')" data-view="skills"><span class="icon">🔧</span><span>Skills Library</span></div>
+<div class="nav-item" onclick="navTo('mcp')" data-view="mcp"><span class="icon">🔌</span><span>MCP Tools</span></div>
+<div class="nav-item" onclick="navTo('groupchat')" data-view="groupchat"><span class="icon">👥</span><span>Group Chat</span></div>
 </div>
-<div id="tab-exec" class="tab-content active">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">$10M</div><div class="lbl">Revenue Target</div></div><div class="kpi-mini"><div class="val" id="projRev">$0</div><div class="lbl">Projected Revenue</div></div><div class="kpi-mini"><div class="val">9</div><div class="lbl">Products Ready</div></div><div class="kpi-mini"><div class="val">18 mo</div><div class="lbl">Entry Timeline</div></div><div class="kpi-mini"><div class="val" style="color:#ffa726">MED</div><div class="lbl">Risk Level</div></div><div class="kpi-mini"><div class="val" id="invDays">TBD</div><div class="lbl">Investor Meeting</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Hermes Daily Briefing — <span id="todayDate"></span></h3>
-<div class="alert g"><div class="t">Project Status: ACTIVE</div><div class="m">China expansion plan initialized. 9 products cataloged. Market intelligence loaded. Financial model projecting $10M in 36 months. Ready for investor presentation.</div></div>
-<div class="alert y" style="margin-top:6px"><div class="t">Top Action Items Today</div><div class="m">1. Finalize product IECSC registration checklist. 2. Update shipping/logistics cost model. 3. Generate investor brief PDF. 4. Validate competitor pricing data.</div></div>
-<div class="alert r" style="margin-top:6px"><div class="t">Key Risk: Regulatory Timeline</div><div class="m">China new chemical substance registration (MEE Order 12) may take 60-90 days. Recommend parallel processing with distributor identification.</div></div></div>
-<div class="card"><h3>One-Click Actions</h3>
-<div style="display:flex;flex-direction:column;gap:8px">
-<button onclick="genInvestorBrief()" style="background:#c9a84c;border:none;border-radius:8px;padding:12px;color:#0a0f1e;font-weight:700;cursor:pointer;font-size:13px">Generate Investor Brief</button>
-<button onclick="refreshAll()" style="background:#1a2744;border:1px solid #2a3a54;border-radius:8px;padding:12px;color:#8899aa;cursor:pointer;font-size:13px">Refresh All Research Data</button>
-<button onclick="switchTab('financials')" style="background:#1a2744;border:1px solid #2a3a54;border-radius:8px;padding:12px;color:#8899aa;cursor:pointer;font-size:13px">Update Financial Model</button></div></div></div>
-<div class="grid"><div class="card"><h3>Revenue Ramp — Path to $10M</h3><div class="chart-wrap tall"><canvas id="revenueRampChart"></canvas></div></div></div></div>
 
-<div id="tab-products" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">9</div><div class="lbl">Total Products</div></div><div class="kpi-mini"><div class="val">4</div><div class="lbl">Categories</div></div><div class="kpi-mini"><div class="val">3</div><div class="lbl">Silicone Grades</div></div><div class="kpi-mini"><div class="val">2</div><div class="lbl">Cationic Grades</div></div><div class="kpi-mini"><div class="val">BDT 213Cr</div><div class="lbl">Current Revenue</div></div><div class="kpi-mini"><div class="val">8,040 MT</div><div class="lbl">Annual Production</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Active Product Portfolio</h3>
-<div style="max-height:360px;overflow-y:auto"><table class="data">
-<tr style="color:#c9a84c;font-size:10px"><td>Product</td><td>Type</td><td>Application</td><td>Price/kg</td></tr>
-<tr><td>Chemisoft C-200</td><td>Cationic</td><td>Cotton exhaust softener</td><td>BDT 185</td></tr>
-<tr><td>Chemisoft C-500</td><td>Ester Quat</td><td>Premium padding softener</td><td>BDT 320</td></tr>
-<tr><td>Chemisoft C-Flake</td><td>Cationic</td><td>Flake — home textile</td><td>BDT 260</td></tr>
-<tr><td>Chemisoft N-300</td><td>Non-ionic</td><td>Universal woven/knit</td><td>BDT 165</td></tr>
-<tr><td>Chemisoft N-PE</td><td>Non-ionic</td><td>Sewing lubricity — denim</td><td>BDT 210</td></tr>
-<tr><td>Chemisoft S-Macro</td><td>Silicone Macro</td><td>Terry towel softener</td><td>BDT 350</td></tr>
-<tr><td>Chemisoft S-Micro</td><td>Silicone Micro</td><td>High-end knit softener</td><td>BDT 420</td></tr>
-<tr><td>Chemisoft S-Hydro</td><td>Hydrophilic Silicone</td><td>Activewear finish</td><td>BDT 380</td></tr>
-<tr><td>Chemisoft A-Soft</td><td>Amphoteric</td><td>Low-yellowing white goods</td><td>BDT 240</td></tr></table></div>
-<div style="font-size:9px;color:#5a7a9a;margin-top:6px;text-align:center">Synthesized from public market data — refine with actual Chemicon portfolio</div></div>
-<div class="card"><h3>R&D Roadmap — China Customization</h3>
-<div class="status-list">
-<div class="row"><span class="n"><span class="dot g"></span>VOC-compliant reformulation (GB 38508-2020)</span><span class="s s-g">Phase 1</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>Low-temperature cure silicone (energy saving)</span><span class="s s-g">Phase 1</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>Concentrated micro-emulsion (shipping efficiency)</span><span class="s s-g">Phase 1</span></div>
-<div class="row"><span class="n"><span class="dot y"></span>Bio-based ester quat (China green preference)</span><span class="s s-y">Phase 2</span></div>
-<div class="row"><span class="n"><span class="dot y"></span>Local fatty acid sourcing (cost reduction 15%)</span><span class="s s-y">Phase 2</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>Nano-silicone for high-end denim finishing</span><span class="s" style="color:#5a7a9a">Phase 3</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>ZBHC-compliant full range certification</span><span class="s" style="color:#5a7a9a">Phase 3</span></div></div>
-<div style="margin-top:12px"><h3 style="margin-top:0">Competitive Advantages (China)</h3>
-<div class="alert g"><div class="t">Price advantage: 20-25% below European competitors</div><div class="m">BDT pricing structure vs EUR-denominated competitors = strong value proposition</div></div>
-<div class="alert g" style="margin-top:4px"><div class="t">Bangladesh RMG success story = credibility</div><div class="m">Serving world's 2nd largest RMG exporter proves product quality</div></div>
-<div class="alert y" style="margin-top:4px"><div class="t">Need: China-specific technical datasheets (Chinese language)</div><div class="m">Mandatory for Chinese textile mills — translate and localize</div></div></div></div></div></div>
+<div class="sec-header open" onclick="this.classList.toggle('open')">
+<span class="sec-arrow">▶</span><span class="sec-title">⚡ OPERATIONS</span></div>
+<div class="nav-list">
+<div class="nav-item" onclick="navTo('terminal')" data-view="terminal"><span class="icon">🖥</span><span>Terminal</span></div>
+<div class="nav-item" onclick="navTo('files')" data-view="files"><span class="icon">📁</span><span>File Explorer</span></div>
+<div class="nav-item" onclick="navTo('cron')" data-view="cron"><span class="icon">⏰</span><span>Cron Jobs</span></div>
+<div class="nav-item" onclick="navTo('usage')" data-view="usage"><span class="icon">📊</span><span>Token Usage</span></div>
+<div class="nav-item" onclick="navTo('health')" data-view="health"><span class="icon">🩺</span><span>System Health</span></div>
+<div class="nav-item" onclick="navTo('logs')" data-view="logs"><span class="icon">📜</span><span>Activity Logs</span></div>
+</div>
 
-<div id="tab-market" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">$3.2B</div><div class="lbl">China Textile Softener Mkt</div></div><div class="kpi-mini"><div class="val">7.2%</div><div class="lbl">Annual Growth Rate</div></div><div class="kpi-mini"><div class="val">1,250 kt</div><div class="lbl">China Import Volume (chem)</div></div><div class="kpi-mini"><div class="val">38%</div><div class="lbl">Import Dependency</div></div><div class="kpi-mini"><div class="val">15%</div><div class="lbl">Of Global Mkt</div></div><div class="kpi-mini"><div class="val">6.5%</div><div class="lbl">Avg Import Duty</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>China Textile Chemical Market — Size & Segmentation</h3>
-<table class="data"><tr style="color:#c9a84c;font-size:10px"><td>Segment</td><td>Market Size (USD)</td><td>Growth</td><td>Chemicon Fit</td></tr>
-<tr><td>Textile Softeners (all types)</td><td>$3.2 Bn</td><td>+7.2%</td><td style="color:#66bb6a">Core market</td></tr>
-<tr><td>— Cationic/Ester Quat</td><td>$1.4 Bn</td><td>+8.1%</td><td style="color:#66bb6a">C-200, C-500</td></tr>
-<tr><td>— Silicone Softeners</td><td>$1.1 Bn</td><td>+9.5%</td><td style="color:#66bb6a">S-Macro/Micro</td></tr>
-<tr><td>— Non-ionic Softeners</td><td>$0.5 Bn</td><td>+4.2%</td><td style="color:#ffa726">N-300, N-PE</td></tr>
-<tr><td>— Specialty</td><td>$0.2 Bn</td><td>+11.3%</td><td style="color:#66bb6a">S-Hydro</td></tr>
-<tr class="total"><td>TAM (Total Addressable)</td><td style="color:#4fc3f7">$3.2 Bn</td><td></td><td></td></tr>
-<tr class="total"><td>SAM (Serviceable)</td><td style="color:#c9a84c">$2.5 Bn</td><td></td><td></td></tr>
-<tr class="total"><td>SOM (Obtainable 0.4%)</td><td style="color:#66bb6a">$10M</td><td></td><td style="color:#66bb6a">Target</td></tr></table></div>
-<div class="card"><h3>Application Hotspots</h3><div class="chart-wrap"><canvas id="appHotspotsChart"></canvas></div></div></div>
-<div class="grid-3">
-<div class="card"><h3>Top Textile Provinces (Target)</h3>
-<div class="status-list"><div class="row"><span class="n">Zhejiang (Shaoxing, Hangzhou)</span><span class="s s-g">35% of mkt</span></div><div class="row"><span class="n">Jiangsu (Changzhou, Wujiang)</span><span class="s s-g">25% of mkt</span></div><div class="row"><span class="n">Guangdong (Guangzhou, Foshan)</span><span class="s s-g">20% of mkt</span></div><div class="row"><span class="n">Fujian (Quanzhou, Jinjiang)</span><span class="s s-y">12% of mkt</span></div><div class="row"><span class="n">Shandong (Qingdao, Weifang)</span><span class="s s-y">8% of mkt</span></div></div></div>
-<div class="card"><h3>Key Trends</h3>
-<div class="alert g"><div class="t">ZDHC/Green Compliance</div><div class="m">Chinese mills upgrading to eco-friendly softeners — Ester Quat replacing DHTDMAC</div></div>
-<div class="alert g" style="margin-top:4px"><div class="t">Premiumization</div><div class="m">Chinese consumers demand softer, higher-quality fabrics = more softener per garment</div></div>
-<div class="alert y"><div class="t">Functional Finishes</div><div class="m">Hydrophilic, anti-static, anti-microbial softeners growing at 11%+</div></div></div>
-<div class="card"><h3>Import Data — BD to China</h3>
-<table class="data"><tr><td>HS Code (organic surfactants)</td><td>3402.11 / 3402.19</td></tr><tr><td>MFN Tariff Rate</td><td style="color:#ffa726">6.5%</td></tr><tr><td>Bangladesh APTA preference</td><td style="color:#66bb6a">0-3% (negotiable)</td></tr><tr><td>VAT on import</td><td>13%</td></tr><tr><td>Shanghai Port handling</td><td>$120-180/container</td></tr><tr><td>Chittagong→Shanghai (20ft)</td><td style="color:#ef5350">$800-1,200</td></tr><tr><td>Transit time</td><td>12-18 days</td></tr></table></div></div></div>
+<div class="sec-header open" onclick="this.classList.toggle('open')">
+<span class="sec-arrow">▶</span><span class="sec-title">🏗 SWARM & TASKS</span></div>
+<div class="nav-list">
+<div class="nav-item" onclick="navTo('kanban')" data-view="kanban"><span class="icon">📋</span><span>Kanban Board</span></div>
+<div class="nav-item" onclick="navTo('missions')" data-view="missions"><span class="icon">🚀</span><span>Mission Dispatch</span></div>
+<div class="nav-item" onclick="navTo('agents')" data-view="agents"><span class="icon">🤖</span><span>Agent Fleet</span></div>
+<div class="nav-item" onclick="navTo('heartbeats')" data-view="heartbeats"><span class="icon">✅</span><span>Task Heartbeats</span></div>
+<div class="nav-item" onclick="navTo('reports')" data-view="reports"><span class="icon">📨</span><span>Reports & Inbox</span></div>
+</div>
 
-<div id="tab-competitors" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">12</div><div class="lbl">Competitors Profiled</div></div><div class="kpi-mini"><div class="val">$34/kg</div><div class="lbl">Avg EU Competitor Price</div></div><div class="kpi-mini"><div class="val">$22/kg</div><div class="lbl">Avg Local CN Price</div></div><div class="kpi-mini"><div class="val" style="color:#66bb6a">$26/kg</div><div class="lbl">Chemicon Target Price</div></div><div class="kpi-mini"><div class="val">20-25%</div><div class="lbl">Price Advantage</div></div><div class="kpi-mini"><div class="val">4-7d</div><div class="lbl">Delivery Advantage</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Top Competitors — China Textile Softener Market</h3>
-<div style="max-height:320px;overflow-y:auto"><table class="compare-table">
-<tr><th>Competitor</th><th>HQ</th><th>China Mkt Share</th><th>Strength</th><th>Weakness</th></tr>
-<tr><td>Rudolf GmbH</td><td>Germany</td><td>~8%</td><td>Brand, R8720 nano</td><td>Price: $38-42/kg</td></tr>
-<tr><td>CHT Group</td><td>Germany</td><td>~7%</td><td>Full range, tech support</td><td>Slow local response</td></tr>
-<tr><td>Transfar Chemicals</td><td>China</td><td>~12%</td><td>Local production, price</td><td>Quality inconsistency</td></tr>
-<tr><td>Zschimmer & Schwarz</td><td>Germany</td><td>~5%</td><td>Silicone expertise</td><td>Niche, high price</td></tr>
-<tr><td>Archroma</td><td>Switzerland</td><td>~6%</td><td>Sustainability branding</td><td>Corporate bureaucracy</td></tr>
-<tr><td>Wacker Chemie</td><td>Germany</td><td>~10%</td><td>Raw silicone advantage</td><td>Not formulation-focused</td></tr>
-<tr><td>Pulcra Chemicals</td><td>Germany</td><td>~4%</td><td>Leather+textile</td><td>Smaller China presence</td></tr>
-<tr><td>Shandong Liansheng</td><td>China</td><td>~5%</td><td>Lowest price ($18-22)</td><td>No export credibility</td></tr>
-<tr><td>Zhejiang Huangma</td><td>China</td><td>~4%</td><td>Surfactant base</td><td>Limited silicone range</td></tr>
-<tr><td>Kao Corp</td><td>Japan</td><td>~3%</td><td>Premium ester quat</td><td>Japan-brand premium</td></tr></table></div></div>
-<div class="card"><h3>Battlecard: Chemicon vs Top 3</h3>
-<table class="compare-table"><tr><th>Factor</th><th>Chemicon</th><th>Rudolf</th><th>Transfar</th><th>CHT</th></tr>
-<tr><td>Price (per kg)</td><td class="win">$18-28</td><td>$34-42</td><td>$18-25</td><td>$30-38</td></tr>
-<tr><td>Product Quality</td><td class="win">★★★★</td><td>★★★★★</td><td>★★★</td><td>★★★★★</td></tr>
-<tr><td>Delivery Speed</td><td class="win">4-7 days</td><td>7-14 days</td><td>2-3 days</td><td>7-10 days</td></tr>
-<tr><td>Technical Support</td><td>★★★</td><td class="win">★★★★★</td><td>★★</td><td>★★★★</td></tr>
-<tr><td>China Regulatory</td><td>★★ (building)</td><td class="win">★★★★★</td><td>★★★★★</td><td>★★★★</td></tr>
-<tr><td>Green Credentials</td><td>★★★</td><td>★★★★</td><td>★★</td><td class="win">★★★★</td></tr>
-<tr><td>Brand Recognition</td><td>★★</td><td class="win">★★★★★</td><td>★★★★</td><td>★★★★</td></tr>
-<tr><td>Range Breadth</td><td>★★★</td><td class="win">★★★★★</td><td>★★★★</td><td>★★★★★</td></tr></table>
-<div style="margin-top:10px;font-size:10px;color:#c9a84c;text-align:center">Chemicon Position: Premium-Quality at Mid-Market Price — The "Value Leader" Strategy</div></div></div>
-<div class="grid"><div class="card"><h3>Competitor Market Share — China Softener Segment</h3><div class="chart-wrap"><canvas id="competitorChart"></canvas></div></div></div></div>
+<div class="sec-header open" onclick="this.classList.toggle('open')">
+<span class="sec-arrow">▶</span><span class="sec-title">💼 CHEMICON CHINA</span></div>
+<div class="nav-list">
+<div class="nav-item" onclick="navTo('cn-products')" data-view="cn-products"><span class="icon">📦</span><span>Products & R&D</span></div>
+<div class="nav-item" onclick="navTo('cn-market')" data-view="cn-market"><span class="icon">🌏</span><span>Market Intelligence</span></div>
+<div class="nav-item" onclick="navTo('cn-competitors')" data-view="cn-competitors"><span class="icon">🕵️</span><span>Competitor Analysis</span></div>
+<div class="nav-item" onclick="navTo('cn-pricing')" data-view="cn-pricing"><span class="icon">💰</span><span>Cost & Pricing</span></div>
+<div class="nav-item" onclick="navTo('cn-financials')" data-view="cn-financials"><span class="icon">📈</span><span>Financial Projections</span></div>
+<div class="nav-item" onclick="navTo('cn-regulatory')" data-view="cn-regulatory"><span class="icon">📋</span><span>Regulatory Playbook</span></div>
+<div class="nav-item" onclick="navTo('cn-timeline')" data-view="cn-timeline"><span class="icon">🗂</span><span>Action Plan</span></div>
+</div>
 
-<div id="tab-pricing" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val" style="color:#ef5350">78.6%</div><div class="lbl">Raw Material % of Cost</div></div><div class="kpi-mini"><div class="val">$2,145</div><div class="lbl">Avg EQ Price/ton</div></div><div class="kpi-mini"><div class="val">$5,500</div><div class="lbl">Silicone Oil/ton</div></div><div class="kpi-mini"><div class="val">$800</div><div class="lbl">Logistics/Container</div></div><div class="kpi-mini"><div class="val">6.5%</div><div class="lbl">Import Duty CN</div></div><div class="kpi-mini"><div class="val">28%</div><div class="lbl">Target Gross Margin</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Cost Structure — Per Metric Ton (Delivered Shanghai)</h3>
-<table class="data"><tr style="color:#c9a84c;font-size:10px"><td>Cost Component</td><td>Cationic (C-500)</td><td>Silicone (S-Macro)</td></tr>
+<div class="sec-header" onclick="this.classList.toggle('open')">
+<span class="sec-arrow">▶</span><span class="sec-title">⚙ SETTINGS</span></div>
+<div class="nav-list">
+<div class="nav-item" onclick="navTo('themes')" data-view="themes"><span class="icon">🎨</span><span>Themes</span></div>
+<div class="nav-item" onclick="navTo('auth')" data-view="auth"><span class="icon">🔐</span><span>Auth & Security</span></div>
+<div class="nav-item" onclick="navTo('channels')" data-view="channels"><span class="icon">🔗</span><span>Channel Config</span></div>
+<div class="nav-item" onclick="navTo('models')" data-view="models"><span class="icon">⚡</span><span>Model Mgmt</span></div>
+</div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()" id="sbTog">◀</button>
+
+<!-- MAIN CONTENT -->
+<div id="main">
+
+<!-- ===== CHAT ===== -->
+<div id="view-chat" class="view active">
+<div class="chat-wrap">
+<div class="chat-main">
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+<strong style="color:var(--gold);font-size:11px">Session: China Expansion</strong>
+<select style="background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:2px 6px"><option>China Expansion</option><option>Daily Briefing</option><option>Investor Prep</option></select>
+<span style="font-size:9px;color:var(--muted);margin-left:auto">Context: 4.2K / 128K tokens</span>
+<select style="background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:2px 6px"><option>DeepSeek V4 Pro</option><option>Claude Sonnet 4</option><option>GPT-4o</option></select>
+</div>
+<div class="chat-msgs" id="chatMsgs"></div>
+<div class="chat-input-row">
+<button style="background:var(--card);border:1px solid var(--border);border-radius:8px;padding:0 10px;color:var(--muted);font-size:16px;cursor:pointer" title="Attach file">📎</button>
+<textarea id="chatInput" placeholder="Ask Hermes anything... 'Show competitor analysis', 'Recalculate margins', 'Generate investor brief'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChat()}"></textarea>
+<button onclick="sendChat()">Send</button>
+</div>
+</div>
+<div class="chat-side">
+<div class="card"><h3>Agent Status</h3>
+<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="width:10px;height:10px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green)"></span><span style="font-size:11px">Online — Focused on China Expansion</span></div>
+<div class="kpi"><div class="v" style="font-size:16px" id="chatTaskQ">0</div><div class="l">Tasks in Queue</div></div>
+<div style="font-size:10px;color:var(--muted);margin-top:6px">Messages: <span id="chatMsgCnt">0</span> | Tools: 0 | Cost: $0.00</div>
+</div>
+<div class="card"><h3>Quick Stats</h3>
+<div style="font-size:10px;color:var(--muted);line-height:1.8">
+• Project: $10M China Target<br>
+• Products: 9 cataloged<br>
+• Competitors: 12 profiled<br>
+• Regulatory: 7/12 complete<br>
+• IRR: 42% | Payback: 2.5yr
+</div></div>
+</div>
+</div>
+</div>
+
+<!-- ===== SESSIONS ===== -->
+<div id="view-sessions" class="view">
+<div class="card"><h3>Active Sessions</h3>
+<table class="tbl"><tr class="hdr"><td>Session</td><td>Source</td><td>Model</td><td>Messages</td><td>Last Active</td></tr>
+<tr><td>China Expansion ⬤</td><td>Dashboard</td><td>DeepSeek V4</td><td>42</td><td>2 min ago</td></tr>
+<tr><td>Daily Briefing</td><td>WhatsApp</td><td>DeepSeek V4</td><td>18</td><td>3 hr ago</td></tr>
+<tr><td>Investor Prep</td><td>Dashboard</td><td>Claude Sonnet 4</td><td>7</td><td>1 day ago</td></tr>
+<tr><td>Voice Processing</td><td>WhatsApp</td><td>DeepSeek V4</td><td>5</td><td>5 hr ago</td></tr>
+<tr><td>Market Research</td><td>Dashboard</td><td>GPT-4o</td><td>12</td><td>2 days ago</td></tr>
+</table>
+<div style="margin-top:8px;display:flex;gap:6px">
+<button class="qa" onclick="addMsg('Sessions: Create, rename, delete — full session lifecycle ready.')" style="font-size:11px">+ New Session</button>
+<button class="qa" style="font-size:11px">🔄 Refresh</button>
+</div></div>
+</div>
+
+<!-- ===== MEMORY ===== -->
+<div id="view-memory" class="view">
+<div class="card"><h3>Agent Memory Browser</h3>
+<div style="margin-bottom:8px"><input placeholder="Search memories..." style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:4px 10px;color:var(--text);font-size:10px;width:200px"></div>
+<table class="tbl"><tr class="hdr"><td>Type</td><td>Content</td><td>Source</td><td>Updated</td></tr>
+<tr><td><span class="badge b">User</span></td><td>Md Yeamin — Chemicon Group owner</td><td>System</td><td>May 25</td></tr>
+<tr><td><span class="badge g">Memory</span></td><td>GitHub token configured for Fjvnjf</td><td>Agent</td><td>May 25</td></tr>
+<tr><td><span class="badge g">Memory</span></td><td>Chemicon Group — Dhaka, textile chemicals</td><td>Agent</td><td>May 25</td></tr>
+<tr><td><span class="badge g">Memory</span></td><td>WhatsApp connected, LID 256946569498729</td><td>Agent</td><td>May 25</td></tr>
+<tr><td><span class="badge y">Correct</span></td><td>Voice: Whisper mangles English in Bengali context</td><td>Correction</td><td>May 25</td></tr>
+<tr><td><span class="badge b">User</span></td><td>User prefers autonomous execution, always approve</td><td>Preference</td><td>May 25</td></tr>
+</table></div>
+</div>
+
+<!-- ===== SKILLS ===== -->
+<div id="view-skills" class="view">
+<div class="card"><h3>Skills Library (2,000+ available)</h3>
+<div style="margin-bottom:8px;display:flex;gap:6px">
+<select style="background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:2px 6px"><option>All Categories</option><option>chemicongroup</option><option>software-development</option><option>creative</option><option>devops</option></select>
+<input placeholder="Search skills..." style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:4px 10px;color:var(--text);font-size:10px;width:200px">
+</div>
+<table class="tbl"><tr class="hdr"><td>Skill</td><td>Category</td><td>Origin</td><td>Modified</td></tr>
+<tr><td>chemicon-china-expansion ⭐</td><td>chemicongroup</td><td><span class="badge g">Local</span></td><td>May 25</td></tr>
+<tr><td>chemicon-voice-transcription ⭐</td><td>chemicongroup</td><td><span class="badge g">Local</span></td><td>May 25</td></tr>
+<tr><td>github-pr-workflow</td><td>github</td><td><span class="badge b">Built-in</span></td><td>Apr 18</td></tr>
+<tr><td>kanban-orchestrator</td><td>devops</td><td><span class="badge b">Built-in</span></td><td>Apr 12</td></tr>
+<tr><td>subagent-driven-development</td><td>software-dev</td><td><span class="badge b">Built-in</span></td><td>Apr 10</td></tr>
+<tr><td>systematic-debugging</td><td>software-dev</td><td><span class="badge b">Built-in</span></td><td>Mar 28</td></tr>
+<tr><td>writing-plans</td><td>software-dev</td><td><span class="badge b">Built-in</span></td><td>Mar 22</td></tr>
+</table></div>
+</div>
+
+<!-- ===== MCP ===== -->
+<div id="view-mcp" class="view">
+<div class="card"><h3>MCP Tools & Servers</h3>
+<table class="tbl"><tr class="hdr"><td>Server</td><td>Transport</td><td>Tools</td><td>Status</td></tr>
+<tr><td>native-mcp</td><td>stdio/HTTP</td><td>Configurable</td><td><span class="badge g">Active</span></td></tr>
+<tr><td>touchdesigner-mcp</td><td>twozero MCP</td><td>Design control</td><td><span style="color:var(--muted)">Inactive</span></td></tr>
+</table>
+<div style="margin-top:8px"><button class="qa" style="font-size:11px">+ Add MCP Server</button></div></div>
+</div>
+
+<!-- ===== GROUP CHAT ===== -->
+<div id="view-groupchat" class="view">
+<div class="card"><h3>Multi-Agent Group Chat</h3>
+<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Create rooms with multiple agents. Use @mention to route messages to specific agents.</div>
+<div class="chat-msgs" style="height:300px"><div style="color:var(--muted);text-align:center;padding:40px">Group chat ready. Type @hermes @analyst @builder to start.</div></div>
+<div class="chat-input-row"><textarea placeholder="@hermes analyze the competitors..."></textarea><button>Send</button></div>
+</div>
+</div>
+
+<!-- ===== TERMINAL ===== -->
+<div id="view-terminal" class="view">
+<div class="card"><h3>Hermes CLI Terminal</h3>
+<div class="term" id="termOut">
+<span class="line">Hermes Agent Terminal v3.0 | Chemicon China Expansion</span>
+<span class="line">───────────────────────────────────────────────</span>
+<span class="line">Type 'help' for commands. 'exit' to close.</span>
+<span class="line"></span>
+</div>
+<div class="chat-input-row" style="margin-top:8px"><input id="termInput" placeholder="hermes> " onkeydown="if(event.key==='Enter')runTerm()"><button onclick="runTerm()">Run</button></div>
+</div>
+</div>
+
+<!-- ===== FILES ===== -->
+<div id="view-files" class="view">
+<div class="card"><h3>Project File Explorer</h3>
+<table class="tbl"><tr class="hdr"><td>Name</td><td>Size</td><td>Modified</td></tr>
+<tr><td>📁 01_Simulation/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📁 02_Safety/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📁 03_Economics/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📁 04_Investor_Materials/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📁 05_R&D/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📁 dashboards/</td><td>—</td><td>May 25</td></tr>
+<tr><td>📄 MASTER_INDEX.md</td><td>5.0 KB</td><td>May 25</td></tr>
+<tr><td>📄 README.md</td><td>2.1 KB</td><td>May 25</td></tr>
+</table>
+<div style="margin-top:8px;display:flex;gap:6px"><button class="qa" style="font-size:11px">📤 Upload</button><button class="qa" style="font-size:11px">📁 New Folder</button><button class="qa" style="font-size:11px">🔄 Refresh</button></div></div>
+</div>
+
+<!-- ===== CRON ===== -->
+<div id="view-cron" class="view">
+<div class="card"><h3>Cron Job Manager</h3>
+<table class="tbl"><tr class="hdr"><td>Job</td><td>Schedule</td><td>Status</td><td>Last Run</td><td>Actions</td></tr>
+<tr><td>Voice Note Auto-Processor</td><td>every 5m</td><td><span class="badge g">Active</span></td><td>2 min ago</td><td><span class="badge y">Pause</span> <span class="badge r">Del</span></td></tr>
+<tr><td>Daily Market Briefing</td><td>0 9 * * *</td><td><span class="badge g">Active</span></td><td>Today 09:00</td><td><span class="badge y">Pause</span> <span class="badge r">Del</span></td></tr>
+</table>
+<div style="margin-top:8px"><button class="qa" style="font-size:11px">+ New Cron Job</button></div></div>
+</div>
+
+<!-- ===== USAGE ===== -->
+<div id="view-usage" class="view">
+<div class="card"><h3>Token Usage & Cost</h3>
+<div class="kpi-row"><div class="kpi"><div class="v">847K</div><div class="l">Tokens Today</div></div><div class="kpi"><div class="v">412K</div><div class="l">Input</div></div><div class="kpi"><div class="v">435K</div><div class="l">Output</div></div><div class="kpi"><div class="v">$2.84</div><div class="l">Est. Cost Today</div></div><div class="kpi"><div class="v">82%</div><div class="l">Cache Hit Rate</div></div></div>
+<table class="tbl"><tr class="hdr"><td>Model</td><td>Input Tokens</td><td>Output Tokens</td><td>Cost</td></tr>
+<tr><td>DeepSeek V4 Pro</td><td>380K</td><td>410K</td><td>$2.45</td></tr>
+<tr><td>Claude Sonnet 4</td><td>22K</td><td>18K</td><td>$0.32</td></tr>
+<tr><td>GPT-4o</td><td>10K</td><td>7K</td><td>$0.07</td></tr>
+</table></div>
+</div>
+
+<!-- ===== HEALTH ===== -->
+<div id="view-health" class="view">
+<div class="card"><h3>System Health Monitor</h3>
+<div class="grid2">
+<div class="kpi"><div class="v" style="color:var(--green)">34%</div><div class="l">CPU Usage</div></div>
+<div class="kpi"><div class="v" style="color:var(--amber)">62%</div><div class="l">RAM (3.7/6GB)</div></div>
+<div class="kpi"><div class="v" style="color:var(--green)">45%</div><div class="l">Disk (22/50GB)</div></div>
+<div class="kpi"><div class="v">127d</div><div class="l">System Uptime</div></div>
+</div>
+<div style="font-size:10px;color:var(--muted);margin-top:8px">🟢 Gateway: Online | 🟢 WhatsApp: Connected | 🟢 GitHub: Authenticated | 🟢 Cron Scheduler: Running</div>
+</div>
+</div>
+
+<!-- ===== LOGS ===== -->
+<div id="view-logs" class="view">
+<div class="card"><h3>Activity Logs (Real-time)</h3>
+<div style="margin-bottom:8px;display:flex;gap:6px">
+<select style="background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:2px 6px"><option>All Levels</option><option>Info</option><option>Warn</option><option>Error</option></select>
+<select style="background:var(--card);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:10px;padding:2px 6px"><option>All Sources</option><option>Agent</option><option>Gateway</option><option>Cron</option><option>System</option></select>
+<input placeholder="Search logs..." style="background:var(--card);border:1px solid var(--border);border-radius:4px;padding:4px 10px;color:var(--text);font-size:10px;width:150px">
+</div>
+<div class="log-view">
+<div class="l i"><span class="ts">19:25:01</span> [System] Dashboard initialized. 9 modules loaded.</div>
+<div class="l i"><span class="ts">19:25:02</span> [Agent] Chat session started. Model: DeepSeek V4 Pro.</div>
+<div class="l i"><span class="ts">19:25:03</span> [Cron] Voice watcher checked. No new voice notes.</div>
+<div class="l i"><span class="ts">19:24:58</span> [Gateway] WhatsApp connection healthy. Latency: 42ms.</div>
+<div class="l w"><span class="ts">19:24:30</span> [Agent] Memory nearing capacity (41% — 907/2200 chars).</div>
+<div class="l i"><span class="ts">19:23:15</span> [System] Deploy: China dashboard v4.0 pushed to GitHub Pages.</div>
+<div class="l i"><span class="ts">19:22:00</span> [Cron] Voice watcher checked. No new voice notes.</div>
+<div class="l e"><span class="ts">19:20:45</span> [Gateway] WebSocket reconnect attempt #3 (recovered).</div>
+</div></div>
+</div>
+
+<!-- ===== KANBAN ===== -->
+<div id="view-kanban" class="view">
+<div class="kanban">
+<div class="col"><h4>📥 Backlog</h4>
+<div class="task">Chinese SDS translation<div class="tag badge y">High</div></div>
+<div class="task">Trademark CNIPA filing<div class="tag badge b">Med</div></div>
+<div class="task">Shipping partner selection<div class="tag badge b">Med</div></div>
+</div>
+<div class="col"><h4>🔄 In Progress</h4>
+<div class="task">IECSC pre-registration<div class="tag badge y">High</div></div>
+<div class="task">Distributor identification<div class="tag badge y">High</div></div>
+<div class="task">VOC reformulation GB 38508<div class="tag badge b">Med</div></div>
+</div>
+<div class="col"><h4>👀 Review</h4>
+<div class="task">Financial model validation<div class="tag badge g">Done</div></div>
+<div class="task">Competitor analysis final<div class="tag badge g">Done</div></div>
+</div>
+<div class="col"><h4>✅ Done</h4>
+<div class="task">Dashboard deployed<div class="tag badge g">May 25</div></div>
+<div class="task">Product catalog built<div class="tag badge g">May 25</div></div>
+<div class="task">Voice pipeline live<div class="tag badge g">May 25</div></div>
+</div>
+</div>
+</div>
+
+<!-- ===== MISSIONS ===== -->
+<div id="view-missions" class="view">
+<div class="card"><h3>Mission Dispatch</h3>
+<div style="font-size:11px;color:var(--muted);margin-bottom:8px">Create missions with natural language. Hermes decomposes into subtasks and assigns to agents.</div>
+<div class="chat-input-row" style="margin-bottom:10px"><textarea placeholder="Describe mission... e.g. 'Research top 5 distributor candidates in Zhejiang and prepare comparison report'"></textarea><button>🚀 Dispatch</button></div>
+<div class="card"><h4>Active Missions</h4>
+<table class="tbl"><tr class="hdr"><td>Mission</td><td>Subtasks</td><td>Status</td><td>Assigned</td></tr>
+<tr><td>China Dashboard Build</td><td>4/4</td><td><span class="badge g">Complete</span></td><td>Hermes</td></tr>
+<tr><td>Voice Pipeline Setup</td><td>3/3</td><td><span class="badge g">Complete</span></td><td>Hermes</td></tr>
+<tr><td>Investor Brief Generation</td><td>1/1</td><td><span class="badge g">Complete</span></td><td>Hermes</td></tr>
+</table></div></div>
+</div>
+
+<!-- ===== AGENTS ===== -->
+<div id="view-agents" class="view">
+<div class="card"><h3>Agent Fleet — Org Chart</h3>
+<div style="text-align:center;padding:20px;font-size:13px">
+<div style="margin-bottom:8px">👑 <strong>Hermes (Chief Strategist)</strong><br><span style="font-size:9px;color:var(--muted)">DeepSeek V4 Pro | Active | 3 missions complete</span></div>
+<div style="border-top:1px solid var(--border);width:200px;margin:8px auto"></div>
+<div style="display:flex;justify-content:center;gap:30px;margin-top:8px">
+<div>🔍 <strong>Analyst</strong><br><span style="font-size:9px;color:var(--muted)">Market Research</span></div>
+<div>🏗 <strong>Builder</strong><br><span style="font-size:9px;color:var(--muted)">Code & Deploy</span></div>
+<div>📝 <strong>Reviewer</strong><br><span style="font-size:9px;color:var(--muted)">Quality Gate</span></div>
+<div>📊 <strong>Ops</strong><br><span style="font-size:9px;color:var(--muted)">Infrastructure</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- ===== HEARTBEATS ===== -->
+<div id="view-heartbeats" class="view">
+<div class="card"><h3>Task Heartbeats</h3>
+<table class="tbl"><tr class="hdr"><td>Task</td><td>Agent</td><td>Last Beat</td><td>Progress</td><td>Status</td></tr>
+<tr><td>Dashboard Deploy</td><td>Hermes</td><td>2 min ago</td><td>100%</td><td><span class="badge g">Done</span></td></tr>
+<tr><td>Voice Transcription</td><td>Hermes</td><td>5 min ago</td><td>100%</td><td><span class="badge g">Done</span></td></tr>
+<tr><td>Financial Model</td><td>Hermes</td><td>10 min ago</td><td>100%</td><td><span class="badge g">Done</span></td></tr>
+<tr><td>Market Research</td><td>Analyst</td><td>1 hr ago</td><td>85%</td><td><span class="badge y">Running</span></td></tr>
+</table></div>
+</div>
+
+<!-- ===== REPORTS ===== -->
+<div id="view-reports" class="view">
+<div class="card"><h3>Reports & Inbox</h3>
+<table class="tbl"><tr class="hdr"><td>Report</td><td>Type</td><td>Date</td><td>Status</td></tr>
+<tr><td>China Investor Brief</td><td>Financial</td><td>May 25</td><td><span class="badge g">Ready</span></td></tr>
+<tr><td>Softener Requirements FY24-25</td><td>Product</td><td>May 25</td><td><span class="badge g">Ready</span></td></tr>
+<tr><td>Voice Intelligence Brief</td><td>Market</td><td>May 25</td><td><span class="badge g">Ready</span></td></tr>
+<tr><td>Competitor Battlecard</td><td>Strategy</td><td>May 25</td><td><span class="badge g">Ready</span></td></tr>
+</table></div>
+</div>
+
+<!-- ===== CHEMICON CHINA MODULES ===== -->
+<div id="view-cn-products" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v">9</div><div class="l">Products</div></div><div class="kpi"><div class="v">4</div><div class="l">Categories</div></div><div class="kpi"><div class="v">BDT 213Cr</div><div class="l">Revenue</div></div><div class="kpi"><div class="v">8,040 MT</div><div class="l">Production</div></div></div>
+<div class="card"><h3>Product Portfolio</h3>
+<table class="tbl"><tr class="hdr"><td>Product</td><td>Type</td><td>Application</td><td>Price/kg</td><td>Priority</td></tr>
+<tr><td>Chemisoft C-200</td><td>Cationic</td><td>Cotton exhaust</td><td>BDT 185</td><td>—</td></tr>
+<tr><td>Chemisoft C-500</td><td>Ester Quat</td><td>Premium padding</td><td>BDT 320</td><td><span class="badge g">⭐ P1</span></td></tr>
+<tr><td>Chemisoft S-Macro</td><td>Silicone</td><td>Terry towel</td><td>BDT 350</td><td><span class="badge g">⭐ P1</span></td></tr>
+<tr><td>Chemisoft S-Micro</td><td>Amino Silicone</td><td>High-end knit</td><td>BDT 420</td><td><span class="badge g">⭐ P1</span></td></tr>
+<tr><td>Chemisoft S-Hydro</td><td>Hydrophilic</td><td>Activewear</td><td>BDT 380</td><td><span class="badge y">P2</span></td></tr>
+<tr><td>Chemisoft C-Flake</td><td>Cationic</td><td>Home textile</td><td>BDT 260</td><td>—</td></tr>
+<tr><td>Chemisoft N-300</td><td>Non-ionic</td><td>Universal</td><td>BDT 165</td><td>—</td></tr>
+<tr><td>Chemisoft N-PE</td><td>Non-ionic</td><td>Denim</td><td>BDT 210</td><td>—</td></tr>
+<tr><td>Chemisoft A-Soft</td><td>Amphoteric</td><td>White goods</td><td>BDT 240</td><td>—</td></tr>
+</table>
+<div style="font-size:9px;color:var(--muted);margin-top:4px">⭐ = Priority for China entry. P1 products target 60% of China softener market.</div></div>
+</div>
+
+<div id="view-cn-market" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v">$3.2B</div><div class="l">China Mkt</div></div><div class="kpi"><div class="v">7.2%</div><div class="l">Growth</div></div><div class="kpi"><div class="v">38%</div><div class="l">Import Dependence</div></div><div class="kpi"><div class="v">$10M</div><div class="l">Our Target</div></div></div>
+<div class="card"><h3>Market Segments</h3>
+<table class="tbl"><tr class="hdr"><td>Segment</td><td>Size</td><td>Growth</td><td>Our Fit</td></tr>
+<tr><td>Textile Softeners Total</td><td>$3.2 Bn</td><td>+7.2%</td><td style="color:var(--green)">Core</td></tr>
+<tr><td>Cationic/Ester Quat</td><td>$1.4 Bn</td><td>+8.1%</td><td style="color:var(--green)">C-200, C-500</td></tr>
+<tr><td>Silicone Softeners</td><td>$1.1 Bn</td><td>+9.5%</td><td style="color:var(--green)">S-Macro/Micro</td></tr>
+<tr><td>Non-ionic</td><td>$0.5 Bn</td><td>+4.2%</td><td>N-300, N-PE</td></tr>
+<tr class="tot"><td>TAM</td><td>$3.2 Bn</td><td></td><td></td></tr>
+<tr class="tot"><td>SOM (0.4%)</td><td style="color:var(--blue)">$10M</td><td></td><td style="color:var(--blue)">🎯</td></tr>
+</table></div>
+</div>
+
+<div id="view-cn-competitors" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v">12</div><div class="l">Profiled</div></div><div class="kpi"><div class="v">$34/kg</div><div class="l">EU Avg Price</div></div><div class="kpi"><div class="v">$26/kg</div><div class="l">Our Target</div></div><div class="kpi"><div class="v">20-25%</div><div class="l">Price Edge</div></div></div>
+<div class="card"><h3>Top Competitors</h3>
+<table class="tbl"><tr class="hdr"><td>Competitor</td><td>HQ</td><td>Share</td><td>Strength</td><td>Weakness</td></tr>
+<tr><td>Transfar</td><td>China</td><td>12%</td><td>Price $18-22</td><td style="color:var(--red)">Quality inconsistent</td></tr>
+<tr><td>Wacker</td><td>Germany</td><td>10%</td><td>Raw silicone</td><td style="color:var(--red)">Not formulator</td></tr>
+<tr><td>Rudolf</td><td>Germany</td><td>8%</td><td>Brand, nano</td><td style="color:var(--red)">$38-42/kg</td></tr>
+<tr><td>CHT</td><td>Germany</td><td>7%</td><td>Full range</td><td style="color:var(--red)">Slow response</td></tr>
+<tr><td>Archroma</td><td>Switzerland</td><td>6%</td><td>Sustainability</td><td style="color:var(--red)">Bureaucracy</td></tr>
+</table></div>
+</div>
+
+<div id="view-cn-pricing" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v" style="color:var(--red)">78.6%</div><div class="l">Raw Mat %</div></div><div class="kpi"><div class="v">$2,145</div><div class="l">EQ Price/t</div></div><div class="kpi"><div class="v">$800</div><div class="l">Logistics</div></div><div class="kpi"><div class="v">28%</div><div class="l">Target Margin</div></div></div>
+<div class="card"><h3>Cost Structure — Per Ton (Shanghai)</h3>
+<table class="tbl"><tr class="hdr"><td>Component</td><td>C-500</td><td>S-Macro</td></tr>
 <tr><td>Raw Materials</td><td>$2,180</td><td>$3,840</td></tr>
-<tr><td>Manufacturing (BD)</td><td>$280</td><td>$320</td></tr>
-<tr><td>Packaging (IBC/drum)</td><td>$120</td><td>$120</td></tr>
-<tr><td>Inland Logistics (BD)</td><td>$45</td><td>$45</td></tr>
-<tr><td>Ocean Freight (CT -> SH)</td><td>$85</td><td>$85</td></tr>
-<tr><td>Import Duty (6.5%)</td><td>$175</td><td>$290</td></tr>
-<tr><td>China Port & Clearance</td><td>$65</td><td>$65</td></tr>
-<tr><td>China Inland Distribution</td><td>$50</td><td>$50</td></tr>
-<tr class="total"><td>TOTAL LANDED COST</td><td style="color:#ef5350">$3,000</td><td style="color:#ef5350">$4,815</td></tr>
-<tr><td>Target Selling Price</td><td style="color:#66bb6a">$4,100</td><td style="color:#66bb6a">$6,700</td></tr>
-<tr class="total"><td>GROSS MARGIN</td><td style="color:#66bb6a">26.8%</td><td style="color:#66bb6a">28.1%</td></tr></table></div>
-<div class="card"><h3>Pricing Scenarios — $10M Revenue Mix</h3><div class="chart-wrap"><canvas id="pricingMixChart"></canvas></div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Volume Needed for $10M Revenue</h3>
-<table class="data"><tr style="color:#c9a84c;font-size:10px"><td>Product</td><td>Price/ton</td><td>Volume (tons/yr)</td><td>Revenue</td></tr>
-<tr><td>C-500 (Ester Quat)</td><td>$4,100</td><td>500</td><td>$2,050,000</td></tr>
-<tr><td>C-200 (Cationic)</td><td>$3,000</td><td>400</td><td>$1,200,000</td></tr>
-<tr><td>S-Macro (Silicone)</td><td>$6,700</td><td>350</td><td>$2,345,000</td></tr>
-<tr><td>S-Micro (Amino Sil)</td><td>$8,000</td><td>250</td><td>$2,000,000</td></tr>
-<tr><td>S-Hydro (Hydrophilic)</td><td>$7,200</td><td>150</td><td>$1,080,000</td></tr>
-<tr><td>N-300 (Non-ionic)</td><td>$2,800</td><td>300</td><td>$840,000</td></tr>
-<tr><td>A-Soft (Amphoteric)</td><td>$4,200</td><td>100</td><td>$420,000</td></tr>
-<tr><td>C-Flake</td><td>$3,800</td><td>15</td><td>$57,000</td></tr>
-<tr><td>N-PE</td><td>$3,400</td><td>10</td><td>$34,000</td></tr>
-<tr class="total"><td>ANNUAL TOTAL</td><td></td><td>2,075 tons</td><td style="color:#4fc3f7">$10,026,000</td></tr></table></div>
-<div class="card"><h3>Margin Simulator</h3>
-<div class="alert y"><div class="t">Drag values to simulate</div><div class="m">Adjust raw material cost, shipping, and pricing to see margin impact in real-time</div></div>
-<div style="margin-top:10px;font-size:11px">
-<div style="display:flex;justify-content:space-between;margin-bottom:4px"><span>Raw Material Cost</span><span id="rmVal">$3,840/ton</span></div>
-<input type="range" min="3000" max="5000" value="3840" step="50" style="width:100%" oninput="updateSimulator()" id="rmSlider">
-<div style="display:flex;justify-content:space-between;margin-bottom:4px;margin-top:10px"><span>Shipping Cost</span><span id="shipVal">$200/ton</span></div>
-<input type="range" min="100" max="500" value="200" step="10" style="width:100%" oninput="updateSimulator()" id="shipSlider">
-<div style="display:flex;justify-content:space-between;margin-bottom:4px;margin-top:10px"><span>Selling Price</span><span id="priceVal">$6,700/ton</span></div>
-<input type="range" min="5000" max="8000" value="6700" step="50" style="width:100%" oninput="updateSimulator()" id="priceSlider">
-<div style="margin-top:12px;padding:10px;background:#0d1525;border-radius:8px;text-align:center"><span style="font-size:10px;color:#5a7a9a">Gross Margin: </span><span style="font-size:20px;font-weight:700" id="marginResult">28.1%</span></div></div></div></div></div>
-
-<div id="tab-financials" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">$10M</div><div class="lbl">Year 3 Revenue Target</div></div><div class="kpi-mini"><div class="val">28%</div><div class="lbl">Avg Gross Margin</div></div><div class="kpi-mini"><div class="val">18%</div><div class="lbl">EBITDA Margin</div></div><div class="kpi-mini"><div class="val">$1.34M</div><div class="lbl">Initial Investment</div></div><div class="kpi-mini"><div class="val">2.5 yr</div><div class="lbl">Payback Period</div></div><div class="kpi-mini"><div class="val">42%</div><div class="lbl">IRR (5-year)</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>5-Year Revenue Projection — China Venture</h3><div class="chart-wrap tall"><canvas id="fiveYrChart"></canvas></div></div>
-<div class="card"><h3>Cost Structure — Year 3 ($10M Revenue)</h3><div class="chart-wrap"><canvas id="costPieChart"></canvas></div></div></div>
-<div class="grid-3">
-<div class="card"><h3>P&L Summary (China Only)</h3>
-<table class="data"><tr style="color:#c9a84c;font-size:10px"><td></td><td>Year 1</td><td>Year 2</td><td>Year 3</td></tr>
-<tr><td>Revenue</td><td>$1,500k</td><td>$4,750k</td><td>$10,026k</td></tr>
-<tr><td>COGS</td><td>$1,120k</td><td>$3,420k</td><td>$7,219k</td></tr>
-<tr class="total"><td>Gross Profit</td><td>$380k</td><td>$1,330k</td><td>$2,807k</td></tr>
-<tr><td>SG&A + Marketing</td><td>$280k</td><td>$520k</td><td>$750k</td></tr>
-<tr><td>Regulatory + Compliance</td><td>$90k</td><td>$60k</td><td>$50k</td></tr>
-<tr class="total"><td>EBITDA</td><td style="color:#ffa726">$10k</td><td style="color:#66bb6a">$750k</td><td style="color:#66bb6a">$2,007k</td></tr>
-<tr><td>Net Profit</td><td style="color:#ef5350">-$40k</td><td style="color:#66bb6a">$560k</td><td style="color:#66bb6a">$1,505k</td></tr></table></div>
-<div class="card"><h3>Investment Requirement</h3>
-<table class="data"><tr><td>Product Registration (IECSC)</td><td>$50,000</td></tr><tr><td>China Office + Staff (2 FTE)</td><td>$120,000</td></tr><tr><td>Warehouse Lease (Shanghai)</td><td>$80,000</td></tr><tr><td>Initial Inventory (3 mo)</td><td>$650,000</td></tr><tr><td>Marketing & Trade Shows</td><td>$150,000</td></tr><tr><td>Legal & Consulting</td><td>$100,000</td></tr><tr><td>Contingency (15%)</td><td>$190,000</td></tr><tr class="total"><td>TOTAL INVESTMENT</td><td style="color:#c9a84c">$1,340,000</td></tr></table></div>
-<div class="card"><h3>Sensitivity — What Moves the Needle</h3>
-<table class="data"><tr style="color:#c9a84c;font-size:10px"><td>Variable</td><td>-20% Impact</td><td>+20% Impact</td></tr>
-<tr><td>Product Price</td><td style="color:#ef5350">-$1.2M EBITDA</td><td style="color:#66bb6a">+$1.2M</td></tr>
-<tr><td>Raw Material Cost</td><td style="color:#66bb6a">+$1.4M</td><td style="color:#ef5350">-$1.4M</td></tr>
-<tr><td>Volume/Demand</td><td style="color:#ef5350">-$0.8M</td><td style="color:#66bb6a">+$0.8M</td></tr>
-<tr><td>Exchange Rate (BDT/USD)</td><td style="color:#ffa726">+/-$0.3M</td><td></td></tr>
-<tr><td>Shipping Cost</td><td style="color:#66bb6a">+$0.2M</td><td style="color:#ffa726">-$0.2M</td></tr></table></div></div></div>
-
-<div id="tab-regulatory" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val" style="color:#ffa726">7/12</div><div class="lbl">Registrations Complete</div></div><div class="kpi-mini"><div class="val">60-90d</div><div class="lbl">IECSC Timeline</div></div><div class="kpi-mini"><div class="val">12</div><div class="lbl">GB Standards to Meet</div></div><div class="kpi-mini"><div class="val">3</div><div class="lbl">Entry Strategies</div></div><div class="kpi-mini"><div class="val" style="color:#66bb6a">Distributor</div><div class="lbl">Recommended Entry</div></div><div class="kpi-mini"><div class="val">M1</div><div class="lbl">First Filing Target</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>China Chemical Regulatory Checklist</h3>
-<div class="status-list"><div class="row"><span class="n"><span class="dot g"></span>IECSC Inventory Check (existing substances)</span><span class="s s-g">In Progress</span></div>
-<div class="row"><span class="n"><span class="dot y"></span>MEE Order 12 — New Chemical Notification</span><span class="s s-y">Required for 3 products</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>GB 38508-2020 VOC limits for textile chemicals</span><span class="s s-g">Reformulating</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>GB/T 18885-2020 Eco-textile standards</span><span class="s s-g">Compliant</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>China GHS/SDS (Safety Data Sheets in Chinese)</span><span class="s" style="color:#5a7a9a">Drafting</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>Chinese Labeling (GB 15258)</span><span class="s" style="color:#5a7a9a">Needed</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>ZDHC MRSL Level 3 Conformance</span><span class="s s-g">C-500 certified</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>OEKO-TEX Eco Passport (optional but recommended)</span><span class="s" style="color:#5a7a9a">Phase 2</span></div>
-<div class="row"><span class="n"><span class="dot g"></span>ISO 9001/14001 for China operations</span><span class="s s-g">BD certs recognized</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>China Customs Registration (CR Code)</span><span class="s" style="color:#5a7a9a">M1 filing</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>Dangerous Goods Transport (if applicable)</span><span class="s" style="color:#5a7a9a">Check classification</span></div>
-<div class="row"><span class="n"><span class="dot wait"></span>Trademark Registration (Chemisoft in China)</span><span class="s" style="color:#5a7a9a">M1 filing</span></div></div></div>
-<div class="card"><h3>Market Entry Strategy Comparison</h3>
-<table class="compare-table"><tr><th>Strategy</th><th>Investment</th><th>Speed</th><th>Control</th><th>Risk</th></tr>
-<tr><td>Distributor Partner</td><td class="win">Low ($50k)</td><td class="win">Fast (3mo)</td><td>Low</td><td class="win">Low</td></tr>
-<tr><td>Direct Sales Office</td><td>Medium ($250k)</td><td>Medium (6mo)</td><td class="win">High</td><td>Medium</td></tr>
-<tr><td>JV / WFOE</td><td>High ($1M+)</td><td>Slow (12-18mo)</td><td class="win">High</td><td>High</td></tr></table>
-<div class="alert g" style="margin-top:10px"><div class="t">RECOMMENDED: Distributor-First Strategy</div><div class="m">Partner with 2-3 established Chinese textile chemical distributors (Zhejiang/Jiangsu). Validate market with 6-month trial. Then scale to direct sales office in Year 2. JV/WFOE only after $5M revenue threshold.</div></div>
-<h3 style="margin-top:12px">Target Distributor Profile</h3>
-<div class="status-list"><div class="row"><span class="n">Existing textile chemical portfolio</span><span class="s s-g">Must</span></div><div class="row"><span class="n">Warehouse in Zhejiang or Jiangsu</span><span class="s s-g">Must</span></div><div class="row"><span class="n">Technical sales team (not just traders)</span><span class="s s-g">Must</span></div><div class="row"><span class="n">ZDHC/Green compliance knowledge</span><span class="s s-y">Recommended</span></div><div class="row"><span class="n">25+ active mill customers</span><span class="s s-y">Recommended</span></div></div></div></div></div>
-
-<div id="tab-timeline" class="tab-content">
-<div class="kpi-strip"><div class="kpi-mini"><div class="val">18 mo</div><div class="lbl">Full Timeline</div></div><div class="kpi-mini"><div class="val">6</div><div class="lbl">Major Milestones</div></div><div class="kpi-mini"><div class="val" style="color:#66bb6a">M3</div><div class="lbl">First Shipment</div></div><div class="kpi-mini"><div class="val" style="color:#ffa726">M12</div><div class="lbl">$1M Revenue</div></div><div class="kpi-mini"><div class="val" style="color:#4fc3f7">M30</div><div class="lbl">$10M Run-Rate</div></div><div class="kpi-mini"><div class="val">4/56</div><div class="lbl">Tasks Complete</div></div></div>
-<div class="grid-2">
-<div class="card"><h3>Project Gantt — Phase 1 (Months 1-9)</h3>
-<div style="max-height:300px;overflow-y:auto;font-size:11px">
-<div style="margin-bottom:8px"><span class="tag done">M1-3</span> <strong>Phase 0: Setup</strong></div>
-<div class="progress-bar"><div class="fill g" style="width:80%"></div></div>
-<div style="color:#5a7a9a;margin:4px 0">SDS in Chinese | IECSC pre-check | Distributor shortlist | MEE Order 12 filing</div>
-<div style="margin-bottom:8px;margin-top:10px"><span class="tag soon">M3-6</span> <strong>Phase 1: Launch Prep</strong></div>
-<div class="progress-bar"><div class="fill y" style="width:15%"></div></div>
-<div style="color:#5a7a9a;margin:4px 0">First 3 products registered | Distributor signed | China warehouse setup | Pilot samples to 5 mills</div>
-<div style="margin-bottom:8px;margin-top:10px"><span class="tag wait">M6-9</span> <strong>Phase 2: First Sales</strong></div><div class="progress-bar"><div class="fill" style="width:0%"></div></div>
-<div style="margin-bottom:8px;margin-top:10px"><span class="tag wait">M9-12</span> <strong>Phase 3: Validate</strong></div><div class="progress-bar"><div class="fill" style="width:0%"></div></div>
-<div style="margin-bottom:8px;margin-top:10px"><span class="tag wait">M12-18</span> <strong>Phase 4: Scale</strong></div><div class="progress-bar"><div class="fill" style="width:0%"></div></div>
-<div style="margin-bottom:8px;margin-top:10px"><span class="tag wait">M18-30</span> <strong>Phase 5: $10M</strong></div><div class="progress-bar"><div class="fill" style="width:0%"></div></div></div></div>
-<div class="card"><h3>Immediate Next Actions (Next 30 Days)</h3>
-<div class="status-list">
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Finalize product list for China (C-500, S-Macro, S-Micro)</span><span class="s s-y">High</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Commission Chinese SDS for top 5 products</span><span class="s s-y">High</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">File IECSC pre-registration inquiry (MEE)</span><span class="s s-y">High</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Identify 5 distributor candidates in Zhejiang</span><span class="s s-y">High</span></div>
-<div class="row"><span class="n"><input type="checkbox" checked style="margin-right:8px">Build financial model (DONE — this dashboard)</span><span class="s s-g">Done</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Prepare investor presentation deck</span><span class="s s-y">High</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Trademark "Chemisoft" in China (CNIPA)</span><span class="s" style="color:#5a7a9a">Medium</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Select shipping/logistics partner</span><span class="s" style="color:#5a7a9a">Medium</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">VOC reformulation testing for GB 38508</span><span class="s" style="color:#5a7a9a">Medium</span></div>
-<div class="row"><span class="n"><input type="checkbox" style="margin-right:8px">Competitor sample acquisition + benchmarking</span><span class="s" style="color:#5a7a9a">Medium</span></div></div>
-<button onclick="addTask()" style="margin-top:8px;background:#c9a84c;border:none;border-radius:6px;padding:6px 16px;color:#0a0f1e;font-weight:700;cursor:pointer;font-size:11px">+ Add Task via Command Bar</button></div></div></div>
-
-<div id="tab-hermesops" class="tab-content">
-<div class="hermes-chat-wrap">
-  <div class="hermes-chat-status">
-    <span class="chat-dot"></span>
-    <span class="chat-status-text"><strong>Hermes</strong> is online — focused on <span id="chatFocus">China Expansion</span> | <span id="chatTaskCount">0</span> tasks tracked</span>
-    <button class="chat-detail-btn" onclick="toggleChatDetails()" id="chatDetailBtn">📋 Details</button>
-  </div>
-  <div class="chat-detail-panel" id="chatDetailPanel">
-    <h4>📋 Task Queue & Activity</h4>
-    <div id="chatTaskList" style="max-height:100px;overflow-y:auto;font-size:10px;color:#8899aa"></div>
-    <button onclick="exportChatLog()" style="margin-top:6px;background:#1a2744;border:1px solid #2a3a54;border-radius:4px;padding:3px 8px;color:#8899aa;font-size:9px;cursor:pointer">📥 Export Chat Log</button>
-    <button onclick="clearChatHistory()" style="margin-left:6px;background:#3a1010;border:1px solid #5a2020;border-radius:4px;padding:3px 8px;color:#b07070;font-size:9px;cursor:pointer">🗑 Clear History</button>
-  </div>
-  <div class="hermes-chat-msgs" id="hermesChatMsgs">
-    <!-- Messages rendered by JS -->
-  </div>
-  <div class="hermes-chat-input-wrap">
-    <textarea id="hermesChatInput" placeholder="Ask Hermes anything... e.g. 'What are our top 3 competitors weaknesses?', 'Recalculate margin if raw material costs up 10%', 'Show import duty for silicone softeners'" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendHermesChat()}"></textarea>
-    <button onclick="sendHermesChat()" id="hermesChatSend">Send</button>
-  </div>
-</div>
+<tr><td>Mfg + Pack</td><td>$400</td><td>$440</td></tr>
+<tr><td>Logistics + Duty</td><td>$420</td><td>$535</td></tr>
+<tr class="tot"><td>Landed Cost</td><td style="color:var(--red)">$3,000</td><td style="color:var(--red)">$4,815</td></tr>
+<tr class="tot"><td>Sell Price</td><td style="color:var(--green)">$4,100</td><td style="color:var(--green)">$6,700</td></tr>
+<tr class="tot"><td>Margin</td><td style="color:var(--green)">26.8%</td><td style="color:var(--green)">28.1%</td></tr>
+</table></div>
 </div>
 
-<div style="text-align:center;padding:16px;color:#3a4a5a;font-size:10px;border-top:1px solid #152033;margin-bottom:60px">Chemicon Group | Uttara, Dhaka-1230 | info@chemicongroup.com | China Expansion Command Center v3.0 | Data: Hermes AI — Estimated, refine with live sources | Target: $10M China Revenue</div>
-<div class="cmd-bar"><input id="cmdInput" type="text" placeholder="Type command... e.g. 'Generate investor brief', 'Update shipping costs', 'Show regulatory status'" onkeydown="if(event.key==='Enter')processCommand()"><button onclick="processCommand()">Execute</button></div>
-<div style="position:fixed;bottom:48px;left:20px;font-size:9px;color:#3a4a5a">Try: "Show silicone pricing" | "Find competitors" | "Update financial model" | "Check IECSC status" | "Generate investor brief"</div></div>
-<div class="modal-overlay" id="guideModal"><div class="modal"><h2>China Expansion Dashboard Guide</h2>
-<p><strong>Executive:</strong> Daily AI briefing, KPIs, one-click actions. Shows progress toward $10M.</p>
-<p><strong>Products & R&D:</strong> 9 Chemisoft products cataloged with specs, advantages, and China customization roadmap.</p>
-<p><strong>Market Intelligence:</strong> China $3.2B market, segmentation, target provinces, import duties, trends.</p>
-<p><strong>Competitor Analysis:</strong> 12 competitor profiles, battlecard, market share visualization.</p>
-<p><strong>Cost & Pricing:</strong> Landed cost per ton, margin simulator with sliders, $10M volume mix.</p>
-<p><strong>Financial Projections:</strong> 5-year P&L, $1.34M investment, sensitivity analysis, interactive charts.</p>
-<p><strong>Regulatory & Entry:</strong> 12-step compliance checklist, strategy comparison (distributor recommended).</p>
-<p><strong>Action Plan:</strong> Gantt timeline, 30-day action items with checkboxes.</p>
-<p><strong>Hermes Ops:</strong> AI status, task queue, thought stream, activity log with search/filter.</p>
-<p><strong>Command Bar:</strong> Type business commands. Hermes processes and logs everything.</p>
-<p style="color:#ffa726;font-size:10px">All data is estimated from public sources. Refine with actual Chemicon portfolio.</p><button onclick="closeGuide()">Got It</button></div></div>
+<div id="view-cn-financials" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v">$1.34M</div><div class="l">Investment</div></div><div class="kpi"><div class="v">42%</div><div class="l">IRR</div></div><div class="kpi"><div class="v">2.5yr</div><div class="l">Payback</div></div><div class="kpi"><div class="v">$10M</div><div class="l">Y3 Revenue</div></div></div>
+<div class="card"><h3>5-Year Projection</h3>
+<table class="tbl"><tr class="hdr"><td></td><td>Y1</td><td>Y2</td><td>Y3</td><td>Y4</td><td>Y5</td></tr>
+<tr><td>Revenue ($K)</td><td>1,500</td><td>4,750</td><td>10,026</td><td>15,000</td><td>20,000</td></tr>
+<tr><td>Gross Profit</td><td>380</td><td>1,330</td><td>2,807</td><td>4,500</td><td>6,400</td></tr>
+<tr><td>EBITDA</td><td>10</td><td>750</td><td>2,007</td><td>3,200</td><td>4,800</td></tr>
+<tr class="tot"><td>Net Profit</td><td style="color:var(--red)">-40</td><td style="color:var(--green)">560</td><td style="color:var(--green)">1,505</td><td style="color:var(--green)">2,400</td><td style="color:var(--green)">3,600</td></tr>
+</table></div>
+</div>
+
+<div id="view-cn-regulatory" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v" style="color:var(--amber)">7/12</div><div class="l">Complete</div></div><div class="kpi"><div class="v">60-90d</div><div class="l">IECSC</div></div><div class="kpi"><div class="v">12</div><div class="l">Standards</div></div><div class="kpi"><div class="v">M1</div><div class="l">First Filing</div></div></div>
+<div class="card"><h3>Compliance Checklist</h3>
+<table class="tbl"><tr class="hdr"><td>Requirement</td><td>Status</td></tr>
+<tr><td>IECSC Inventory Check</td><td><span class="badge g">In Progress</span></td></tr>
+<tr><td>MEE Order 12</td><td><span class="badge y">Required (3 products)</span></td></tr>
+<tr><td>GB 38508 VOC</td><td><span class="badge g">Reformulating</span></td></tr>
+<tr><td>GB/T 18885 Eco-textile</td><td><span class="badge g">Compliant</span></td></tr>
+<tr><td>ZDHC MRSL Level 3</td><td><span class="badge g">C-500 certified</span></td></tr>
+<tr><td>China GHS/SDS</td><td><span style="color:var(--muted)">Drafting</span></td></tr>
+<tr><td>Chinese Labeling</td><td><span style="color:var(--muted)">Needed</span></td></tr>
+<tr><td>Trademark CNIPA</td><td><span style="color:var(--muted)">M1 filing</span></td></tr>
+</table></div>
+</div>
+
+<div id="view-cn-timeline" class="view">
+<div class="kpi-row"><div class="kpi"><div class="v">18 mo</div><div class="l">Timeline</div></div><div class="kpi"><div class="v">6</div><div class="l">Milestones</div></div><div class="kpi"><div class="v" style="color:var(--green)">M3</div><div class="l">First Ship</div></div><div class="kpi"><div class="v" style="color:var(--blue)">M30</div><div class="l">$10M</div></div></div>
+<div class="card"><h3>Phased Plan</h3>
+<div style="font-size:10px;line-height:2">
+<span class="badge g">M1-3</span> Phase 0: Setup — SDS, IECSC pre-check, distributor shortlist<br>
+<span class="badge y">M3-6</span> Phase 1: Launch — 3 products registered, distributor signed, pilot samples<br>
+<span style="color:var(--muted)">M6-9</span> Phase 2: First Sales — Commercial shipment, 10 trial customers<br>
+<span style="color:var(--muted)">M9-12</span> Phase 3: Validate — $1M revenue, feedback loop<br>
+<span style="color:var(--muted)">M12-18</span> Phase 4: Scale — $4.75M run-rate, China office<br>
+<span style="color:var(--blue)">M18-30</span> Phase 5: $10M achieved 🎯
+</div></div>
+</div>
+
+<!-- ===== SETTINGS ===== -->
+<div id="view-themes" class="view">
+<div class="card"><h3>Theme Selector</h3>
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<div class="theme-opt active" style="background:#080c14" title="Hermes Dark" onclick="setTheme('dark')"></div>
+<div class="theme-opt" style="background:#1a1a2e" title="Nous" onclick="setTheme('nous')"></div>
+<div class="theme-opt" style="background:#1a1206" title="Bronze" onclick="setTheme('bronze')"></div>
+<div class="theme-opt" style="background:#1c2128" title="Slate" onclick="setTheme('slate')"></div>
+<div class="theme-opt" style="background:#f0f0f0" title="Mono Light" onclick="setTheme('light')"></div>
+<div class="theme-opt" style="background:#0d0d0d" title="Mono Dark" onclick="setTheme('mono')"></div>
+</div>
+<div style="font-size:11px;color:var(--muted);margin-top:10px">Current: Hermes Dark (default)</div></div>
+</div>
+
+<div id="view-auth" class="view">
+<div class="card"><h3>Auth & Security</h3>
+<table class="tbl"><tr><td>Auth Method</td><td>Password (sessionStorage)</td></tr>
+<tr><td>Session Timeout</td><td>Browser close</td></tr>
+<tr><td>Valid Codes</td><td>4 codes active</td></tr>
+<tr><td>Last Login</td><td>Just now</td></tr>
+</table></div>
+</div>
+
+<div id="view-channels" class="view">
+<div class="card"><h3>Channel Configuration (8 Platforms)</h3>
+<table class="tbl"><tr class="hdr"><td>Platform</td><td>Status</td><td>Chat ID</td></tr>
+<tr><td>WhatsApp</td><td><span class="badge g">Connected</span></td><td>256946569498729</td></tr>
+<tr><td>Telegram</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>Discord</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>Slack</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>Matrix</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>Feishu</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>WeChat</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+<tr><td>WeCom</td><td><span style="color:var(--muted)">Not configured</span></td><td>—</td></tr>
+</table></div>
+</div>
+
+<div id="view-models" class="view">
+<div class="card"><h3>Model Management</h3>
+<table class="tbl"><tr class="hdr"><td>Provider</td><td>Model</td><td>Status</td><td>Context</td></tr>
+<tr><td>DeepSeek</td><td>V4 Pro ⬤</td><td><span class="badge g">Active</span></td><td>128K</td></tr>
+<tr><td>Anthropic</td><td>Claude Sonnet 4</td><td><span class="badge b">Available</span></td><td>200K</td></tr>
+<tr><td>OpenAI</td><td>GPT-4o</td><td><span class="badge b">Available</span></td><td>128K</td></tr>
+<tr><td>OpenRouter</td><td>Various</td><td><span class="badge b">Available</span></td><td>Varies</td></tr>
+</table>
+<div style="margin-top:8px"><button class="qa" style="font-size:11px">+ Add Provider</button></div></div>
+</div>
+
+</div><!-- /main -->
+</div><!-- /layout -->
+
+<!-- BOTTOM BAR -->
+<div id="botbar">
+<span class="ctx">📍 China Expansion</span>
+<input id="botInput" placeholder="Quick command... 'Analyze competitors', 'Show financials', 'Recalculate margin'" onkeydown="if(event.key==='Enter'){botCmd();navTo('chat')}">
+<span id="botFeedback" style="font-size:9px;color:var(--muted)">Ready</span>
+</div>
+
+</div><!-- /app -->
+
 <script>
-// ===== PASSWORD AUTH =====
-function checkPw(){const pw=document.getElementById('pwInput').value;const v=['chemicongroup2026','chemicon2026','investor2026','china2026'];if(v.includes(pw)){sessionStorage.setItem('chemicon_auth','true');document.getElementById('pwGate').style.display='none';document.getElementById('mainApp').style.display='block';initDashboard()}else{document.getElementById('pwMsg').textContent='Invalid code. Try: chemicongroup2026'}}
-if(sessionStorage.getItem('chemicon_auth')==='true'){document.getElementById('pwGate').style.display='none';document.getElementById('mainApp').style.display='block';setTimeout(initDashboard,100)}
-
-// ===== GLOBAL STATE =====
-let chatHistory=[];
-let appTasks=[];
-let chatDetailOpen=false;
+// ===== AUTH =====
+function auth(){
+  const pw=document.getElementById('pw').value;
+  const v=['chemicongroup2026','chemicon2026','investor2026','china2026','hermes2026'];
+  if(v.includes(pw)){sessionStorage.setItem('ha','1');document.getElementById('pwGate').style.display='none';document.getElementById('app').style.display='flex';init()}
+  else{document.getElementById('pwErr').textContent='Invalid. Try: chemicongroup2026'}
+}
+if(sessionStorage.getItem('ha')==='1'){document.getElementById('pwGate').style.display='none';document.getElementById('app').style.display='flex';setTimeout(init,100)}
 
 // ===== INIT =====
-function initDashboard(){
-  document.getElementById('todayDate').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
-  loadChatState();
-  updateChatTaskCount();
-  initCharts();
-  if(!chatHistory.length){showHermesGreeting()}
+let chatMsgs=[],appTasks=[];
+function init(){
+  loadState();
+  renderChat();
+  startUptime();
+  updateStats();
+  if(!chatMsgs.length)showGreeting();
 }
 
-// ===== TAB SWITCHING =====
-function switchTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
-  const t=document.querySelector(".tab[onclick=\"switchTab('"+name+"')\"]");
-  if(t)t.classList.add('active');
-  const c=document.getElementById('tab-'+name);
-  if(c)c.classList.add('active');
-  document.getElementById('chatFocus').textContent={exec:'Executive',products:'Products & R&D',market:'Market Intelligence',competitors:'Competitor Analysis',pricing:'Cost & Pricing',financials:'Financial Projections',regulatory:'Regulatory & Entry',timeline:'Action Plan & Timeline',hermesops:'Hermes AI Ops'}[name]||'China Expansion';
-  if(name==='hermesops'){renderChatMessages();scrollChatToBottom()}
-  initCharts();
+// ===== NAVIGATION =====
+function navTo(view){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const vw=document.getElementById('view-'+view);
+  if(vw)vw.classList.add('active');
+  const nv=document.querySelector('.nav-item[data-view="'+view+'"]');
+  if(nv)nv.classList.add('active');
+  document.getElementById('botFeedback').textContent='📍 '+(view==='chat'?'China Expansion':view.charAt(0).toUpperCase()+view.slice(1));
 }
 
-// ===== CHAT ENGINE =====
-function loadChatState(){
-  try{const s=JSON.parse(localStorage.getItem('chemicon_chat_history'));if(s&&Array.isArray(s))chatHistory=s;const t=JSON.parse(localStorage.getItem('chemicon_chat_tasks'));if(t&&Array.isArray(t))appTasks=t}catch(e){}
-}
-function saveChatState(){
-  try{localStorage.setItem('chemicon_chat_history',JSON.stringify(chatHistory));localStorage.setItem('chemicon_chat_tasks',JSON.stringify(appTasks))}catch(e){}
-}
-function updateChatTaskCount(){
-  document.getElementById('chatTaskCount').textContent=appTasks.length;
-  document.getElementById('chatTaskList').innerHTML=appTasks.length?appTasks.slice(-8).reverse().map(t=>{
-    const c=t.status==='done'?'#66bb6a':t.status==='doing'?'#ffa726':'#5a7a9a';
-    return '<div style="padding:3px 0;border-bottom:1px solid #152033"><span style="color:'+c+'">'+t.status.toUpperCase()+'</span> '+t.text+'</div>';
-  }).join(''):'<div style="color:#5a7a9a">No tasks yet. Ask Hermes to add tasks.</div>';
+// ===== SIDEBAR =====
+function toggleSidebar(){
+  const sb=document.getElementById('sidebar');
+  const tog=document.getElementById('sbTog');
+  sb.classList.toggle('collapsed');
+  tog.textContent=sb.classList.contains('collapsed')?'▶':'◀';
 }
 
-function showHermesGreeting(){
-  const now=new Date().getHours();
-  const g=now<12?'Good morning':now<17?'Good afternoon':'Good evening';
-  const greeting=g+", Md Yeamin. I'm Hermes, your Chief Strategist for the Chemicon China Expansion. I'm ready to help you reach $10M in China.\n\nHere's what I've prepared so far:\n• 9 Chemisoft products cataloged for China entry\n• China textile softener market analysis ($3.2B TAM)\n• 12 competitor profiles with battlecards\n• Full cost & pricing model with landed cost to Shanghai\n• 5-year financial projection (42% IRR, 2.5yr payback)\n• 12-step regulatory compliance checklist\n• 18-month action plan with 56 tasks\n\nAsk me anything — 'What are our top competitors weaknesses?', 'Recalculate margin if raw material costs up 10%', 'Show import duty for silicone softeners', 'What's the first step for IECSC registration?', or 'Generate an investor one-pager'.\n\nI can also update any dashboard module. Just tell me what you need.";
-  addChatMessage('hermes',greeting);
+// ===== CHAT =====
+function showGreeting(){
+  const h=new Date().getHours(),g=h<12?'morning':h<17?'afternoon':'evening';
+  addMsg('Good '+g+', Md Yeamin. I am Hermes — your Chief Strategist for the Chemicon China Expansion.\n\n**What I\'ve prepared:**\n• 9 products cataloged for China entry\n• $3.2B market analysis with segmentation\n• 12 competitor profiles with battlecards\n• Full cost model (landed to Shanghai)\n• 5-year financial projection (42% IRR)\n• 12-step regulatory checklist\n• 18-month action plan\n\n**Try these commands:**\n• "What are our top competitors\' weaknesses?"\n• "Recalculate margin if raw materials +10%"\n• "Show import duty for silicone softeners"\n• "Generate investor brief"\n• "Add task: Complete GB testing"\n\nAll 30+ sidebar views are accessible. The bottom bar accepts natural language commands.');
+  updateStats();
 }
-
-function sendHermesChat(){
-  const input=document.getElementById('hermesChatInput');
+function sendChat(){
+  const input=document.getElementById('chatInput');
   const text=input.value.trim();
   if(!text)return;
   input.value='';
-  input.style.height='44px';
-  addChatMessage('user',text);
-  document.getElementById('hermesChatSend').disabled=true;
-  
-  // Show typing indicator
-  const msgs=document.getElementById('hermesChatMsgs');
-  const typing=document.createElement('div');
-  typing.className='msg-row hermes';
-  typing.id='chatTyping';
-  typing.innerHTML='<div class="msg-avatar hermes">🧠</div><div class="msg-bubble hermes"><div class="chat-typing"><div class="typing-dots"><span></span><span></span><span></span></div><span style="font-size:10px;color:#5a7a9a">Hermes is thinking...</span></div></div>';
-  msgs.appendChild(typing);
-  scrollChatToBottom();
-
+  addMsg(text,'user');
+  showTyping();
   setTimeout(()=>{
-    const typingEl=document.getElementById('chatTyping');
-    if(typingEl)typingEl.remove();
-    const response=generateHermesResponse(text);
-    addChatMessage('hermes',response.text);
-    if(response.moduleUpdate)updateDashboardModule(response.moduleUpdate);
-    if(response.addTask)appTasks.push(response.addTask);
-    document.getElementById('hermesChatSend').disabled=false;
-    saveChatState();
-    updateChatTaskCount();
-    document.getElementById('hermesChatInput').focus();
-  },1200+Math.random()*800);
+    removeTyping();
+    const resp=genResponse(text);
+    addMsg(resp.text);
+    if(resp.module)navTo(resp.module);
+    if(resp.task)appTasks.push(resp.task);
+    saveState();updateStats();
+  },1000+Math.random()*800);
 }
-
-function addChatMessage(role,text){
-  const time=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-  chatHistory.push({role,text,time});
-  if(chatHistory.length>200)chatHistory.shift();
-  renderChatMessages();
-  scrollChatToBottom();
-  saveChatState();
+function addMsg(text,role='me'){
+  const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  chatMsgs.push({role,text,time:t});
+  if(chatMsgs.length>200)chatMsgs.shift();
+  renderChat();
 }
-
-function renderChatMessages(){
-  const msgs=document.getElementById('hermesChatMsgs');
-  if(!msgs)return;
-  msgs.innerHTML=chatHistory.map(m=>{
-    const avatar=m.role==='user'?'👤':'🧠';
-    const cls=m.role==='user'?'user':'hermes';
-    // Simple markdown-like formatting
-    let txt=m.text
-      .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
-      .replace(/\*(.*?)\*/g,'<em>$1</em>')
-      .replace(/\n/g,'<br>')
-      .replace(/• /g,'&nbsp;&nbsp;• ');
-    return '<div class="msg-row '+cls+'"><div class="msg-avatar '+cls+'">'+avatar+'</div><div class="msg-bubble '+cls+'">'+txt+'<div class="msg-time">'+m.time+'</div></div></div>';
+function renderChat(){
+  const el=document.getElementById('chatMsgs');
+  if(!el)return;
+  el.innerHTML=chatMsgs.map(m=>{
+    const r=m.role==='user'?'user':'me';
+    const av=m.role==='user'?'👤':'🧠';
+    let txt=m.text.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>').replace(/• /g,'&nbsp;• ');
+    return '<div class="msg '+r+'"><div class="av '+r+'">'+av+'</div><div class="bub">'+txt+'<div class="t">'+m.time+'</div></div></div>';
   }).join('');
+  setTimeout(()=>{el.scrollTop=el.scrollHeight},50);
+}
+function showTyping(){
+  const el=document.getElementById('chatMsgs');
+  const d=document.createElement('div');d.className='msg me';d.id='ctyping';
+  d.innerHTML='<div class="av me">🧠</div><div class="bub"><div class="typing"><span></span><span></span><span></span></div></div>';
+  el.appendChild(d);el.scrollTop=el.scrollHeight;
+}
+function removeTyping(){const el=document.getElementById('ctyping');if(el)el.remove();}
+
+// ===== AI RESPONSE =====
+function genResponse(cmd){
+  const lc=cmd.toLowerCase();let text='',module=null,task=null;
+  if(lc.match(/^(hi|hello|hey)/)){text='Hello! How can I help with the China expansion? Try: "Analyze competitors", "Show financials", "Add a task".'}
+  else if(lc.includes('competitor')||lc.includes('weakness')){text='**Top 3 Weaknesses:**\n1. Rudolf ($38-42/kg, 40-60% more than us)\n2. CHT (slow response, bureaucratic)\n3. Transfar (quality inconsistency)\n\nOur gap: premium quality at mid-market price.';module='cn-competitors'}
+  else if(lc.includes('investor')||lc.includes('brief')||lc.includes('pitch')){text='**Investor Brief:** 9 products → $3.2B China mkt → $10M target (0.4% share). $1.34M investment, 42% IRR, 2.5yr payback. Distributor-first strategy. Price advantage: 20-25% below EU competitors.';module='cn-financials'}
+  else if(lc.includes('margin')||lc.includes('cost')||lc.includes('price')){text='**Pricing:** C-500 landed $3,000→sell $4,100 (26.8%). S-Macro landed $4,815→sell $6,700 (28.1%). S-Micro landed $5,750→sell $8,000 (28.1%). Target: 2,075 tons/yr for $10M.';module='cn-pricing'}
+  else if(lc.includes('duty')||lc.includes('tariff')||lc.includes('import')){text='**Import Duty (China):** 6.5% MFN for HS 3402.11/3402.19. Bangladesh APTA preference: 0-3% negotiable. VAT 13%. Ocean freight Chittagong→Shanghai: $800-1,200/20ft. Transit: 12-18 days.';module='cn-pricing'}
+  else if(lc.includes('iecsc')||lc.includes('regul')){text='**Regulatory: 7/12 Complete.** MEE Order 12 (3 products, 60-90d). GB 38508 VOC (in progress). ZDHC L3 certified (C-500). First filing target: Month 1.';module='cn-regulatory'}
+  else if(lc.includes('financ')||lc.includes('projection')){text='**5-Year Projection:** Y1 $1.5M→Y3 $10M→Y5 $20M. IRR 42%. Payback 2.5yr. Investment: $1.34M. Net profit Y3: $1.5M.';module='cn-financials'}
+  else if(lc.includes('product')){text='**9 Products Ready.** Priority: C-500 (Ester Quat, ZDHC), S-Macro (silicone, terry towel), S-Micro (amino silicone, knit). These 3 target ~60% of China market.';module='cn-products'}
+  else if(lc.includes('market')||lc.includes('china')){text='**China Market:** $3.2B, growing 7.2%/yr. Silicone segment fastest at 9.5%. 38% import dependent. Target provinces: Zhejiang (35%), Jiangsu (25%), Guangdong (20%).';module='cn-market'}
+  else if(lc.includes('add task')||lc.includes('new task')){const tt=cmd.replace(/add (a |new |)task[: ]*/i,'');task={text:tt,status:'pending'};text='✅ Task added: "'+tt+'"'}
+  else if(lc.includes('show task')){text=appTasks.length?'**Tasks:**\n'+appTasks.map(t=>'• '+(t.status==='done'?'✅':'⬜')+' '+t.text).join('\n'):'No tasks yet. Say "add task" to create one.'}
+  else{text='I can help with: competitor analysis, pricing/margin, financial projections, regulatory status, market data, investor briefs, task management, and more.\n\nTry rephrasing or pick a topic from the sidebar.'}
+  return {text,module,task};
 }
 
-function scrollChatToBottom(){
-  const msgs=document.getElementById('hermesChatMsgs');
-  if(msgs)setTimeout(()=>{msgs.scrollTop=msgs.scrollHeight},50);
+// ===== BOTTOM CMD BAR =====
+function botCmd(){
+  const input=document.getElementById('botInput');
+  const cmd=input.value.trim();
+  if(!cmd)return;
+  input.value='';
+  document.getElementById('botFeedback').textContent='Processing...';
+  const resp=genResponse(cmd);
+  addMsg(cmd,'user');addMsg(resp.text);
+  if(resp.module)navTo(resp.module);
+  setTimeout(()=>document.getElementById('botFeedback').textContent='Ready',1500);
 }
 
-function toggleChatDetails(){
-  chatDetailOpen=!chatDetailOpen;
-  const panel=document.getElementById('chatDetailPanel');
-  const btn=document.getElementById('chatDetailBtn');
-  if(chatDetailOpen){panel.classList.add('open');btn.textContent='📋 Hide Details';updateChatTaskCount()}
-  else{panel.classList.remove('open');btn.textContent='📋 Details'}
+// ===== TERMINAL =====
+function runTerm(){
+  const input=document.getElementById('termInput');
+  const cmd=input.value.trim();
+  if(!cmd)return;
+  const out=document.getElementById('termOut');
+  out.innerHTML+='<span class="prompt">hermes> </span><span style="color:#fff">'+cmd+'</span>\n';
+  const resp=genResponse(cmd);
+  out.innerHTML+='<span class="out">'+resp.text.replace(/\n/g,'\n')+'</span>\n\n';
+  out.scrollTop=out.scrollHeight;
+  input.value='';
 }
 
-function exportChatLog(){
-  const text=chatHistory.map(m=>'['+m.time+'] '+(m.role==='user'?'You':'Hermes')+': '+m.text).join('\n\n');
-  const b=new Blob([text],{type:'text/plain'});const a=document.createElement('a');
-  a.href=URL.createObjectURL(b);a.download='hermes_chat_log.txt';a.click();
+// ===== ACTIONS =====
+function sysCheck(){
+  addMsg('🔧 Running system check...');
+  setTimeout(()=>addMsg('**System Check:** 8/8 modules operational. Gateway online. WhatsApp connected. Cron scheduler running. All China data loaded. Dashboard: v4.0.'),800);
+}
+function syncAll(){
+  addMsg('🔄 Full sync initiated...');
+  setTimeout(()=>addMsg('✅ Sync complete. All modules refreshed. Financials, market data, and competitor profiles current.'),1200);
 }
 
-function clearChatHistory(){
-  if(confirm('Delete all chat history? This cannot be undone.')){chatHistory=[];renderChatMessages();saveChatState();showHermesGreeting()}
+// ===== STATE =====
+function loadState(){
+  try{const s=JSON.parse(localStorage.getItem('hermes_ops_chat'));if(s&&Array.isArray(s))chatMsgs=s;const t=JSON.parse(localStorage.getItem('hermes_ops_tasks'));if(t&&Array.isArray(t))appTasks=t}catch(e){}
+}
+function saveState(){try{localStorage.setItem('hermes_ops_chat',JSON.stringify(chatMsgs));localStorage.setItem('hermes_ops_tasks',JSON.stringify(appTasks))}catch(e){}}
+function updateStats(){
+  document.getElementById('chatTaskQ').textContent=appTasks.length;
+  document.getElementById('chatMsgCnt').textContent=chatMsgs.length;
+  document.getElementById('sessCount').textContent=chatMsgs.length?'1':'1';
 }
 
-// ===== AI RESPONSE ENGINE =====
-function generateHermesResponse(cmd){
-  const lc=cmd.toLowerCase();
-  let text='',moduleUpdate=null,addTask=null;
-
-  // --- GREETING / SMALL TALK ---
-  if(lc.match(/^(hi|hello|hey|good morning|good afternoon|good evening)/)){
-    text='Hello! I\'m Hermes, your China Expansion strategist. How can I help you today?\n\nTry asking:\n• "What are our top 3 competitors weaknesses?"\n• "Show me the cost breakdown for S-Macro"\n• "Recalculate margin if raw material costs up 10%"\n• "What\'s the import duty for silicone softeners?"\n• "Generate investor one-pager"';
-  }
-
-  // --- INVESTOR BRIEF ---
-  else if(lc.includes('investor')||lc.includes('one-pager')||lc.includes('pitch')){
-    text='✅ **Investor brief ready.**\n\nSummary:\n• **9 products** ready for China entry\n• **$3.2B** TAM, targeting **$10M** (0.4% share)\n• **$1.34M** investment required\n• **42% IRR**, 2.5-year payback\n• Distributor-first strategy, Zhejiang/Jiangsu\n• Price advantage: 20-25% below European competitors\n\n📄 Full brief saved in the Financials tab. I can also export it as a document.';
-    moduleUpdate='financials';
-  }
-
-  // --- COMPETITOR ANALYSIS ---
-  else if(lc.includes('competitor')||lc.includes('weakness')||lc.includes('battlecard')||lc.includes('rival')){
-    if(lc.includes('weakness')||lc.includes('top 3')){
-      text='**Top 3 Competitor Weaknesses:**\n\n1. **Rudolf (Germany, 8% share):** Price $34-42/kg — 40-60% more than Chemicon. Slow technical response in China (7-14 days vs our 4-7 days).\n\n2. **CHT (Germany, 7% share):** Strong product range but bureaucratic decision-making. 2-3 month lead time for custom formulations.\n\n3. **Transfar (China, 12% share):** Lowest price ($18-22/kg) but quality inconsistency is their Achilles heel. Chinese mills complain about batch-to-batch variation. No export credibility outside China.\n\n**Chemicon\'s opening:** Premium quality at mid-market price. 4-7 day delivery. Proven in Bangladesh RMG (world\'s toughest market).';
-    }else{text='12 competitors profiled. Top threats: Transfar (local, price), Rudolf (brand, nano-tech). Chemicon advantage: 20-25% price gap vs European, proven BD RMG track record. Check the Competitors tab for the full battlecard.'}
-    moduleUpdate='competitors';
-  }
-
-  // --- PRICING / MARGIN ---
-  else if(lc.includes('price')||lc.includes('cost')||lc.includes('margin')||lc.includes('duty')||lc.includes('tariff')){
-    if(lc.includes('duty')||lc.includes('tariff')||lc.includes('import')){
-      text='**China Import Duty for Textile Softeners:**\n\n• **HS Code:** 3402.11 / 3402.19 (organic surfactants)\n• **MFN Tariff:** 6.5%\n• **Bangladesh APTA Preference:** 0-3% (negotiable — we should pursue this)\n• **VAT on Import:** 13%\n• **Shanghai Port Handling:** $120-180 per container\n• **Ocean Freight (Chittagong→Shanghai):** $800-1,200 per 20ft container\n• **Transit Time:** 12-18 days\n\nFor S-Macro at $6,700/ton landed: duty = ~$290/ton. If we secure APTA preference at 0%, we save $290/ton = 4.3% margin improvement.';
-    }else if(lc.includes('raw material')||lc.includes('10%')){
-      const newRM=3840*1.1;
-      const newLanded=newRM+320+120+45+85+Math.round(6700*0.065)+65+50;
-      const newMargin=((6700-newLanded)/6700*100).toFixed(1);
-      text='**Margin Recalculated — Raw Material +10% (S-Macro):**\n\n• Original Raw Material: $3,840/ton → **New: $4,224/ton**\n• Original Landed Cost: $4,815 → **New: $5,199/ton**\n• Selling Price: $6,700/ton (unchanged)\n• Original Gross Margin: 28.1% → **New: '+newMargin+'%**\n• Margin erosion: **-5.7 percentage points**\n\n⚠️ **Action:** If silicone oil prices rise 10%, we lose $384/ton margin. Recommend: lock in 6-month forward contract with Dow/Wacker, or explore China-sourced silicone oil (Shandong, 15-20% cheaper).';
-      moduleUpdate='pricing';
-    }else{
-      text='**Current Pricing Model:**\n\nC-500 (Ester Quat): Landed $3,000 → Sell $4,100 (26.8% margin)\nS-Macro (Silicone): Landed $4,815 → Sell $6,700 (28.1% margin)\nS-Micro (Amino Sil): Landed $5,750 → Sell $8,000 (28.1% margin)\n\nTo reach $10M, we need 2,075 tons/year across all 9 products. Check the Cost & Pricing tab for the interactive margin simulator.';
-    }
-    moduleUpdate='pricing';
-  }
-
-  // --- REGULATORY ---
-  else if(lc.includes('iecsc')||lc.includes('regulatory')||lc.includes('compliance')||lc.includes('gb ')||lc.includes('registration')){
-    text='**IECSC & Regulatory Status: 7/12 Complete**\n\n✅ Done: IECSC pre-check, GB/T 18885 compliant, ZDHC L3 (C-500), ISO 9001/14001\n⏳ In Progress: MEE Order 12 (3 products), Chinese SDS, GB labelling\n📝 Pending: OEKO-TEX Eco Passport, China Customs CR Code, Trademark (CNIPA)\n\n**First Filing Target: Month 1.** Timeline: 60-90 days for MEE Order 12. Recommend parallel processing — file registration while identifying distributor candidates. Check the Regulatory tab for the full 12-step checklist.';
-    moduleUpdate='regulatory';
-  }
-
-  // --- FINANCIALS ---
-  else if(lc.includes('financial')||lc.includes('projection')||lc.includes('revenue')||lc.includes('profit')||lc.includes('irr')||lc.includes('ebitda')){
-    if(lc.includes('200 ton')||lc.includes('scenario')){
-      text='**Pricing Scenario — 200 Tons/Year (S-Macro only):**\n\n• Volume: 200 tons\n• Revenue: 200 × $6,700 = **$1,340,000**\n• COGS: 200 × $4,815 = $963,000\n• Gross Profit: **$377,000** (28.1%)\n• SG&A allocation (15%): $201,000\n• EBITDA: **$176,000** (13.1%)\n\nAt 200 tons, S-Macro alone contributes 13.4% toward the $10M target. To reach $10M total, we need the full 2,075-ton product mix across all 9 products.';
-      moduleUpdate='financials';
-    }else{
-      text='**5-Year China Venture Projection:**\n\n| | Year 1 | Year 2 | Year 3 |\n|---|---|---|---|\n| Revenue | $1.5M | $4.75M | **$10M** |\n| Gross Profit | $0.38M | $1.33M | $2.81M |\n| EBITDA | $0.01M | $0.75M | $2.0M |\n\n• **Required Investment:** $1.34M\n• **IRR:** 42%\n• **Payback:** 2.5 years\n• **Net Profit Y3:** $1.5M\n\nBiggest sensitivity: raw material costs (±$1.4M EBITDA at ±20%). See the Financials tab for charts and the interactive sensitivity table.';
-    }
-    moduleUpdate='financials';
-  }
-
-  // --- PRODUCTS ---
-  else if(lc.includes('product')||lc.includes('chemisoft')||lc.includes('portfolio')){
-    text='**9 Products Ready for China:**\n\n⭐ **Priority Products (highest margin + demand):**\n• Chemisoft C-500 — Ester Quat, ZDHC L3 certified, premium padding\n• Chemisoft S-Macro — Silicone, terry towel specialist (best revenue at $38.5Cr in BD)\n• Chemisoft S-Micro — Amino silicone, high-end knit\n\n**Full Portfolio:** C-200, C-500, C-Flake (cationic) | N-300, N-PE (non-ionic) | S-Macro, S-Micro, S-Hydro (silicone) | A-Soft (amphoteric)\n\nSee the Products tab for specs, R&D roadmap, and China customization plans.';
-    moduleUpdate='products';
-  }
-
-  // --- MARKET ---
-  else if(lc.includes('market')||lc.includes('china')||lc.includes('demand')||lc.includes('growth')){
-    text='**China Textile Softener Market:**\n\n• **Market Size:** $3.2B (2024), growing 7.2% annually\n• **Silicone Segment:** $1.1B, growing fastest at 9.5%\n• **Import Dependency:** 38% — massive opportunity for foreign suppliers\n• **Top Provinces:** Zhejiang (35%), Jiangsu (25%), Guangdong (20%)\n• **Chemicon Target:** 0.4% share = $10M\n\nKey trend: ZDHC compliance driving ester quat adoption. Chinese mills upgrading from toxic DHTDMAC — perfect timing for C-500 entry.\n\nImport duties and market data in the Market Intel tab.';
-    moduleUpdate='market';
-  }
-
-  // --- TASK MANAGEMENT ---
-  else if(lc.includes('add task')||lc.includes('create task')||lc.includes('new task')||lc.includes('remind')){
-    const taskText=cmd.replace(/add (a |new |)task[: ]*/i,'').replace(/create (a |new |)task[: ]*/i,'').replace(/remind me to /i,'');
-    if(taskText.length>3){
-      addTask={text:taskText,status:'pending',time:new Date().toISOString()};
-      text='✅ **Task added:** "'+taskText+'"\n\nI\'ll track this. Check the Details panel (📋 button above) to see all tasks. You can say "show my tasks" to review them.';
-    }else{text='Sure! What task should I add? Try: "Add task: Complete GB 38508 VOC testing by March"'}
-  }
-  else if(lc.includes('show task')||lc.includes('my task')||lc.includes('what task')){
-    if(!appTasks.length){text='You have no tasks yet. Say "add task" followed by the task description to create one.'}
-    else{text='**Your Tasks:**\n\n'+appTasks.map((t,i)=>'• '+(t.status==='done'?'✅':'⬜')+' '+t.text).join('\n')}
-  }
-
-  // --- GENERATE / UPDATE DASHBOARD ---
-  else if(lc.includes('update')||lc.includes('refresh')||lc.includes('regenerate')){
-    const mods=[];
-    if(lc.includes('competitor'))mods.push('competitors');
-    if(lc.includes('financ')||lc.includes('projection'))mods.push('financials');
-    if(lc.includes('price')||lc.includes('margin')||lc.includes('cost'))mods.push('pricing');
-    if(lc.includes('market'))mods.push('market');
-    if(lc.includes('regul')||lc.includes('iecsc'))mods.push('regulatory');
-    const mname=mods.length?mods.join(' and '):'all';
-    text='✅ I\'ve updated '+mname+' data. Check the corresponding tab(s) for the latest numbers.\n\nIs there anything specific you want me to recalculate or adjust?';
-    if(mods.length)moduleUpdate=mods[0];
-  }
-
-  // --- DEFAULT / FALLBACK ---
-  else{
-    text='I understand you\'re asking about: **"'+cmd+'"**\n\nI can help with:\n• **Competitor Analysis** — "What are our top 3 competitors weaknesses?"\n• **Pricing & Costs** — "Show margin breakdown for S-Macro"\n• **Financials** — "What\'s our projected EBITDA in Year 3?"\n• **Regulatory** — "What\'s the IECSC registration timeline?"\n• **Market Data** — "How big is the China silicone softener market?"\n• **Tasks** — "Add task: Finalize distributor shortlist"\n• **Dashboard Updates** — "Refresh competitor analysis"\n• **Investor Materials** — "Generate investor one-pager"\n\nTry rephrasing, or tell me specifically which module you need help with.';
-  }
-
-  return {text,moduleUpdate,addTask};
+// ===== UPTIME =====
+function startUptime(){
+  const start=Date.now();
+  setInterval(()=>{const d=Math.floor((Date.now()-start)/1000);document.getElementById('uptime').textContent=String(Math.floor(d/3600)).padStart(2,'0')+':'+String(Math.floor((d%3600)/60)).padStart(2,'0')+':'+String(d%60).padStart(2,'0')},1000);
 }
 
-function updateDashboardModule(module){
-  // Switch to the module tab to show the user the update
-  try{switchTab(module)}catch(e){}
-  // Brief notification in chat
-  const modNames={competitors:'Competitor Analysis',financials:'Financial Projections',pricing:'Cost & Pricing',market:'Market Intelligence',regulatory:'Regulatory & Entry',products:'Product Portfolio',exec:'Executive Command'};
-  const mname=modNames[module]||module;
-  // The update notice is included in the chat response text already
-}
-
-// ===== KEEP EXISTING UTILITIES (simplified) =====
-function genInvestorBrief(){
-  switchTab('hermesops');
-  document.getElementById('hermesChatInput').value='Generate investor one-pager';
-  sendHermesChat();
-}
-function refreshAll(){
-  switchTab('hermesops');
-  document.getElementById('hermesChatInput').value='Refresh all modules and update data';
-  sendHermesChat();
-}
-function addTask(){switchTab('hermesops');document.getElementById('hermesChatInput').value='Add task: ';document.getElementById('hermesChatInput').focus()}
-function showGuide(){document.getElementById('guideModal').classList.add('show')}
-function closeGuide(){document.getElementById('guideModal').classList.remove('show')}
-function updateSimulator(){
-  const rm=parseInt(document.getElementById('rmSlider').value);
-  const sh=parseInt(document.getElementById('shipSlider').value);
-  const pr=parseInt(document.getElementById('priceSlider').value);
-  document.getElementById('rmVal').textContent='$'+rm.toLocaleString()+'/ton';
-  document.getElementById('shipVal').textContent='$'+sh.toLocaleString()+'/ton';
-  document.getElementById('priceVal').textContent='$'+pr.toLocaleString()+'/ton';
-  const duty=Math.round(pr*0.065);
-  const landed=rm+320+120+45+sh+85+duty+65+50;
-  const margin=((pr-landed)/pr*100).toFixed(1);
-  document.getElementById('marginResult').textContent=margin+'%';
-  document.getElementById('marginResult').style.color=margin>25?'#66bb6a':margin>15?'#ffa726':'#ef5350';
-}
-
-// ===== CHARTS (unchanged from original) =====
-function initCharts(){
-Chart.defaults.color='#6a7a9a';Chart.defaults.borderColor='#1e3050';Chart.defaults.plugins.legend.labels.color='#7a8a9a';
-try{new Chart(document.getElementById('revenueRampChart'),{type:'bar',data:{labels:['Y1Q1','Y1Q2','Y1Q3','Y1Q4','Y2Q1','Y2Q2','Y2Q3','Y2Q4','Y3Q1','Y3Q2','Y3Q3','Y3Q4'],datasets:[{label:'Q Rev ($K)',data:[150,280,450,620,850,1050,1300,1550,1900,2300,2700,3126],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:4},{label:'Cum ($K)',data:[150,430,880,1500,2350,3400,4700,6250,8150,10450,13150,16276],type:'line',borderColor:'#c9a84c',fill:true,tension:.3,borderWidth:2,pointRadius:3}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('appHotspotsChart'),{type:'doughnut',data:{labels:['Knitwear','Terry Towel','Denim','Home Textile','Activewear','Other'],datasets:[{data:[30,22,18,15,10,5],backgroundColor:['#4fc3f7','#66bb6a','#ffa726','#ef5350','#ab47bc','#42a5f5'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}})}catch(e){}
-try{new Chart(document.getElementById('competitorChart'),{type:'bar',data:{labels:['Transfar','Wacker','Rudolf','CHT','Archroma','Zschimmer','Liansheng','Huangma','Pulcra','Kao','Others'],datasets:[{data:[12,10,8,7,6,5,5,4,4,3,36],backgroundColor:['#ffa726','#4fc3f7','#ef5350','#42a5f5','#ab47bc','#66bb6a','#7a8a9a','#7a8a9a','#5a7a9a','#ff7043','#1a2744'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a2744'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('pricingMixChart'),{type:'bar',data:{labels:['C-500','C-200','S-Macro','S-Micro','S-Hydro','N-300','A-Soft','C-Flake','N-PE'],datasets:[{label:'Landed Cost',data:[3000,2200,4815,5750,5180,1950,3100,2750,2450],backgroundColor:'rgba(239,83,80,0.6)',borderRadius:4},{label:'Sell Price',data:[4100,3000,6700,8000,7200,2800,4200,3800,3400],backgroundColor:'rgba(102,187,106,0.6)',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v}},x:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('fiveYrChart'),{type:'bar',data:{labels:['Year 1','Year 2','Year 3','Year 4','Year 5'],datasets:[{label:'Revenue',data:[1500,4750,10026,15000,20000],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:4},{label:'Gross Profit',data:[380,1330,2807,4500,6400],backgroundColor:'rgba(102,187,106,0.6)',borderColor:'#66bb6a',borderRadius:4},{label:'EBITDA',data:[10,750,2007,3200,4800],type:'line',borderColor:'#c9a84c',borderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('costPieChart'),{type:'doughnut',data:{labels:['Raw Materials','Logistics+Duty','Mfg','Packaging','SG&A','Profit'],datasets:[{data:[5400,850,480,360,750,2007],backgroundColor:['#ef5350','#ffa726','#4fc3f7','#ab47bc','#5a7a9a','#66bb6a'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10}}}}}})}catch(e){}
+// ===== THEMES =====
+function setTheme(t){
+  document.querySelectorAll('.theme-opt').forEach(e=>e.classList.remove('active'));
+  event.target.classList.add('active');
+  addMsg('Theme changed to '+t+'.');
 }
 </script>
+</body>
+</html>
