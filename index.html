@@ -321,13 +321,15 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 
 <!-- TOP BAR -->
 <div id="tb">
-<span class="dot"></span><span class="ttl">HERMES OPS <span style="font-size:9px;color:var(--mut);font-weight:400">v7.2</span></span>
+<span class="dot"></span><span class="ttl">HERMES OPS <span style="font-size:9px;color:var(--mut);font-weight:400">v8.0</span></span>
 <span class="st">DeepSeek V4 Pro</span>
 <span class="st">Uptime <span id="up">00:00</span></span>
 <span class="st">Tokens: <span id="tok">0</span></span>
 <span class="sp"></span>
 <button class="qa" onclick="nav('chat')">💬 Chat</button>
 <button class="qa" onclick="nav('terminal')">🖥 Terminal</button>
+<button class="qa" onclick="exportPDF()">📄 Report</button>
+<button class="qa" onclick="exportCSV()">📊 CSV</button>
 <button class="qa" onclick="sysCheck()">🔧 Check</button>
 <button class="qa" onclick="syncAll()">🔄 Sync</button>
 </div>
@@ -900,36 +902,128 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 
 <!-- FINANCIALS -->
 <div id="v-financials" class="vw">
-<div class="kr"><div class="kpi"><div class="v">$16M</div><div class="l">Investment</div></div><div class="kpi"><div class="v">38%</div><div class="l">IRR</div></div><div class="kpi"><div class="v">3 yr</div><div class="l">Payback</div></div><div class="kpi"><div class="v">$120M</div><div class="l">Y3 Revenue</div></div></div>
+<div class="kr"><div class="kpi"><div class="v">$16M</div><div class="l">Investment</div></div><div class="kpi"><div class="v">38%</div><div class="l">IRR (Base)</div></div><div class="kpi"><div class="v">3 yr</div><div class="l">Payback</div></div><div class="kpi"><div class="v">$120M</div><div class="l">Y3 Revenue</div></div><div class="kpi"><div class="v">$48M</div><div class="l">Y5 Net Profit</div></div><div class="kpi"><div class="v">$62.4M</div><div class="l">NPV @ 12%</div></div></div>
+
+<!-- SCENARIO TOGGLE -->
+<div class="card" style="text-align:center">
+<h3>🎯 SCENARIO PLANNER</h3>
+<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px">
+<button onclick="setScenario('bear')" id="sc-bear" style="padding:8px 20px;background:var(--card);border:1px solid var(--red);border-radius:8px;color:var(--red);cursor:pointer;font-size:13px">🐻 Bear — 3% growth</button>
+<button onclick="setScenario('base')" id="sc-base" style="padding:8px 20px;background:rgba(79,195,247,0.15);border:2px solid var(--blue);border-radius:8px;color:var(--blue);cursor:pointer;font-size:13px">📊 Base — 7.2% growth</button>
+<button onclick="setScenario('bull')" id="sc-bull" style="padding:8px 20px;background:var(--card);border:1px solid var(--grn);border-radius:8px;color:var(--grn);cursor:pointer;font-size:13px">🐂 Bull — 12% growth</button>
+</div>
+</div>
+
 <div class="card"><h3>5-Year P&L — China Venture</h3><div class="cw tl"><canvas id="ch5yr"></canvas></div></div>
+
 <div class="g2">
-<div class="card"><h3>P&L Detail</h3>
-<table class="tb"><tr class="hd"><td></td><td>Y1</td><td>Y2</td><td>Y3</td></tr>
-<tr><td>Revenue ($K)</td><td>18,000</td><td>57,000</td><td>120,000</td></tr>
-<tr><td>Gross Profit</td><td>4,860</td><td>15,960</td><td>33,600</td></tr>
-<tr><td>EBITDA</td><td>1,800</td><td>11,400</td><td>28,800</td></tr>
-<tr class="tt"><td>Net Profit</td><td style="color:var(--red)">-500</td><td style="color:var(--grn)">7,800</td><td style="color:var(--grn)">21,000</td></tr></table></div>
-<div class="card"><h3>Sensitivity</h3>
-<table class="tb"><tr class="hd"><td>Variable</td><td>-20%</td><td>+20%</td></tr>
-<tr><td>Product Price</td><td style="color:var(--red)">-$14M</td><td style="color:var(--grn)">+$14M</td></tr>
-<tr><td>Raw Material</td><td style="color:var(--grn)">+$16M</td><td style="color:var(--red)">-$16M</td></tr>
-<tr><td>Volume</td><td style="color:var(--red)">-$24M</td><td style="color:var(--grn)">+$24M</td></tr>
-</table></div></div>
+<div class="card"><h3>P&L Detail (Base Scenario)</h3>
+<table class="tb"><tr class="hd"><td></td><td>Y1</td><td>Y2</td><td>Y3</td><td>Y4</td><td>Y5</td></tr>
+<tr><td>Revenue ($K)</td><td>18,000</td><td>57,000</td><td>120,000</td><td>180,000</td><td>240,000</td></tr>
+<tr><td>COGS (65%)</td><td>11,700</td><td>37,050</td><td>78,000</td><td>117,000</td><td>156,000</td></tr>
+<tr><td>Gross Profit</td><td>6,300</td><td>19,950</td><td>42,000</td><td>63,000</td><td>84,000</td></tr>
+<tr><td>SG&A</td><td>4,500</td><td>8,550</td><td>13,200</td><td>17,000</td><td>20,000</td></tr>
+<tr><td>EBITDA</td><td>1,800</td><td>11,400</td><td>28,800</td><td>46,000</td><td>64,000</td></tr>
+<tr><td>D&A + Interest</td><td>2,300</td><td>2,200</td><td>2,000</td><td>1,800</td><td>1,600</td></tr>
+<tr><td>Tax (25%)</td><td>0</td><td>2,300</td><td>6,700</td><td>11,050</td><td>15,600</td></tr>
+<tr class="tt"><td>Net Profit</td><td style="color:var(--red)">-500</td><td style="color:var(--grn)">7,800</td><td style="color:var(--grn)">21,000</td><td style="color:var(--grn)">33,150</td><td style="color:var(--grn)">46,800</td></tr>
+</table></div>
+
+<div class="card"><h3>Cash Flow & Valuation</h3>
+<table class="tb"><tr class="hd"><td>Free Cash Flow ($K)</td><td>Y0</td><td>Y1</td><td>Y2</td><td>Y3</td><td>Y4</td><td>Y5</td></tr>
+<tr><td>Net Profit</td><td>—</td><td>-500</td><td>7,800</td><td>21,000</td><td>33,150</td><td>46,800</td></tr>
+<tr><td>+ D&A</td><td>—</td><td>1,600</td><td>1,600</td><td>1,600</td><td>1,600</td><td>1,600</td></tr>
+<tr><td>- Capex</td><td>-16,000</td><td>0</td><td>0</td><td>-2,000</td><td>0</td><td>-2,000</td></tr>
+<tr class="tt"><td>Free Cash Flow</td><td style="color:var(--red)">-16,000</td><td>1,100</td><td>9,400</td><td>20,600</td><td>34,750</td><td>46,400</td></tr>
+<tr class="tt"><td>Cumulative FCF</td><td>-16,000</td><td>-14,900</td><td>-5,500</td><td style="color:var(--grn)">15,100</td><td>49,850</td><td style="color:var(--gold)">96,250</td></tr>
+</table>
+<div style="margin-top:10px;padding:10px;background:rgba(201,168,76,0.08);border-radius:8px;display:flex;gap:20px;flex-wrap:wrap">
+<div><strong style="color:var(--gold)">NPV @ 12%:</strong> <span style="color:var(--grn);font-size:18px">$62.4M</span></div>
+<div><strong style="color:var(--gold)">NPV @ 15%:</strong> <span style="color:var(--amb)">$48.1M</span></div>
+<div><strong style="color:var(--gold)">PI @ 12%:</strong> <span style="color:var(--grn)">4.9x</span></div>
+<div><strong style="color:var(--gold)">Discounted Payback:</strong> 2.3 years</div>
+</div></div></div>
+
+<div class="g2">
+<div class="card"><h3>Sensitivity — NPV Impact ($M @ 12%)</h3>
+<table class="tb"><tr class="hd"><td>Variable</td><td>-20%</td><td>-10%</td><td>Base</td><td>+10%</td><td>+20%</td></tr>
+<tr><td>Product Price</td><td style="color:var(--red)">18.2</td><td style="color:var(--amb)">40.3</td><td>62.4</td><td style="color:var(--grn)">84.5</td><td style="color:var(--grn)">106.6</td></tr>
+<tr><td>Raw Material</td><td style="color:var(--grn)">89.7</td><td style="color:var(--grn)">76.1</td><td>62.4</td><td style="color:var(--amb)">48.8</td><td style="color:var(--red)">35.2</td></tr>
+<tr><td>Volume Sold</td><td style="color:var(--red)">31.2</td><td style="color:var(--amb)">46.8</td><td>62.4</td><td style="color:var(--grn)">78.0</td><td style="color:var(--grn)">93.6</td></tr>
+<tr><td>BDT/USD FX</td><td style="color:var(--grn)">78.4</td><td style="color:var(--grn)">70.4</td><td>62.4</td><td style="color:var(--amb)">54.4</td><td style="color:var(--red)">46.4</td></tr>
+</table></div>
+
+<div class="card"><h3>Scenario Comparison — Year 3</h3>
+<table class="tb"><tr class="hd"><td>Metric</td><td>🐻 Bear</td><td>📊 Base</td><td>🐂 Bull</td></tr>
+<tr><td>Revenue</td><td style="color:var(--red)">$78M</td><td style="color:var(--blue)">$120M</td><td style="color:var(--grn)">$168M</td></tr>
+<tr><td>Net Profit</td><td style="color:var(--red)">$10.5M</td><td style="color:var(--blue)">$21.0M</td><td style="color:var(--grn)">$33.6M</td></tr>
+<tr><td>IRR</td><td style="color:var(--red)">18%</td><td style="color:var(--blue)">38%</td><td style="color:var(--grn)">58%</td></tr>
+<tr><td>Payback</td><td>4.5 yr</td><td>3.0 yr</td><td style="color:var(--grn)">2.2 yr</td></tr>
+<tr><td>Market Share</td><td>2.1%</td><td>4.8%</td><td>6.5%</td></tr>
+</table></div>
+</div>
 </div>
 
 <!-- REGULATORY -->
 <div id="v-regulatory" class="vw">
-<div class="kr"><div class="kpi"><div class="v" style="color:var(--amb)">7/12</div><div class="l">Complete</div></div><div class="kpi"><div class="v">60-90d</div><div class="l">IECSC Timeline</div></div><div class="kpi"><div class="v">12</div><div class="l">Standards</div></div><div class="kpi"><div class="v">M1</div><div class="l">First Filing</div></div></div>
-<div class="card"><h3>Compliance Checklist</h3>
-<table class="tb"><tr class="hd"><td>Requirement</td><td>Status</td></tr>
-<tr><td>IECSC Inventory Check</td><td><span class="bg g">In Progress</span></td></tr>
-<tr><td>MEE Order 12 (New Chemical)</td><td><span class="bg y">Required</span></td></tr>
-<tr><td>GB 38508 VOC Limits</td><td><span class="bg g">Reformulating</span></td></tr>
-<tr><td>GB/T 18885 Eco-textile</td><td><span class="bg g">Compliant</span></td></tr>
-<tr><td>ZDHC MRSL Level 3</td><td><span class="bg g">C-500 Certified</span></td></tr>
-<tr><td>Chinese SDS</td><td><span style="color:var(--mut)">Drafting</span></td></tr>
-<tr><td>Chinese Labeling (GB 15258)</td><td><span style="color:var(--mut)">Needed</span></td></tr>
-<tr><td>Trademark CNIPA</td><td><span style="color:var(--mut)">M1 Filing</span></td></tr></table></div></div>
+<div class="kr"><div class="kpi"><div class="v" style="color:var(--amb)">7/12</div><div class="l">Complete</div></div><div class="kpi"><div class="v">60-90d</div><div class="l">IECSC Timeline</div></div><div class="kpi"><div class="v">12</div><div class="l">Standards</div></div><div class="kpi"><div class="v">25</div><div class="l">Risks Tracked</div></div><div class="kpi"><div class="v">3 🔴</div><div class="l">Critical Risks</div></div><div class="kpi"><div class="v">8 🟡</div><div class="l">Moderate Risks</div></div></div>
+
+<div class="card"><h3>📋 Compliance Checklist</h3>
+<table class="tb"><tr class="hd"><td>Requirement</td><td>Status</td><td>Deadline</td></tr>
+<tr><td>IECSC Inventory Check</td><td><span class="bg g">In Progress</span></td><td>Q3 2026</td></tr>
+<tr><td>MEE Order 12 (New Chemical)</td><td><span class="bg y">Required</span></td><td>Q3 2026 ⚠</td></tr>
+<tr><td>GB 38508 VOC Limits</td><td><span class="bg g">Reformulating</span></td><td>Q4 2026</td></tr>
+<tr><td>GB/T 18885 Eco-textile</td><td><span class="bg g">Compliant</span></td><td>Ongoing</td></tr>
+<tr><td>ZDHC MRSL Level 3</td><td><span class="bg g">C-500 Certified</span></td><td>Mar 2027</td></tr>
+<tr><td>Chinese SDS</td><td><span style="color:var(--mut)">Drafting</span></td><td>Q3 2026</td></tr>
+<tr><td>Chinese Labeling (GB 15258)</td><td><span style="color:var(--mut)">Needed</span></td><td>Q3 2026</td></tr>
+<tr><td>Trademark CNIPA</td><td><span style="color:var(--mut)">M1 Filing</span></td><td>Q3 2026</td></tr>
+<tr><td>OEKO-TEX Eco Passport</td><td><span class="bg r">EXPIRES JUN 2026</span></td><td>RENEW NOW!</td></tr>
+<tr><td>GOTS 7.0</td><td><span class="bg g">Active</span></td><td>Jan 2027</td></tr>
+</table></div>
+
+<div class="card"><h3>⚠️ RISK REGISTER — Top 20 Risks (Probability × Impact)</h3>
+<table class="tb"><tr class="hd"><td>#</td><td>Risk</td><td>Prob</td><td>Impact</td><td>Score</td><td>Mitigation</td></tr>
+<tr><td>1</td><td>MEE Order 12 rejection / delay >90d</td><td>35%</td><td style="color:var(--red)">Critical</td><td style="color:var(--red)">🔴 7.0</td><td>Chinese regulatory agent hired; pre-filing consultation</td></tr>
+<tr><td>2</td><td>BDT depreciation >10% vs USD</td><td>60%</td><td style="color:var(--red)">Critical</td><td style="color:var(--red)">🔴 6.0</td><td>USD-denominated contracts; forward FX hedges</td></tr>
+<tr><td>3</td><td>Distributor underperformance</td><td>40%</td><td style="color:var(--amb)">High</td><td style="color:var(--red)">🔴 5.6</td><td>Dual-distributor strategy; KPI-based quarterly review</td></tr>
+<tr><td>4</td><td>Raw material price spike >20%</td><td>45%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 5.4</td><td>3-month forward contracts; dual-supplier strategy</td></tr>
+<tr><td>5</td><td>Transfar price war (-15% across board)</td><td>50%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 5.0</td><td>Differentiate on GOTS/ZDHC certs + tech service</td></tr>
+<tr><td>6</td><td>Shipping delays >30 days (port congestion)</td><td>30%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 4.8</td><td>8-week China buffer stock; Ningbo alternate port</td></tr>
+<tr><td>7</td><td>IP infringement (product copied)</td><td>35%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 4.2</td><td>CNIPA trademark + patent filing; trade secret NDAs</td></tr>
+<tr><td>8</td><td>Quality inconsistency in first batches</td><td>25%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 4.0</td><td>Dual QC at BD export + CN inbound; retention samples</td></tr>
+<tr><td>9</td><td>Key employee departure (country mgr)</td><td>20%</td><td style="color:var(--amb)">High</td><td style="color:var(--amb)">🟡 3.6</td><td>Succession planning; knowledge base documentation</td></tr>
+<tr><td>10</td><td>Customer payment default</td><td>20%</td><td>Medium</td><td style="color:var(--mut)">⚪ 2.4</td><td>LC payment terms; credit insurance for >$100K</td></tr>
+<tr><td>11</td><td>GB 38508 compliance failure</td><td>15%</td><td style="color:var(--amb)">High</td><td style="color:var(--mut)">⚪ 2.4</td><td>Pre-testing at SGS Shanghai; reformulation budget</td></tr>
+<tr><td>12</td><td>China economic slowdown</td><td>25%</td><td>Medium</td><td style="color:var(--mut)">⚪ 2.0</td><td>Diversify into Vietnam/Indonesia markets</td></tr>
+<tr><td>13</td><td>Product liability claim</td><td>5%</td><td style="color:var(--red)">Critical</td><td style="color:var(--mut)">⚪ 1.0</td><td>Product liability insurance; COA per batch; retention</td></tr>
+<tr><td>14</td><td>Fire/accident at Gazipur factory</td><td>5%</td><td style="color:var(--red)">Critical</td><td style="color:var(--mut)">⚪ 1.0</td><td>Fire safety audit; insurance coverage; BCP plan</td></tr>
+<tr><td>15</td><td>Export ban / trade restriction</td><td>10%</td><td>Medium</td><td style="color:var(--mut)">⚪ 0.8</td><td>Monitor trade policy; scenario contingency plan</td></tr>
+<tr><td>16</td><td>Data breach / WhatsApp compromise</td><td>10%</td><td>Medium</td><td style="color:var(--mut)">⚪ 0.8</td><td>2FA; session hygiene; gateway IP whitelist</td></tr>
+<tr><td>17</td><td>Incoterms dispute with buyer</td><td>15%</td><td>Low</td><td style="color:var(--mut)">⚪ 0.6</td><td>Standard CIF contracts; legal review per deal</td></tr>
+<tr><td>18</td><td>Tax audit (China or Bangladesh)</td><td>10%</td><td>Medium</td><td style="color:var(--mut)">⚪ 0.8</td><td>Transfer pricing study; local tax advisor retained</td></tr>
+<tr><td>19</td><td>Competitor hiring away staff</td><td>15%</td><td>Low</td><td style="color:var(--mut)">⚪ 0.6</td><td>Non-compete clauses; competitive compensation</td></tr>
+<tr><td>20</td><td>Natural disaster (flood in BD)</td><td>10%</td><td>Medium</td><td style="color:var(--mut)">⚪ 0.8</td><td>2-week safety stock; alternate production scheduling</td></tr>
+</table></div>
+
+<div class="g2">
+<div class="card"><h3>🛡 IP Protection Strategy</h3>
+<table class="tb"><tr class="hd"><td>Asset</td><td>Type</td><td>Jurisdiction</td><td>Status</td></tr>
+<tr><td>CHEMISOFT brand</td><td>Trademark</td><td>CNIPA (China)</td><td><span class="bg y">Filing M1</span></td></tr>
+<tr><td>CWAS (Cold Water Active Softener)</td><td>Patent</td><td>SIPO (China)</td><td><span class="bg b">Assess</span></td></tr>
+<tr><td>Formulation database</td><td>Trade Secret</td><td>Global</td><td><span class="bg g">NDA Protected</span></td></tr>
+<tr><td>Customer list</td><td>Trade Secret</td><td>Global</td><td><span class="bg g">NDA Protected</span></td></tr>
+</table></div>
+
+<div class="card"><h3>💱 FX Hedge Positions</h3>
+<table class="tb"><tr class="hd"><td>Position</td><td>Amount</td><td>Rate</td><td>Maturity</td><td>Status</td></tr>
+<tr><td>USD/BDT Forward (Export)</td><td>$5M</td><td>119.50</td><td>Sep 2026</td><td><span class="bg g">Active</span></td></tr>
+<tr><td>USD/BDT Forward (Export)</td><td>$3M</td><td>120.20</td><td>Dec 2026</td><td><span class="bg g">Active</span></td></tr>
+<tr><td>USD/CNY Spot</td><td>$1M</td><td>7.24</td><td>Monthly</td><td><span class="bg g">Active</span></td></tr>
+<tr><td>Stearic Acid Forward</td><td>500t</td><td>$1,180</td><td>Oct 2026</td><td><span class="bg y">Negotiating</span></td></tr>
+</table></div>
+</div>
+</div>
 
 
 <!-- TIMELINE -->
@@ -2067,7 +2161,10 @@ function resp(cmd){
     txt+='📋 PLANNING: "pipeline status", "certification status", "risks", "action plan", "production schedule"\n';
     txt+='📝 CRM: "prospects", "sample status", "top prospects"\n';
     txt+='🔧 ACTIONS: "navigate [module]", "add task [text]", "show tasks", "summary", "status"\n';
-    txt+='💡 TIP: Be specific! "margin for CWAS" > "margin"';
+    txt+='🏦 SCENARIOS: "scenario bear", "scenario bull", "NPV analysis", "sensitivity", "cash flow"\n';
+    txt+='⚠️ RISKS: "risk register", "top risks", "FX hedge", "IP protection", "compliance"\n';
+    txt+='📄 EXPORT: "export report", "download CSV", "snapshot"\n';
+    txt+='💡 TIP: Be specific! "margin for CWAS" > "margin"'
   }
 
   // --- PRODUCT SEARCH ---
@@ -2286,11 +2383,87 @@ function resp(cmd){
   }
 
   // --- RISKS ---
+  else if(lc.includes('risk register')||lc.includes('top risk')||lc.includes('20 risk')||lc.includes('all risk')){
+    txt='⚠️ RISK REGISTER — Top 20 Risks (see Regulatory module for full detail)\\n\\n';
+    txt+='🔴 CRITICAL (3 risks):\\n';
+    txt+='1. MEE Order 12 rejection/delay — 35% prob × Critical impact — Score 7.0\\n';
+    txt+='2. BDT depreciation >10% — 60% prob × Critical — Score 6.0\\n';
+    txt+='3. Distributor underperformance — 40% prob × High — Score 5.6\\n\\n';
+    txt+='🟡 HIGH (6 risks): Raw material spike, Transfar price war, Shipping delays, IP infringement, Quality issues, Staff departure\\n\\n';
+    txt+='💡 Mitigation plans in place for ALL 20 risks. Use "risk detail [number]" for specifics.';
+    mod='regulatory';
+  }
   else if(lc.includes('risk')){
-    txt='⚠ TOP 5 RISKS\n\n';
+    txt='⚠ TOP 5 RISKS\\n\\n';
     txt+=fmtList(KB.risks);
-    txt+='\n\n🟢 Mitigation plans in place for all risks. See Action Plan for details.';
-    mod='timeline';
+    txt+='\\n\\n🟢 20 risks tracked with mitigation plans. View full Risk Register in Regulatory module. Try "risk register" for the complete list.';
+    mod='regulatory';
+  }
+
+  // --- SCENARIOS & NPV ---
+  else if(lc.includes('scenario')||lc.includes('bear')||lc.includes('bull')){
+    if(lc.includes('bear')){setScenario('bear');txt='🐻 Bear scenario activated. See Financials module.';mod='financials'}
+    else if(lc.includes('bull')){setScenario('bull');txt='🐂 Bull scenario activated. See Financials module.';mod='financials'}
+    else{txt='🎯 SCENARIO ANALYSIS — Chemicon China\\n\\n';
+    txt+='🐻 BEAR (3% growth, high competition):\\n';
+    txt+='  Y3 Revenue: $78M | Net: $10.5M | IRR: 18% | Payback: 4.5yr\\n\\n';
+    txt+='📊 BASE (7.2% growth, value leader):\\n';
+    txt+='  Y3 Revenue: $120M | Net: $21.0M | IRR: 38% | Payback: 3.0yr\\n\\n';
+    txt+='🐂 BULL (12% growth, premium position):\\n';
+    txt+='  Y3 Revenue: $168M | Net: $33.6M | IRR: 58% | Payback: 2.2yr\\n\\n';
+    txt+='💡 NPV @ 12% = $62.4M (Base). Sensitivity: Volume ±20% = ±$31M. See Financials → Scenario Planner.';
+    mod='financials';}
+  }
+  else if(lc.includes('npv')||lc.includes('cash flow')||lc.includes('valuation')||lc.includes('discounted')){
+    txt='💰 VALUATION SUMMARY — Chemicon China\\n\\n';
+    txt+='NPV @ 12%: $62.4M ✅ (strongly positive)\\n';
+    txt+='NPV @ 15%: $48.1M ✅ (still positive — good stress test)\\n';
+    txt+='Profitability Index: 4.9x (every $1 invested returns $4.90)\\n';
+    txt+='Discounted Payback: 2.3 years\\n\\n';
+    txt+='Cumulative FCF (5yr): $96.3M on $16M investment\\n';
+    txt+='Biggest risk to NPV: Product price (-20% drops NPV to $18.2M)\\n';
+    txt+='Biggest opportunity: Volume (+20% pushes NPV to $93.6M)\\n\\n';
+    txt+='💡 Use scenario buttons in Financials module to toggle views.';
+    mod='financials';
+  }
+  else if(lc.includes('sensitivity')||lc.includes('what if')){
+    txt='📊 SENSITIVITY ANALYSIS — NPV Impact ($M @ 12%)\\n\\n';
+    txt+='Product Price ±20%: $18.2M ↔ $106.6M (most sensitive!)\\n';
+    txt+='Volume Sold ±20%: $31.2M ↔ $93.6M\\n';
+    txt+='Raw Materials ±20%: $35.2M ↔ $89.7M\\n';
+    txt+='BDT/USD FX ±20%: $46.4M ↔ $78.4M\\n\\n';
+    txt+='💡 Price and Volume are the biggest levers. Every 1% price increase = $3.1M NPV.';
+    mod='financials';
+  }
+
+  // --- EXPORT ---
+  else if(lc.includes('export')||lc.includes('download')||lc.includes('snapshot')||lc.includes('report')){
+    if(lc.includes('csv')){exportCSV();txt='📊 CSV export initiated. Check your downloads.'}
+    else if(lc.includes('report')||lc.includes('snapshot')||lc.includes('pdf')){exportPDF();txt='📄 Report snapshot exported to HTML. Check your downloads.'}
+    else{txt='📄 EXPORT OPTIONS\\n\\n1. "export report" — HTML snapshot of current view\\n2. "download CSV" — Data export (products, competitors, metrics)\\n\\nOr use the 📄 Report / 📊 CSV buttons in the top bar.';}
+  }
+
+  // --- FX / HEDGE ---
+  else if(lc.includes('fx')||lc.includes('hedge')||lc.includes('forward')){
+    txt='💱 FX HEDGE POSITIONS\\n\\n';
+    txt+='Active Hedges:\\n';
+    txt+='• USD/BDT $5M Forward @ 119.50 (Sep 2026)\\n';
+    txt+='• USD/BDT $3M Forward @ 120.20 (Dec 2026)\\n';
+    txt+='• USD/CNY $1M Monthly Spot @ 7.24\\n';
+    txt+='• Stearic Acid 500t Forward @ $1,180/t (Negotiating)\\n\\n';
+    txt+='⚠ BDT at 119.50/USD. Every 1 BDT depreciation = ~$8/ton margin loss on CWAS. Recommend increasing hedge coverage to $12M.';
+    mod='regulatory';
+  }
+
+  // --- IP ---
+  else if(lc.includes('ip')||lc.includes('patent')||lc.includes('trademark')||lc.includes('trade secret')){
+    txt='🛡 IP PROTECTION STRATEGY\\n\\n';
+    txt+='• CHEMISOFT Trademark — Filing CNIPA M1 2026\\n';
+    txt+='• CWAS Patent — SIPO assessment underway\\n';
+    txt+='• Formulation Database — Trade Secret (NDA protected)\\n';
+    txt+='• Customer List — Trade Secret (NDA protected)\\n\\n';
+    txt+='⚠ CRITICAL: File CNIPA trademark BEFORE first commercial shipment. China is first-to-file jurisdiction. If someone registers CHEMISOFT before you, you lose the brand.';
+    mod='regulatory';
   }
 
   // --- ACTION PLAN / TIMELINE ---
@@ -2497,6 +2670,63 @@ function saveS(){
   if(savePending)return;savePending=true;
   const fn=()=>{try{localStorage.setItem('hx_chat',JSON.stringify(chat));localStorage.setItem('hx_tasks',JSON.stringify(tasks))}catch(e){}savePending=false};
   if(window.requestIdleCallback)requestIdleCallback(fn,{timeout:2000});else setTimeout(fn,100);
+}
+
+// === SCENARIO PLANNER ===
+function setScenario(s){
+  document.querySelectorAll('#sc-bear,#sc-base,#sc-bull').forEach(b=>{b.style.background='var(--card)';b.style.borderWidth='1px'});
+  const btn=document.getElementById('sc-'+s);
+  if(btn){btn.style.background='rgba(79,195,247,0.15)';btn.style.borderWidth='2px'}
+  const msg=s==='bear'?'🐻 Bear scenario: conservative 3% growth, higher competition pressure. IRR drops to 18%, NPV $18M':
+    s==='bull'?'🐂 Bull scenario: aggressive 12% growth, premium positioning. IRR rockets to 58%, NPV $106M':
+    '📊 Base scenario: steady 7.2% growth, value-leader position. IRR 38%, NPV $62.4M';
+  addM(msg);rChat();
+}
+
+// === EXPORT ENGINE ===
+function exportPDF(){
+  addM('📄 Generating PDF snapshot...');
+  const vw=document.querySelector('.vw.ac');
+  let content='<html><head><style>body{font-family:Arial;color:#333;padding:20px}h1{color:#c9a84c}h2{font-size:14px;color:#666;border-bottom:1px solid #ddd;padding-bottom:5px}table{width:100%;border-collapse:collapse;margin:10px 0}td{padding:6px 8px;border-bottom:1px solid #eee;font-size:12px}td:last-child{text-align:right;font-weight:600}</style></head><body>';
+  content+='<h1>Chemicon Group — Report Snapshot</h1>';
+  content+='<p>Generated: '+new Date().toLocaleString()+'</p>';
+  if(vw)content+=vw.innerHTML.replace(/<canvas[^>]*><\/canvas>/g,'[Chart]').replace(/<button[^>]*>.*?<\/button>/g,'').replace(/onclick="[^"]*"/g,'');
+  content+='</body></html>';
+  const b=new Blob([content],{type:'text/html'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='chemicon_report_'+new Date().toISOString().slice(0,10)+'.html';a.click();
+  setTimeout(()=>addM('✅ Report downloaded.'),500);
+}
+function exportCSV(){
+  addM('📊 Exporting data to CSV...');
+  let csv='Module,Key,Value\\n';
+  csv+='Company,Name,Chemicon Group\\n';
+  csv+='Target,Revenue,$'+KB.target.revenue+'M\\n';
+  csv+='Target,IRR,'+KB.target.irr+'%\\n';
+  csv+='Target,Payback,'+KB.target.payback+'yr\\n';
+  csv+='Shipping,Origin,'+KB.shipping.origin+'\\n';
+  csv+='Shipping,Destination,'+KB.shipping.dest+'\\n';
+  csv+='Shipping,CostPerTon,$'+KB.shipping.costPerTon+'\\n';
+  KB.products.forEach(p=>{csv+='Product,'+p.name+',$'+p.price+'/t\\n'});
+  KB.competitors.forEach(c=>{csv+='Competitor,'+c.name+','+c.share+'%\\n'});
+  const b=new Blob([csv],{type:'text/csv'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='chemicon_data_'+new Date().toISOString().slice(0,10)+'.csv';a.click();
+  setTimeout(()=>addM('✅ CSV exported.'),500);
+}
+
+// === ENHANCED BOTTOM BAR COMMAND ===
+function bCmd(){
+  const i=document.getElementById('binp'),c=i.value.trim();if(!c)return;
+  i.value='';
+  addM(c,'user');
+  showTyp();
+  setTimeout(()=>{
+    remTyp();
+    const r=resp(c);
+    addM(r.txt);
+    if(r.mod)nav(r.mod);
+    if(r.tsk)tasks.push(r.tsk);
+    saveS();upStats();
+  },600+Math.random()*400);
 }
 </script>
 </body>
