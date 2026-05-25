@@ -160,6 +160,18 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 <!-- SIDEBAR -->
 <div id="sb">
 
+<div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>💼 CHEMICON CHINA</div>
+<div class="nl">
+<div class="ni" onclick="nav('exec')" data-v="exec">🏠 Executive Overview</div>
+<div class="ni" onclick="nav('products')" data-v="products">📦 Products & R&D</div>
+<div class="ni" onclick="nav('market')" data-v="market">🌏 Market Intelligence</div>
+<div class="ni" onclick="nav('competitors')" data-v="competitors">🕵️ Competitors</div>
+<div class="ni" onclick="nav('pricing')" data-v="pricing">💰 Cost & Pricing</div>
+<div class="ni" onclick="nav('financials')" data-v="financials">📈 Financials</div>
+<div class="ni" onclick="nav('regulatory')" data-v="regulatory">📋 Regulatory</div>
+<div class="ni" onclick="nav('timeline')" data-v="timeline">🗂 Action Plan</div>
+</div>
+
 <div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>🤖 HERMES AGENT</div>
 <div class="nl">
 <div class="ni ac" onclick="nav('chat')" data-v="chat">💬 AI Chat</div>
@@ -189,20 +201,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 <div class="ni" onclick="nav('reports')" data-v="reports">📨 Reports</div>
 </div>
 
-<div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>💼 CHEMICON CHINA</div>
-<div class="nl">
-<div class="ni" onclick="nav('exec')" data-v="exec">🏠 Executive Overview</div>
-<div class="ni" onclick="nav('products')" data-v="products">📦 Products & R&D</div>
-<div class="ni" onclick="nav('market')" data-v="market">🌏 Market Intelligence</div>
-<div class="ni" onclick="nav('competitors')" data-v="competitors">🕵️ Competitors</div>
-<div class="ni" onclick="nav('pricing')" data-v="pricing">💰 Cost & Pricing</div>
-<div class="ni" onclick="nav('financials')" data-v="financials">📈 Financials</div>
-<div class="ni" onclick="nav('regulatory')" data-v="regulatory">📋 Regulatory</div>
-<div class="ni" onclick="nav('timeline')" data-v="timeline">🗂 Action Plan</div>
-</div>
-
 <div class="sh" onclick="this.classList.toggle('op')"><span class="ar">▶</span>⚙ SETTINGS</div>
 <div class="nl">
+<div class="ni" onclick="nav('themes')" data-v="themes">🎨 Themes</div>
 <div class="ni" onclick="nav('channels')" data-v="channels">🔗 Channels</div>
 <div class="ni" onclick="nav('models')" data-v="models">⚡ Models</div>
 <div class="ni" onclick="nav('auths')" data-v="auths">🔐 Security</div>
@@ -534,33 +535,49 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 <span style="color:var(--mut)">M12-18</span> <strong>Phase 4:</strong> Scale — $4.75M run-rate, China office<br>
 <span style="color:var(--blue)">M18-30</span> <strong>Phase 5:</strong> $10M Achieved 🎯</div></div></div>
 
+<!-- THEMES -->
+<div id="v-themes" class="vw"><div class="card"><h3>🎨 Theme Selector (6 Built-in)</h3>
+<div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+<div class="theme-opt active" style="background:#080c14;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid var(--gold)" onclick="setTheme('dark',this)" title="Hermes Dark (default)"><div style="color:#c9a84c;text-align:center;padding-top:18px;font-size:9px">Hermes<br>Dark</div></div>
+<div class="theme-opt" style="background:#1a1a2e;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid transparent" onclick="setTheme('nous',this)" title="Nous"><div style="color:#7b68ee;text-align:center;padding-top:18px;font-size:9px">Nous</div></div>
+<div class="theme-opt" style="background:#1a1206;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid transparent" onclick="setTheme('bronze',this)" title="Bronze"><div style="color:#cd7f32;text-align:center;padding-top:18px;font-size:9px">Bronze</div></div>
+<div class="theme-opt" style="background:#1c2128;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid transparent" onclick="setTheme('slate',this)" title="Slate"><div style="color:#7a8a9a;text-align:center;padding-top:18px;font-size:9px">Slate</div></div>
+<div class="theme-opt" style="background:#f0f0f0;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid transparent" onclick="setTheme('light',this)" title="Mono Light"><div style="color:#333;text-align:center;padding-top:18px;font-size:9px">Mono<br>Light</div></div>
+<div class="theme-opt" style="background:#0d0d0d;width:60px;height:60px;border-radius:12px;cursor:pointer;border:3px solid transparent" onclick="setTheme('mono',this)" title="Mono Dark"><div style="color:#888;text-align:center;padding-top:18px;font-size:9px">Mono<br>Dark</div></div>
+</div>
+<div style="font-size:14px;color:var(--mut);margin-top:16px">Current: <strong style="color:var(--gold)">Hermes Dark</strong> | Changes apply instantly</div></div></div>
+
 <!-- CHANNELS -->
-<div id="v-channels" class="vw"><div class="card"><h3>Channel Configuration</h3>
-<table class="tb"><tr class="hd"><td>Platform</td><td>Status</td></tr>
-<tr><td>WhatsApp</td><td><span class="bg g">Connected</span></td></tr>
-<tr><td>Telegram</td><td><span style="color:var(--mut)">Not Configured</span></td></tr>
-<tr><td>Discord</td><td><span style="color:var(--mut)">Not Configured</span></td></tr></table></div></div>
+<div id="v-channels" class="vw"><div class="card"><h3>🔗 Channel Configuration (8 Platforms)</h3>
+<table class="tb"><tr class="hd"><td>Platform</td><td>Status</td><td>ID / Handle</td><td>Actions</td></tr>
+<tr><td>WhatsApp</td><td><span class="bg g">Connected</span></td><td>256946569498729</td><td><span style="cursor:pointer;color:var(--red)">Disconnect</span></td></tr>
+<tr><td>Telegram</td><td><span style="color:var(--mut)">Not configured</span></td><td>—</td><td><span style="cursor:pointer;color:var(--blue)">+ Connect</span></td></tr>
+<tr><td>Discord</td><td><span style="color:var(--mut)">Not configured</span></td><td>—</td><td><span style="cursor:pointer;color:var(--blue)">+ Connect</span></td></tr>
+<tr><td>Slack</td><td><span style="color:var(--mut)">Not configured</span></td><td>—</td><td><span style="cursor:pointer;color:var(--blue)">+ Connect</span></td></tr>
+<tr><td>Matrix</td><td><span style="color:var(--mut)">Not configured</span></td><td>—</td><td><span style="cursor:pointer;color:var(--blue)">+ Connect</span></td></tr>
+</table></div></div>
 
 <!-- MODELS -->
-<div id="v-models" class="vw"><div class="card"><h3>Model Management</h3>
-<table class="tb"><tr class="hd"><td>Provider</td><td>Model</td><td>Context</td></tr>
-<tr><td>DeepSeek</td><td>V4 Pro ⬤</td><td>128K</td></tr>
-<tr><td>Anthropic</td><td>Claude Sonnet 4</td><td>200K</td></tr>
-<tr><td>OpenAI</td><td>GPT-4o</td><td>128K</td></tr></table></div></div>
+<div id="v-models" class="vw"><div class="card"><h3>⚡ Model Management</h3>
+<table class="tb"><tr class="hd"><td>Provider</td><td>Model</td><td>Context</td><td>Status</td><td>Actions</td></tr>
+<tr><td>DeepSeek</td><td>V4 Pro ⬤</td><td>128K</td><td><span class="bg g">Active</span></td><td><span style="cursor:pointer;color:var(--mut)">Default</span></td></tr>
+<tr><td>Anthropic</td><td>Claude Sonnet 4</td><td>200K</td><td><span class="bg b">Available</span></td><td><span style="cursor:pointer;color:var(--blue)">Switch</span></td></tr>
+<tr><td>OpenAI</td><td>GPT-4o</td><td>128K</td><td><span class="bg b">Available</span></td><td><span style="cursor:pointer;color:var(--blue)">Switch</span></td></tr>
+<tr><td>OpenRouter</td><td>Various</td><td>Varies</td><td><span style="color:var(--mut)">Inactive</span></td><td><span style="cursor:pointer;color:var(--blue)">+ Add</span></td></tr>
+</table></div></div>
 
 <!-- AUTH -->
-<div id="v-auths" class="vw"><div class="card"><h3>Security</h3>
-<table class="tb"><tr><td>Auth Method</td><td>Password + sessionStorage</td></tr>
-<tr><td>Session Timeout</td><td>Browser close</td></tr>
-<tr><td>Active Codes</td><td>4</td></tr></table></div></div>
+<div id="v-auths" class="vw"><div class="card"><h3>🔐 Security</h3>
+<table class="tb"><tr><td>Auth Method</td><td>Password + sessionStorage</td></tr><tr><td>Session Timeout</td><td>Browser close</td></tr><tr><td>Active Codes</td><td>5 valid codes</td></tr><tr><td>Last Login</td><td>Just now</td></tr></table></div></div>
 
 </div><!-- /mn -->
 </div><!-- /lo -->
 
 <!-- BOTTOM BAR -->
-<div id="bb">
+<div id="bb" style="position:relative">
 <span class="cx">📍 China Expansion</span>
-<input id="binp" placeholder="Quick command... 'Analyze competitors', 'Show financials', 'Update pricing'" onkeydown="if(event.key==='Enter'){bCmd();nav('chat')}">
+<input id="binp" placeholder="Quick command... 'Analyze competitors', 'Show financials', 'Update pricing'" onkeydown="if(event.key==='Enter'){bCmd();nav('chat')}" oninput="autoSuggest()" autocomplete="off">
+<div id="suggestBox" style="display:none;position:absolute;bottom:50px;left:100px;right:14px;background:var(--card);border:1px solid var(--gold);border-radius:8px;max-height:180px;overflow-y:auto;z-index:200;font-size:13px"></div>
 <span id="bfb" style="font-size:11px;color:var(--mut)">Ready</span>
 </div>
 
@@ -587,6 +604,7 @@ function init(){
   document.getElementById('tok').textContent='847K';
   if(!chat.length)greet();
   drawCharts();
+  const t=localStorage.getItem('hx_theme');if(t&&t!=='dark')setTheme(t);
 }
 
 // === NAV ===
@@ -645,7 +663,33 @@ function resp(cmd){
 }
 
 // === BOTTOM CMD ===
-function bCmd(){const i=document.getElementById('binp'),c=i.value.trim();if(!c)return;i.value='';const r=resp(c);addM(c,'user');addM(r.txt);if(r.mod)nav(r.mod);document.getElementById('bfb').textContent='Ready'}
+function bCmd(){const i=document.getElementById('binp'),c=i.value.trim();if(!c)return;i.value='';document.getElementById('suggestBox').style.display='none';const r=resp(c);addM(c,'user');addM(r.txt);if(r.mod)nav(r.mod);document.getElementById('bfb').textContent='Ready'}
+function autoSuggest(){
+  const i=document.getElementById('binp'),v=i.value.toLowerCase().trim(),sb=document.getElementById('suggestBox');
+  if(v.length<2){sb.style.display='none';return}
+  const all=['analyze competitors','competitor weaknesses','show financials','update pricing','import duty','recalculate margin','add task','show tasks','generate investor brief','show market data','iecsc status','regulatory checklist','product portfolio','executive overview','revenue ramp','cost structure','system health','activity logs','kanban board','agent fleet','channel config','model management','theme','voice notes','ester quat','cationic softener'];
+  const matches=all.filter(s=>s.includes(v)||v.split(' ').some(w=>s.includes(w))).slice(0,8);
+  if(!matches.length){sb.style.display='none';return}
+  sb.innerHTML=matches.map(m=>'<div style="padding:8px 14px;cursor:pointer;border-bottom:1px solid var(--brd)" onclick="document.getElementById(\'binp\').value=\''+m+'\';document.getElementById(\'suggestBox\').style.display=\'none\';document.getElementById(\'binp\').focus()" onmouseover="this.style.background=\'var(--surf)\'" onmouseout="this.style.background=\'transparent\'">💡 '+m+'</div>').join('');
+  sb.style.display='block';
+}
+document.addEventListener('click',function(e){if(!e.target.closest('#bb'))document.getElementById('suggestBox').style.display='none'});
+
+// === THEMES ===
+function setTheme(t,el){
+  const themes={dark:{bg:'#060a12',surf:'#0f1520',card:'#131a28',brd:'#1e3050',txt:'#c8d0dc',gold:'#c9a84c',blue:'#4fc3f7'},
+    nous:{bg:'#0a0a1a',surf:'#12122a',card:'#1a1a3a',brd:'#2a2a5a',txt:'#c0c0e0',gold:'#7b68ee',blue:'#4fc3f7'},
+    bronze:{bg:'#1a1206',surf:'#241a0a',card:'#2a1e0e',brd:'#4a3a20',txt:'#d0c8b8',gold:'#cd7f32',blue:'#4fc3f7'},
+    slate:{bg:'#1c2128',surf:'#242a34',card:'#2a303c',brd:'#3a4454',txt:'#c0c8d0',gold:'#7a8a9a',blue:'#4fc3f7'},
+    light:{bg:'#f0f2f5',surf:'#fff',card:'#fff',brd:'#d0d5dd',txt:'#1a1a2e',gold:'#b8860b',blue:'#0077cc'},
+    mono:{bg:'#0d0d0d',surf:'#1a1a1a',card:'#1a1a1a',brd:'#333',txt:'#aaa',gold:'#888',blue:'#4fc3f7'}};
+  const th=themes[t];if(!th)return;
+  document.documentElement.style.setProperty('--bg',th.bg);document.documentElement.style.setProperty('--surf',th.surf);
+  document.documentElement.style.setProperty('--card',th.card);document.documentElement.style.setProperty('--brd',th.brd);
+  document.documentElement.style.setProperty('--txt',th.txt);document.documentElement.style.setProperty('--gold',th.gold);
+  document.documentElement.style.setProperty('--blue',th.blue);
+  document.querySelectorAll('.theme-opt').forEach(e=>e.style.border='3px solid transparent');
+  if(el)el.style.border='3px solid var(--gold)';addM('🎨 Theme changed to '+t+'.');localStorage.setItem('hx_theme',t);}
 
 // === TERMINAL ===
 function runTerm(){
