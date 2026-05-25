@@ -292,6 +292,9 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <button class="mi2" onclick="mobNav('suppliers')">🏗 Supplier Comparison</button>
 <button class="mi2" onclick="mobNav('crm')">📝 CRM Lite</button>
 <button class="mi2" onclick="mobNav('livemetrics')">📊 Live Metrics</button>
+<button class="mi2" onclick="mobNav('production')">🏭 Production</button>
+<button class="mi2" onclick="mobNav('quality')">🔬 Quality Control</button>
+<button class="mi2" onclick="mobNav('randd')">🔬 R&D Pipeline</button>
 
 <button class="mi2" onclick="mobNav('kanban')">📋 Kanban Board</button>
 <div class="mh" style="margin-top:12px">⚡ System</div>
@@ -353,6 +356,16 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="ni" onclick="nav('crm')" data-v="crm">📝 CRM Lite</div>
 <div class="ni" onclick="nav('livemetrics')" data-v="livemetrics">📊 Live Metrics</div>
 </div>
+
+<div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>🏭 MANUFACTURING</div>
+<div class="nl">
+<div class="ni" onclick="nav('production')" data-v="production">🏭 Production Planning</div>
+<div class="ni" onclick="nav('quality')" data-v="quality">🔬 Quality Control</div>
+<div class="ni" onclick="nav('randd')" data-v="randd">🔬 R&D Pipeline</div>
+<div class="ni" onclick="nav('certifications')" data-v="certifications">🏆 Certifications</div>
+<div class="ni" onclick="nav('documents')" data-v="documents">📄 Documents</div>
+</div>
+
 
 
 <div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>🤖 HERMES AGENT</div>
@@ -1208,6 +1221,178 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <span style="color:var(--mut)">May 15</span> <span style="color:var(--grn)">[Sample]</span> Shaoxing Yongli — 10 kg CWAS Flakes sample sent via DHL.
 </div></div>
 </div>
+</div>
+
+
+<!-- QUALITY CONTROL -->
+<div id="v-quality" class="vw">
+<div class="kr"><div class="kpi"><div class="v">98.2%</div><div class="l">Pass Rate (30d)</div></div><div class="kpi"><div class="v">247</div><div class="l">Batches Tested</div></div><div class="kpi"><div class="v">4</div><div class="l">Failed Batches</div></div><div class="kpi"><div class="v">0</div><div class="l">Customer Complaints</div></div><div class="kpi"><div class="v">12</div><div class="l">QC Parameters</div></div><div class="kpi"><div class="v">33</div><div class="l">Products Monitored</div></div></div>
+
+<div class="card"><h3>🔬 QC Test Parameters — Per Product Category</h3>
+<table class="tb"><tr class="hd"><td>Parameter</td><td>Cationic (CWAS)</td><td>Silicone (MASC)</td><td>LMF Series</td><td>Anti-Crease</td><td>Frequency</td></tr>
+<tr><td>Active Content (%)</td><td>88-92%</td><td>30-35%</td><td>95-98%</td><td>98-100%</td><td>Every batch</td></tr>
+<tr><td>pH (5% solution)</td><td>4.5-5.5</td><td>5.0-6.0</td><td>6.5-7.5</td><td>6.0-7.0</td><td>Every batch</td></tr>
+<tr><td>Appearance</td><td>White flake</td><td>Milky emulsion</td><td>Clear liquid</td><td>Clear liquid</td><td>Every batch</td></tr>
+<tr><td>Viscosity (cP @25°C)</td><td>N/A</td><td>200-800</td><td>50-200</td><td>100-300</td><td>Every batch</td></tr>
+<tr><td>Solubility (in water)</td><td>Hot water</td><td>Cold dispersible</td><td>Instant</td><td>Instant</td><td>Weekly</td></tr>
+<tr><td>Ionic Character</td><td>Cationic</td><td>Non-ionic</td><td>Anionic</td><td>Non-ionic</td><td>Monthly</td></tr>
+<tr><td>Biodegradability (OECD 301B)</td><td>>95%</td><td>>90%</td><td>>97%</td><td>>95%</td><td>Quarterly</td></tr>
+<tr><td>Heavy Metals (ppm)</td><td><10</td><td><10</td><td><5</td><td><5</td><td>Quarterly</td></tr>
+<tr><td>APEO Content</td><td>ND</td><td>ND</td><td>ND</td><td>ND</td><td>Quarterly</td></tr>
+<tr><td>Microbial Count (CFU/g)</td><td><100</td><td><100</td><td><100</td><td><100</td><td>Monthly</td></tr>
+<tr><td>Color (Gardner)</td><td><3</td><td><2</td><td><2</td><td><1</td><td>Every batch</td></tr>
+<tr><td>Storage Stability</td><td>12 months</td><td>6 months</td><td>12 months</td><td>12 months</td><td>Per lot</td></tr>
+</table></div>
+
+<div class="g2">
+<div class="card"><h3>📊 Recent Batch Test Results</h3>
+<table class="tb"><tr class="hd"><td>Batch ID</td><td>Product</td><td>Date</td><td>Result</td><td>Deviation</td></tr>
+<tr><td>B-2026-0525-01</td><td>CWAS Flakes</td><td>May 25</td><td><span class="bg g">PASS</span></td><td>—</td></tr>
+<tr><td>B-2026-0524-03</td><td>CHEMISIL MASC</td><td>May 24</td><td><span class="bg g">PASS</span></td><td>—</td></tr>
+<tr><td>B-2026-0524-02</td><td>CWMS 161</td><td>May 24</td><td><span class="bg g">PASS</span></td><td>—</td></tr>
+<tr><td>B-2026-0523-04</td><td>LMF PDR 98</td><td>May 23</td><td><span class="bg g">PASS</span></td><td>—</td></tr>
+<tr><td>B-2026-0523-01</td><td>CWAS Cold Prill</td><td>May 23</td><td><span class="bg y">PASS*</span></td><td style="color:var(--amb)">pH 4.2 (spec 4.0-5.0)</td></tr>
+<tr><td>B-2026-0522-02</td><td>CHEMIFIX NFC</td><td>May 22</td><td><span class="bg g">PASS</span></td><td>—</td></tr>
+</table></div>
+
+<div class="card"><h3>📋 Certificate of Analysis (COA) — Template</h3>
+<table class="tb"><tr class="hd"><td>Section</td><td>Content</td></tr>
+<tr><td>Product</td><td>CHEMISOFT CWAS (Flakes) — Cationic Softener</td></tr>
+<tr><td>Batch No.</td><td>B-2026-0525-01</td></tr>
+<tr><td>Mfg Date</td><td>25 May 2026 | Expiry: 25 May 2027</td></tr>
+<tr><td>Active Content</td><td>90.2% (Spec: 88-92%) ✅</td></tr>
+<tr><td>pH (5% sol)</td><td>4.8 (Spec: 4.5-5.5) ✅</td></tr>
+<tr><td>Appearance</td><td>White flake ✅</td></tr>
+<tr><td>Certifications</td><td>GOTS 7.0 | ZDHC L3 | OEKO-TEX</td></tr>
+<tr><td>QC Approval</td><td>Md. Rahman — Quality Manager</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- PRODUCTION -->
+<div id="v-production" class="vw">
+<div class="kr"><div class="kpi"><div class="v">8,040</div><div class="l">Annual Capacity (t)</div></div><div class="kpi"><div class="v">72%</div><div class="l">Utilization Rate</div></div><div class="kpi"><div class="v">3</div><div class="l">Production Lines</div></div><div class="kpi"><div class="v">18</div><div class="l">Active SKUs/Month</div></div><div class="kpi"><div class="v">85%</div><div class="l">Yield Rate</div></div><div class="kpi"><div class="v">14d</div><div class="l">Avg Lead Time</div></div></div>
+
+<div class="g2">
+<div class="card"><h3>🏭 Production Lines — Capacity</h3>
+<table class="tb"><tr class="hd"><td>Line</td><td>Products</td><td>Capacity (t/mo)</td><td>Current Load</td><td>Utilization</td></tr>
+<tr><td><strong>Line 1: Softeners</strong></td><td>CWAS, CWMS, CSLC, NSLN</td><td>350</td><td>280t</td><td><span class="bg g">80%</span></td></tr>
+<tr><td><strong>Line 2: Silicones</strong></td><td>HS 200, 1800 CON, MASC</td><td>180</td><td>125t</td><td><span class="bg y">69%</span></td></tr>
+<tr><td><strong>Line 3: Auxiliaries</strong></td><td>LMF, Anti-Crease, Fixing, Enzymes</td><td>140</td><td>95t</td><td><span class="bg g">68%</span></td></tr>
+<tr class="tt"><td><strong>TOTAL</strong></td><td></td><td><strong>670</strong></td><td><strong>500t</strong></td><td><strong>75%</strong></td></tr>
+</table></div>
+
+<div class="card"><h3>📅 Monthly Production Schedule — June 2026</h3>
+<table class="tb"><tr class="hd"><td>Week</td><td>Product</td><td>Qty (t)</td><td>Customer</td><td>Priority</td><td>Status</td></tr>
+<tr><td>W1</td><td>CWAS Flakes</td><td>45</td><td>Local Stock</td><td><span class="bg g">Normal</span></td><td><span class="bg g">Planned</span></td></tr>
+<tr><td>W1</td><td>CHEMISIL MASC</td><td>25</td><td>Shaoxing Yongli</td><td><span class="bg r">Urgent</span></td><td><span class="bg g">Planned</span></td></tr>
+<tr><td>W2</td><td>CWMS 161</td><td>30</td><td>Local Stock</td><td><span class="bg g">Normal</span></td><td><span class="bg y">Scheduled</span></td></tr>
+<tr><td>W2</td><td>LMF PDR 98</td><td>15</td><td>Changzhou Jialong</td><td><span class="bg y">High</span></td><td><span class="bg y">Scheduled</span></td></tr>
+<tr><td>W3</td><td>CWAS Cold Prill</td><td>40</td><td>Foshan Nanhai</td><td><span class="bg y">High</span></td><td><span style="color:var(--mut)">Pending</span></td></tr>
+<tr><td>W3</td><td>HS 200</td><td>20</td><td>Export Stock</td><td><span class="bg g">Normal</span></td><td><span style="color:var(--mut)">Pending</span></td></tr>
+<tr><td>W4</td><td>CHEMIFIX NFC</td><td>10</td><td>Local Stock</td><td><span class="bg g">Normal</span></td><td><span style="color:var(--mut)">Pending</span></td></tr>
+<tr><td>W4</td><td>CWAS Flakes</td><td>50</td><td>Export Stock</td><td><span class="bg g">Normal</span></td><td><span style="color:var(--mut)">Pending</span></td></tr>
+</table></div>
+</div>
+
+<div class="card"><h3>🧪 Raw Material Requirement (Next 30 Days)</h3>
+<table class="tb"><tr class="hd"><td>Raw Material</td><td>Required (t)</td><td>In Stock (t)</td><td>Shortfall</td><td>Supplier</td><td>Lead Time</td><td>Action</td></tr>
+<tr><td>Stearic Acid TP</td><td>85</td><td>62</td><td style="color:var(--red)">-23t</td><td>Wilmar / KLK</td><td>21d</td><td><span class="bg r">ORDER NOW</span></td></tr>
+<tr><td>Triethanolamine</td><td>18</td><td>22</td><td style="color:var(--grn)">+4t</td><td>BASF</td><td>30d</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>PDMS Silicone Oil</td><td>32</td><td>28</td><td style="color:var(--amb)">-4t</td><td>Dow / Wacker</td><td>14d</td><td><span class="bg y">ORDER</span></td></tr>
+<tr><td>Dimethyl Sulfate</td><td>8</td><td>15</td><td style="color:var(--grn)">+7t</td><td>Nantong Chem</td><td>25d</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>Amino Silicone</td><td>12</td><td>10</td><td style="color:var(--amb)">-2t</td><td>Shin-Etsu</td><td>18d</td><td><span class="bg y">ORDER</span></td></tr>
+</table></div>
+</div>
+
+<!-- R&D PIPELINE -->
+<div id="v-randd" class="vw">
+<div class="kr"><div class="kpi"><div class="v">8</div><div class="l">Active Projects</div></div><div class="kpi"><div class="v">3</div><div class="l">In Formulation</div></div><div class="kpi"><div class="v">2</div><div class="l">In Trial</div></div><div class="kpi"><div class="v">2</div><div class="l">Scale-Up</div></div><div class="kpi"><div class="v">1</div><div class="l">Commercialized</div></div><div class="kpi"><div class="v">$450K</div><div class="l">R&D Budget Y1</div></div></div>
+
+<div class="card"><h3>🔬 R&D Pipeline — New Product Development</h3>
+<table class="tb"><tr class="hd"><td>Project</td><td>Target</td><td>Stage</td><td>Timeline</td><td>Priority</td><td>Next Milestone</td></tr>
+<tr><td><strong>China-Localized CWAS</strong></td><td>Lower temp variant for Chinese mills (30°C)</td><td><span class="bg y">Formulation</span></td><td>Q2-Q3 2026</td><td><span class="bg r">Critical</span></td><td>5 candidate formulas ready</td></tr>
+<tr><td><strong>Ultra-Concentrate Silicone</strong></td><td>3:1 concentration for lower shipping cost</td><td><span class="bg y">Trial</span></td><td>Q2-Q4 2026</td><td><span class="bg y">High</span></td><td>Stability testing at 40°C</td></tr>
+<tr><td><strong>VOC-Free Softener</strong></td><td>GB 38508-2020 compliant, zero VOC</td><td><span class="bg y">Formulation</span></td><td>Q3 2026-Q1 2027</td><td><span class="bg y">High</span></td><td>Solvent replacement screening</td></tr>
+<tr><td><strong>Bio-Based Ester Quat</strong></td><td>100% plant-derived, EU Ecolabel ready</td><td><span style="color:var(--mut)">Research</span></td><td>Q4 2026-Q2 2027</td><td><span class="bg b">Medium</span></td><td>Literature review complete</td></tr>
+<tr><td><strong>One-Pack Pretreatment</strong></td><td>Scour + bleach + level in one product</td><td><span class="bg y">Trial</span></td><td>Q3-Q4 2026</td><td><span class="bg b">Medium</span></td><td>Compatibility testing</td></tr>
+<tr><td><strong>Anti-Pilling Silicone</strong></td><td>Silicone + anti-pilling for cotton knits</td><td><span style="color:var(--mut)">Research</span></td><td>Q1-Q3 2027</td><td><span style="color:var(--amb)">Low</span></td><td>Patent search</td></tr>
+<tr><td><strong>Cold-Water Soaping Agent</strong></td><td>Effective at 40°C (energy saving)</td><td><span class="bg y">Formulation</span></td><td>Q2-Q3 2026</td><td><span class="bg y">High</span></td><td>3 surfactants shortlisted</td></tr>
+<tr><td><strong>Recycled Polyester Softener</strong></td><td>Specific for rPET fabric hand feel</td><td><span style="color:var(--mut)">Ideation</span></td><td>Q1-Q2 2027</td><td><span style="color:var(--amb)">Low</span></td><td>Customer need validation</td></tr>
+</table></div>
+</div>
+
+<!-- CERTIFICATION TRACKER -->
+<div id="v-certifications" class="vw">
+<div class="kr"><div class="kpi"><div class="v">3</div><div class="l">Active Certifications</div></div><div class="kpi"><div class="v">2</div><div class="l">In Progress</div></div><div class="kpi"><div class="v">1</div><div class="l">Expiring < 90d</div></div><div class="kpi"><div class="v">$35K</div><div class="l">Annual Cert Cost</div></div></div>
+
+<div class="card"><h3>🏆 Certification Portfolio — Status & Deadlines</h3>
+<table class="tb"><tr class="hd"><td>Certification</td><td>Status</td><td>Issue Date</td><td>Expiry</td><td>Renewal Due</td><td>Audit Date</td><td>Action</td></tr>
+<tr><td><strong>GOTS 7.0</strong></td><td><span class="bg g">Active</span></td><td>Jan 2025</td><td>Jan 2027</td><td style="color:var(--amb)">Oct 2026</td><td>Nov 2026</td><td><span class="bg y">Prepare</span></td></tr>
+<tr><td><strong>ZDHC MRSL Level 3</strong></td><td><span class="bg g">Active</span></td><td>Mar 2025</td><td>Mar 2027</td><td style="color:var(--mut)">Dec 2026</td><td>Jan 2027</td><td><span class="bg g">OK</span></td></tr>
+<tr><td><strong>OEKO-TEX Eco Passport</strong></td><td><span class="bg g">Active</span></td><td>Jun 2025</td><td>Jun 2026</td><td style="color:var(--red)">NOW</td><td>Jul 2026</td><td><span class="bg r">RENEW NOW</span></td></tr>
+<tr><td><strong>ISO 9001:2015</strong></td><td><span style="color:var(--amb)">In Progress</span></td><td>—</td><td>—</td><td>—</td><td>Q3 2026</td><td><span class="bg y">Implementing</span></td></tr>
+<tr><td><strong>ISO 14001 (EMS)</strong></td><td><span style="color:var(--mut)">Planned</span></td><td>—</td><td>—</td><td>—</td><td>Q4 2026</td><td><span style="color:var(--mut)">Planning</span></td></tr>
+</table></div>
+
+<div class="g22">
+<div class="card"><h3>📋 Customer Audit Schedule</h3>
+<table class="tb"><tr class="hd"><td>Customer</td><td>Type</td><td>Last Audit</td><td>Next Due</td><td>Status</td></tr>
+<tr><td>H&M (via buyer)</td><td>Social + Chemical</td><td>Mar 2025</td><td>Sep 2026</td><td><span class="bg y">Scheduled</span></td></tr>
+<tr><td>Inditex/Zara supplier</td><td>Chemical Compliance</td><td>Jan 2026</td><td>Jan 2027</td><td><span class="bg g">OK</span></td></tr>
+<tr><td>Levi Strauss supplier</td><td>ZDHC Verification</td><td>—</td><td>Q3 2026</td><td><span class="bg b">New</span></td></tr>
+</table></div>
+
+<div class="card"><h3>📄 China-Specific Certifications</h3>
+<table class="tb"><tr class="hd"><td>Requirement</td><td>Authority</td><td>Status</td><td>Deadline</td></tr>
+<tr><td>IECSC Listing</td><td>MEE China</td><td><span class="bg y">Filing Q3 2026</span></td><td>Before 1st shipment</td></tr>
+<tr><td>MEE Order 12 (New Chem)</td><td>MEE China</td><td><span class="bg y">60-90d processing</span></td><td>Before 1st shipment</td></tr>
+<tr><td>China GOTS Equivalent</td><td>CU China</td><td><span style="color:var(--mut)">Researching</span></td><td>Q4 2026</td></tr>
+<tr><td>GB Testing (3rd Party)</td><td>SGS / Intertek China</td><td><span class="bg y">Samples preparing</span></td><td>Q3 2026</td></tr>
+</table></div>
+</div>
+</div>
+
+<!-- DOCUMENT LIBRARY -->
+<div id="v-documents" class="vw">
+<div class="kr"><div class="kpi"><div class="v">33</div><div class="l">SDS Sheets</div></div><div class="kpi"><div class="v">18</div><div class="l">TDS Docs</div></div><div class="kpi"><div class="v">5</div><div class="l">Certifications</div></div><div class="kpi"><div class="v">12</div><div class="l">Test Reports</div></div></div>
+
+<div class="g2">
+<div class="card"><h3>📄 Safety Data Sheets (SDS) — English</h3>
+<table class="tb"><tr class="hd"><td>Product</td><td>Rev</td><td>Date</td><td>Format</td><td>China Ready?</td></tr>
+<tr><td>CHEMISOFT CWAS (Flakes)</td><td>v3.2</td><td>Jan 2026</td><td>PDF</td><td><span class="bg g">✅ Done</span></td></tr>
+<tr><td>CHEMISOFT CWAS (Cold) Prill</td><td>v2.1</td><td>Mar 2026</td><td>PDF</td><td><span class="bg g">✅ Done</span></td></tr>
+<tr><td>CHEMISIL HS 200</td><td>v3.0</td><td>Feb 2026</td><td>PDF</td><td><span class="bg g">✅ Done</span></td></tr>
+<tr><td>CHEMISIL 1800 CON</td><td>v2.5</td><td>Apr 2026</td><td>PDF</td><td><span class="bg g">✅ Done</span></td></tr>
+<tr><td>CHEMISOFT MASC</td><td>v3.1</td><td>Jan 2026</td><td>PDF</td><td><span class="bg g">✅ Done</span></td></tr>
+<tr><td>CHEMISCOUR LMF 800</td><td>v1.8</td><td>May 2026</td><td>PDF</td><td><span class="bg y">Drafting</span></td></tr>
+<tr><td>CHEMIFIX NFC</td><td>v2.0</td><td>Dec 2025</td><td>PDF</td><td><span class="bg y">Drafting</span></td></tr>
+<tr><td>REMAINING 26 PRODUCTS</td><td>Various</td><td>—</td><td>PDF</td><td><span style="color:var(--red)">PENDING</span></td></tr>
+</table></div>
+
+<div class="card"><h3>📋 Technical Data Sheets (TDS)</h3>
+<table class="tb"><tr class="hd"><td>Document</td><td>Version</td><td>Language</td><td>Status</td></tr>
+<tr><td>TDS — Cationic Softeners (all 5)</td><td>v2.0</td><td>EN + BN</td><td><span class="bg g">Ready</span></td></tr>
+<tr><td>TDS — Silicone Softeners (all 3)</td><td>v2.1</td><td>EN + BN</td><td><span class="bg g">Ready</span></td></tr>
+<tr><td>TDS — LMF Multifunctional Series</td><td>v1.5</td><td>EN + BN</td><td><span class="bg g">Ready</span></td></tr>
+<tr><td>TDS — Anti-Creasing Agents</td><td>v1.3</td><td>EN</td><td><span class="bg y">CN needed</span></td></tr>
+<tr><td>TDS — Enzymes CHEMIZYME</td><td>v1.2</td><td>EN</td><td><span class="bg y">CN needed</span></td></tr>
+<tr><td>China Product Brochure (33 products)</td><td>Draft 1</td><td>CN</td><td><span class="bg y">Drafting</span></td></tr>
+<tr><td>Application Guidelines — Chinese Mills</td><td>Draft 1</td><td>CN</td><td><span style="color:var(--mut)">Planned</span></td></tr>
+</table></div>
+</div>
+
+<div class="card"><h3>📁 Quick Access — Critical Documents</h3>
+<table class="tb"><tr class="hd"><td>Category</td><td>Document</td><td>Location</td><td>For</td></tr>
+<tr><td>🏆 Cert</td><td>GOTS 7.0 Certificate</td><td>/docs/certs/gots_v7_2025.pdf</td><td>Customer audits</td></tr>
+<tr><td>🏆 Cert</td><td>ZDHC MRSL Level 3 Certificate</td><td>/docs/certs/zdhc_l3_2025.pdf</td><td>Buyer compliance</td></tr>
+<tr><td>🏆 Cert</td><td>OEKO-TEX Eco Passport</td><td>/docs/certs/oeko_tex_2025.pdf</td><td>EU exports</td></tr>
+<tr><td>📋 Regulatory</td><td>IECSC Pre-Screening Report</td><td>/docs/regulatory/iecsc_screen.pdf</td><td>China customs</td></tr>
+<tr><td>📋 Regulatory</td><td>GB 38508-2020 VOC Test Report</td><td>/docs/regulatory/gb38508_test.pdf</td><td>China compliance</td></tr>
+<tr><td>📊 Investor</td><td>China Expansion Pitch Deck</td><td>/docs/investor/china_pitch_v3.pdf</td><td>Investors</td></tr>
+<tr><td>📊 Investor</td><td>5-Year Financial Model</td><td>/docs/investor/financial_model.xlsx</td><td>Board</td></tr>
+<tr><td>🧪 Technical</td><td>Raw Material Specifications</td><td>/docs/technical/rm_specs_v2.pdf</td><td>Procurement</td></tr>
+</table></div>
 </div>
 
 <!-- THEMES -->
