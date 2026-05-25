@@ -1543,54 +1543,481 @@ function remTyp(){const e=document.getElementById('typ');if(e)e.remove()}
 function upStats(){document.getElementById('tq').textContent=tasks.length;document.getElementById('mc').textContent=chat.length}
 
 // === RESPONSE ENGINE ===
-function resp(cmd){
-  const lc=cmd.toLowerCase();let txt='',mod=null,tsk=null;
-  if(lc.match(/^(hi|hello|hey|greetings)/)){txt='Hello Md Yeamin!'}
-  else if(lc.includes('product')||lc.includes('chemisoft')||lc.includes('chemisil')){
-    if(lc.includes('cwas')){txt='CWAS specs...';mod='products'}
-    else if(lc.includes('cwm')){txt='CWMS specs...';mod='products'}
-    else if(lc.includes('hs 200')||lc.includes('hs200')){txt='HS 200 specs...';mod='products'}
-    else if(lc.includes('1800')){txt='1800 CON specs...';mod='products'}
-    else if(lc.includes('masc')){txt='MASC specs...';mod='products'}
-    else{txt='Full catalog...';mod='products'}
-  }
-  else if(lc.includes('competitor')||lc.includes('weakness')){
-    if(lc.includes('top 3')){txt='Top 3 weaknesses...';mod='competitors'}
-    else{txt='12 profiled...';mod='competitors'}
-  }
-  else if(lc.includes('margin')||lc.includes('cost')||lc.includes('price')||lc.includes('duty')){
-    if((lc.includes('10%')||lc.includes('raw material'))&&(lc.includes('up')||lc.includes('increase'))){
-      txt='Margin recalc...';mod='pricing'
-    }
-    else if(lc.includes('duty')||lc.includes('tariff')){txt='Import duty...';mod='pricing'}
-    else if(lc.includes('s-macro')||lc.includes('smacro')){txt='S-Macro cost...';mod='pricing'}
-    else{txt='Current pricing...';mod='pricing'}
-  }
-  else if(lc.includes('financ')||lc.includes('projection')||lc.includes('revenue')||lc.includes('irr')){
-    if(lc.includes('200 ton')){txt='200 ton scenario...';mod='financials'}
-    else{txt='5-year projection...';mod='financials'}
-  }
-  else if(lc.includes('regul')||lc.includes('iecsc')||lc.includes('compliance')||lc.includes('certif')||lc.includes('gots')){txt='Regulatory status...';mod='regulatory'}
-  else if(lc.includes('market')||lc.includes('china')||lc.includes('demand')||lc.includes('voice')){txt='Market data...';mod='market'}
-  else if(lc.includes('add task')||lc.includes('new task')||lc.includes('create task')){
-    const tt=cmd.replace(/add (a |new |create |)task[: ]*/i,'').trim();
-    if(tt.length>2){tsk={txt:tt,st:'pending'};txt='Task added.'}
-    else{txt='What task?'}
-  }
-  else if(lc.match(/show (my |)task/)){txt=appTasks.length?'Tasks listed.':'No tasks.'}
-  else if(lc.includes('investor')||lc.includes('brief')||lc.includes('pitch')){txt='Investor brief...';mod='financials'}
-  else if(lc.includes('update')||lc.includes('refresh')){txt='Updated.'}
-  else if(lc.includes('help')){txt='I can help with...'}
-  else{txt='Try these instead...'}
-  return {txt,mod,tsk};
+// HERMES CHAT INTELLIGENCE — full knowledge base, calculations, search, commands
+
+// === KNOWLEDGE BASE ===
+const KB={
+  company:{name:'Chemicon Group',founded:2005,location:'Gazipur, Bangladesh',founder:'BUET Chemical Engineer',customers:'200+',philosophy:'Strengthening and Refining Eco-friendly Chemicals'},
+  target:{revenue:120,unit:'M',year3:120,year5:240,volume:25000,investment:16,irr:38,payback:3,split:'50/50 local/export'},
+  certifications:['GOTS 7.0 (exp Jan 2027)','ZDHC MRSL Level 3 (exp Mar 2027)','OEKO-TEX Eco Passport (exp Jun 2026 — RENEW NOW)'],
+  products:[
+    {name:'CHEMISOFT CWAS (Flakes)',cat:'Cationic Softener',form:'Flake/Hot water',dose:'0.2-0.3% exhaust',ph:'4.5-5.5',temp:'40-50°C',price:4100,landed:3400,margin:24.4},
+    {name:'CHEMISOFT CWAS (Cold) Prill',cat:'Cationic Softener',form:'Prill/Cold water',dose:'0.2-0.3% exhaust',ph:'4.0-5.0',temp:'40°C',price:4200,landed:3450,margin:22},
+    {name:'CHEMISOFT CWMS',cat:'Weak Cationic',form:'Flake/Hot water',dose:'0.3-0.4% exhaust',ph:'4.5-5.5',temp:'40-50°C',price:3500,landed:2800,margin:25},
+    {name:'CHEMISOFT CWMS (161)',cat:'Weak Cationic',form:'Flake/Hot water',dose:'0.3-4.5% exhaust',ph:'4.5-5.5',temp:'70-80°C',price:3800,landed:2900,margin:31},
+    {name:'CHEMISOFT CSLC',cat:'Mild Cationic',form:'Flake/Hot water',dose:'0.5-1.0% exhaust',ph:'4.5-5.5',temp:'40-50°C',price:3200,landed:2600,margin:23},
+    {name:'CHEMISOFT NSLN',cat:'Near-Nonionic',form:'Flake/Hot water',dose:'0.5-1.0% exhaust',padding:'5-15 g/l',price:3000,landed:2400,margin:25},
+    {name:'CHEMISIL HS 200',cat:'Hydrophilic Silicone',features:'Cool-dry effect, all substrates',dose:'1.0-3.0% exhaust',temp:'<40°C',price:6700,landed:5216,margin:28},
+    {name:'CHEMISIL 1800 CON',cat:'Amino-Modified PDMS',features:'Micro/Macro emulsion, non-yellowing, OBA stable, hydrophilic',dose:'0.3-0.5 g/l',ph:'5.0-6.0',temp:'40°C',price:7500,landed:5600,margin:34},
+    {name:'CHEMISOFT MASC',cat:'Silicone Macro Emulsion',features:'Bulky feel, elastomeric, hard water resistant, pigment stable',dose:'1.0-3.0% exhaust',temp:'<40°C',price:7000,landed:5216,margin:25.5},
+    {name:'CHEMISCOUR LMF 800',cat:'LMF Multifunctional',format:'Liquid',dose:'0.7-0.8% w.o.f.',process:'85°C × 45 min',price:2200,landed:1700,margin:29},
+    {name:'CHEMISCOUR LMF PDR 98',cat:'LMF Multifunctional',format:'Powder',dose:'1.4% w.o.f.',process:'98°C × 30 min',price:2500,landed:1900,margin:32},
+    {name:'CHEMIFIX NFC',cat:'Fixing Agent',features:'High-efficiency dye fixing',dose:'0.3-1.0%',price:1800,landed:1400,margin:29},
+    {name:'CHEMIPROTECT LP 100',cat:'Lycra Protector',features:'Premium spandex/elastomer protector',dose:'0.3-1.0% w.o.f.',price:3500,landed:2800,margin:25},
+    {name:'CHEMIZYME 220K',cat:'Enzyme',features:'Concentrate acid cellulase',bp:'0.15-0.25%',gw:'0.1-0.3%',price:5000,landed:4000,margin:25},
+    {name:'CHEMICLEAR ABS',cat:'Anti-Backstaining',features:'Eco-friendly',dose:'0.5-1.0 g/l',price:1500,landed:1200,margin:25},
+    {name:'CHEMITEX PC',cat:'Peroxide Killer',features:'Enzymatic & Non-Enzymatic',dose:'0.5-1.0 g/l',process:'15 min, 80-98°C',price:2000,landed:1600,margin:25},
+    {name:'CHEMIPOUR RXKN',cat:'Soaping Agent',features:'Low-temperature soaping/dispersing',dose:'0.5-1.5 g/l',temp:'60-90°C',price:1800,landed:1450,margin:24},
+    {name:'CHEMIFLUID Z 100',cat:'Anti-Creasing',features:'Fatty acid condensation, HT resistant, pH 2 stable',dose:'0.5-1.0 g/l',price:2200,landed:1700,margin:29},
+    {name:'CHEMIFLUID X 100',cat:'Anti-Creasing',features:'Polymer-based, 100% silicone/oil/fat free',dose:'0.5-1.0 g/l',price:2000,landed:1600,margin:25},
+    {name:'SODA HC 104',cat:'Soda Substitute',features:'High-efficiency soda ash substitute',price:800,landed:650,margin:23}
+  ],
+  competitors:[
+    {name:'Transfar',hq:'China',share:12,price:'$18-22',strength:'Low price, local presence',weakness:'Quality varies, no GOTS'},
+    {name:'Wacker',hq:'Germany',share:10,price:'$32-38',strength:'Raw silicone source',weakness:'Not a formulator'},
+    {name:'Rudolf',hq:'Germany',share:8,price:'$34-42',strength:'Brand, Nano tech',weakness:'Expensive, slow'},
+    {name:'CHT',hq:'Germany',share:7,price:'$30-38',strength:'Full product range',weakness:'Slow response'},
+    {name:'Archroma',hq:'Switzerland',share:6,price:'$30-36',strength:'Sustainability focus',weakness:'Bureaucratic'}
+  ],
+  market:{chinaSoftener:3.2,cationic:1.4,silicone:1.1,nonionic:0.5,growth:7.2,importDependence:38},
+  provinces:[
+    {name:'Zhejiang',city:'Shaoxing',share:35,target:4375},
+    {name:'Jiangsu',city:'Changzhou',share:25,target:3125},
+    {name:'Guangdong',city:'Foshan',share:20,target:2500},
+    {name:'Fujian',city:'Quanzhou',share:12,target:1500},
+    {name:'Shandong',city:'Qingdao',share:8,target:1000}
+  ],
+  shipping:{origin:'Chittagong',dest:'Shanghai',transit:'14-18d',cost20ft:1850,cost40ft:2950,costPerTon:109},
+  currency:{usdBdt:119.5,usdCny:7.24,bdtCny:16.51},
+  commodities:{stearicAcid:1180,tea:1450,pdms:3200,dms:890},
+  pipeline:{prospecting:80,contacted:40,qualified:20,proposal:8,negotiation:3,won:1,wonValue:0.5},
+  manufacturing:{capacity:8040,utilization:72,lines:3,leadTime:14,yield:85},
+  risks:[
+    'MEE Order 12 rejection — hire Chinese regulatory agent',
+    'Distributor underperformance — dual-distributor strategy',
+    'Transfar price war — differentiate on quality + ZDHC certs',
+    'BDT depreciation — USD-denominated contracts',
+    'Shipping delays — 8-week China buffer stock'
+  ]
+};
+
+// === SEARCH FUNCTIONS ===
+function findProduct(q){
+  q=q.toLowerCase();
+  return KB.products.filter(p=>
+    p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q)
+  );
 }
 
+function searchKB(query){
+  query=query.toLowerCase();let results=[];
+  if(query.includes('product')||query.includes('chemisoft')||query.includes('chemisil')||query.includes('softener')||query.includes('silicone'))
+    results.push(...findProduct(query));
+  if(query.includes('competitor')||query.includes('transfar')||query.includes('wacker')||query.includes('rudolf'))
+    results.push(...KB.competitors.filter(c=>c.name.toLowerCase().includes(query)));
+  return results;
+}
+
+// === CALCULATION FUNCTIONS ===
+function calcMargin(price,landed){return ((price-landed)/price*100).toFixed(1);}
+function calcLandedCost(exFactory,quantity){
+  const freightPerTon=KB.shipping.costPerTon;
+  const insurance=exFactory*0.003;
+  const duty=(exFactory+freightPerTon+insurance)*0.065;
+  const portHandling=115;
+  return Math.round(exFactory+45+55+freightPerTon+insurance+duty+60+portHandling);
+}
+function calcVolumeNeeded(revenueTarget,avgPrice){return Math.round(revenueTarget*1e6/avgPrice);}
+function calcContainerCount(tons){return Math.ceil(tons/27);}
+function calcRevenue(volume,price){return (volume*price/1e6).toFixed(1);}
+
+// === FORMATTING ===
+function fmt(n){return n>=1e6?'$'+(n/1e6).toFixed(1)+'M':n>=1e3?'$'+(n/1e3).toFixed(0)+'K':'$'+n;}
+function bg(t){return t>30?'🟢':t>15?'🟡':'🔴';}
+function fmtList(arr,limit){return arr.slice(0,limit||5).map((x,i)=>(i+1)+'. '+x).join('\n');}
+
+// === MAIN RESPONSE ENGINE ===
+function resp(cmd){
+  const lc=cmd.toLowerCase();let txt='',mod=null,tsk=null;
+  const h=new Date().getHours(),g=h<12?'morning':h<17?'afternoon':'evening';
+
+  // --- GREETINGS ---
+  if(lc.match(/^(hi|hello|hey|greetings|good|sup)/)){
+    txt='Good '+g+', Md Yeamin! 👋\n\n';
+    txt+='🧠 Hermes ready. 39 modules active across 6 sections.\n';
+    txt+='📊 $120M China target | 33 products | 18 categories\n';
+    txt+='🔬 8 R&D projects | 3 certifications active\n';
+    txt+='💡 Try: "product CWAS", "competitor analysis", "financial summary", "margin calc", "pipeline status", "risks", "search [topic]", "help"';
+  }
+
+  // --- HELP ---
+  else if(lc.includes('help')||lc.includes('what can you')||lc.includes('command')){
+    txt='🤖 HERMES COMMAND CENTER\n\n';
+    txt+='📦 PRODUCTS: "product CWAS", "silicone products", "search [name]", "all products", "compare products"\n';
+    txt+='📊 BUSINESS: "financial summary", "revenue projection", "margin calc [product]", "pricing [product]"\n';
+    txt+='🕵️ INTEL: "competitor analysis", "competitor [name]", "market size", "import data"\n';
+    txt+='🚢 OPS: "shipping cost", "landed cost [product]", "currency rates", "raw material prices"\n';
+    txt+='📋 PLANNING: "pipeline status", "certification status", "risks", "action plan", "production schedule"\n';
+    txt+='📝 CRM: "prospects", "sample status", "top prospects"\n';
+    txt+='🔧 ACTIONS: "navigate [module]", "add task [text]", "show tasks", "summary", "status"\n';
+    txt+='💡 TIP: Be specific! "margin for CWAS" > "margin"';
+  }
+
+  // --- PRODUCT SEARCH ---
+  else if(lc.includes('product')||lc.includes('chemisoft')||lc.includes('chemisil')||lc.includes('chemiscour')||lc.includes('chemifix')||lc.includes('chemifluid')||lc.includes('chemizyme')||lc.includes('chemiclear')||lc.includes('chemitex')||lc.includes('chemipour')||lc.includes('chemiprotect')||lc.includes('softener')||lc.includes('silicone')){
+    const results=findProduct(lc.replace(/product|search|find|show|list|all/gi,'').trim());
+    if(results.length===0){txt='No products found. Try: "CWAS", "silicone", "cationic", "enzyme", "LMF"';mod='products'}
+    else if(lc.includes('all')||lc.includes('list')||lc.includes('catalog')||lc.includes('portfolio')){
+      txt='📦 CHEMICON PRODUCT PORTFOLIO — '+KB.products.length+' products, 18 categories\n\n';
+      const cats={};
+      KB.products.forEach(p=>{if(!cats[p.cat])cats[p.cat]=[];cats[p.cat].push(p.name.split(' ').slice(0,2).join(' '));});
+      for(const[cat,prods]of Object.entries(cats)){
+        txt+='• '+cat+': '+prods.join(', ')+'\n';
+      }
+      txt+='\n🏆 GOTS 7.0 | ZDHC L3 | OEKO-TEX | 200+ customers';
+      mod='products';
+    }
+    else if(results.length===1){
+      const p=results[0];
+      txt='📦 '+p.name+'\n';
+      txt+='Category: '+p.cat+'\n';
+      if(p.form)txt+='Form: '+p.form+'\n';
+      if(p.features)txt+='Features: '+p.features+'\n';
+      if(p.dose)txt+='Dosing: '+p.dose+'\n';
+      if(p.ph)txt+='pH: '+p.ph+'\n';
+      if(p.temp)txt+='Temperature: '+p.temp+'\n';
+      if(p.process)txt+='Process: '+p.process+'\n';
+      if(p.price){txt+='\n💰 Selling Price: $'+p.price+'/ton | Landed Cost: $'+p.landed+'/ton | Margin: '+p.margin+'%';}
+      mod='products';
+    }
+    else{
+      txt='📦 Found '+results.length+' products matching your search:\n\n';
+      results.slice(0,8).forEach((p,i)=>{
+        txt+=(i+1)+'. '+p.name+' — '+p.cat;
+        if(p.price)txt+=' ($'+p.price+'/t, '+p.margin+'% margin)';
+        txt+='\n';
+      });
+      if(results.length>8)txt+='\n...and '+(results.length-8)+' more. Narrow your search.';
+      mod='products';
+    }
+  }
+
+  // --- COMPETITOR INTELLIGENCE ---
+  else if(lc.includes('competitor')||lc.includes('transfar')||lc.includes('wacker')||lc.includes('rudolf')||lc.includes('cht')||lc.includes('archroma')){
+    const q=lc.replace(/competitor|analysis|compare|vs|against/gi,'').trim();
+    const match=KB.competitors.find(c=>c.name.toLowerCase().includes(q));
+    if(match){
+      txt='🕵️ '+match.name+' ('+match.hq+')\n';
+      txt+='Market Share: '+match.share+'%\n';
+      txt+='Price Range: '+match.price+'/kg\n';
+      txt+='✅ Strength: '+match.strength+'\n';
+      txt+='❌ Weakness: '+match.weakness+'\n';
+      txt+='\n💡 Chemicon Advantage: 22-25% below their pricing with GOTS/ZDHC/OEKO-TEX certifications.';
+      mod='competitors';
+    }
+    else{
+      txt='🕵️ COMPETITOR LANDSCAPE — China Softener Market\n\n';
+      KB.competitors.forEach((c,i)=>{
+        txt+=(i+1)+'. '+c.name+' ('+c.hq+') — '+c.share+'% share, '+c.price+'/kg\n';
+      });
+      txt+='\n💡 Chemicon positioned as VALUE LEADER: premium quality at 22-25% below EU prices.';
+      mod='competitors';
+    }
+  }
+
+  // --- FINANCIALS & CALCULATIONS ---
+  else if(lc.includes('margin')||lc.includes('profit')||lc.includes('calc')){
+    const prod=KB.products.find(p=>lc.includes(p.name.toLowerCase().split(' ')[0].toLowerCase())||lc.includes(p.name.toLowerCase().split(' ')[1]?.toLowerCase()));
+    if(prod&&prod.price){
+      txt='💰 MARGIN ANALYSIS — '+prod.name+'\n\n';
+      txt+='Selling Price: $'+prod.price+'/ton\n';
+      txt+='Landed Cost (CIF Shanghai): $'+prod.landed+'/ton\n';
+      txt+='Gross Profit: $'+(prod.price-prod.landed)+'/ton\n';
+      txt+='Margin: '+prod.margin+'%\n\n';
+      txt+='📊 At 25,000 tons/year: Revenue $'+(prod.price*25000/1e6).toFixed(1)+'M, Profit $'+((prod.price-prod.landed)*25000/1e6).toFixed(1)+'M\n';
+      txt+='\n💡 Best margins: 1800 CON (34%), LMF PDR 98 (32%), CWMS 161 (31%)';
+      mod='pricing';
+    }
+    else if(lc.includes('all')||lc.includes('compare')||lc.includes('list')){
+      txt='💰 MARGIN COMPARISON — Top Products\n\n';
+      const sorted=[...KB.products].filter(p=>p.price).sort((a,b)=>b.margin-a.margin);
+      sorted.slice(0,10).forEach((p,i)=>{
+        txt+=(i+1)+'. '+p.name.split(' ').slice(0,2).join(' ')+' — '+p.margin+'% ($'+p.price+'/t selling, $'+p.landed+'/t landed)\n';
+      });
+      mod='pricing';
+    }
+    else{
+      txt='💰 FINANCIAL OVERVIEW\n\n';
+      txt+='Revenue Target: $120M (Year 3)\n';
+      txt+='Investment: $16M | IRR: 38% | Payback: 3 years\n';
+      txt+='Volume: 25,000 tons/year | Avg Margin: 26%\n\n';
+      txt+='Specify a product for margin detail: "margin CWAS" or "margin 1800 CON"';
+      mod='financials';
+    }
+  }
+
+  // --- FINANCIAL SUMMARY ---
+  else if(lc.includes('financ')||lc.includes('revenue')||lc.includes('projection')||lc.includes('irr')||lc.includes('summary')||lc.includes('overview')){
+    if(lc.includes('5 year')||lc.includes('5-year')||lc.includes('projection')){
+      txt='📈 5-YEAR PROJECTION\n\n';
+      txt+='Year 1: $18M revenue | -$0.5M net | 3,000 tons\n';
+      txt+='Year 2: $57M revenue | $7.8M net | 9,500 tons\n';
+      txt+='Year 3: $120M revenue | $21M net | 25,000 tons\n';
+      txt+='Year 4: $180M revenue | $32M net | 35,000 tons\n';
+      txt+='Year 5: $240M revenue | $48M net | 45,000 tons\n';
+      txt+='\nIRR: 38% | Payback: 3 years | Investment: $16M';
+      mod='financials';
+    }
+    else{
+      txt='📈 CHEMICON CHINA — Executive Summary\n\n';
+      txt+='🎯 Revenue Target: $120M (Year 3) | $240M (Year 5)\n';
+      txt+='💰 Investment: $16M | IRR: 38% | Payback: 3 years\n';
+      txt+='📦 Products: 33 across 18 categories\n';
+      txt+='🏭 Capacity: 8,040 t/yr | Utilization: 72%\n';
+      txt+='🚢 Shipping: Chittagong→Shanghai, 14-18 days\n';
+      txt+='🌏 Market: China $3.2B softener market\n';
+      txt+='🕵️ Position: Value Leader — 22-25% below EU prices\n';
+      txt+='📋 Sales Split: 50% Local (BD) / 50% Export\n';
+      txt+='🏆 Certs: GOTS 7.0 | ZDHC L3 | OEKO-TEX\n\n';
+      txt+='⚠ Top Risk: MEE Order 12 — 60-90 day regulatory filing. OEKO-TEX expires Jun 2026.';
+      mod='exec';
+    }
+  }
+
+  // --- MARKET DATA ---
+  else if(lc.includes('market')||lc.includes('china')||lc.includes('demand')||lc.includes('import')){
+    txt='🌏 CHINA TEXTILE SOFTENER MARKET\n\n';
+    txt+='Total Market: $3.2B | Growth: 7.2%/yr\n';
+    txt+='Cationic/EQ: $1.4B (44%) | +8.1% growth\n';
+    txt+='Silicone: $1.1B (34%) | +9.5% growth\n';
+    txt+='Non-ionic: $0.5B (16%) | +4.2% growth\n';
+    txt+='Import Dependence: 38%\n\n';
+    txt+='🇨🇳 China imported 65,409 tons (HS 3809.91) in 2024 — $237M\n';
+    txt+='Top suppliers: S.Korea 25%, India 18%, Japan 13%\n';
+    txt+='\n💡 Chemicon\'s 4.8% SOM target = $120M revenue';
+    mod='market';
+  }
+
+  // --- PRICING ---
+  else if(lc.includes('price')||lc.includes('cost')||lc.includes('duty')||lc.includes('tariff')||lc.includes('landed')){
+    txt='💰 PRICING & LANDED COST\n\n';
+    txt+='CWAS (Cationic): Landed $3,400/t → Sell $4,100/t (24.4% margin)\n';
+    txt+='MASC (Silicone): Landed $5,216/t → Sell $7,000/t (25.5% margin)\n';
+    txt+='HS 200 (Hydrophilic): Landed $5,216/t → Sell $6,700/t (28% margin)\n\n';
+    txt+='Cost Components: Ex-Factory + Inland($45) + Port($55) + Freight($119/t) + Insurance(0.3%) + Duty(6.5%) + Distribution($115)\n\n';
+    txt+='💱 BDT/USD: 119.5 | USD/CNY: 7.24\n';
+    txt+='⚠ Every 1 BDT depreciation = ~$8/ton on CWAS landed cost';
+    mod='pricing';
+  }
+
+  // --- SHIPPING & LOGISTICS ---
+  else if(lc.includes('ship')||lc.includes('freight')||lc.includes('logistic')||lc.includes('container')||lc.includes('transport')){
+    txt='🚢 SHIPPING: Chittagong → Shanghai\n\n';
+    txt+='Transit: 14-18 days | Carrier: Maersk/COSCO\n';
+    txt+='20ft Container: $1,850 (23t capacity)\n';
+    txt+='40ft Container: $2,950 (27t capacity)\n';
+    txt+='Per-ton cost: $109/t (40ft avg)\n\n';
+    txt+='Year 1: 111 containers → $357K freight\n';
+    txt+='Year 2: 352 containers → $1.13M freight\n';
+    txt+='Year 3: 926 containers → $2.98M freight\n';
+    txt+='\n🏷 Recommended: CIF Shanghai (Chemicon controls freight)';
+    mod='logistics';
+  }
+
+  // --- CURRENCY & COMMODITIES ---
+  else if(lc.includes('currency')||lc.includes('exchange')||lc.includes('bdt')||lc.includes('cny')||lc.includes('commodit')||lc.includes('raw material')||lc.includes('stearic')||lc.includes('tea')||lc.includes('pdms')){
+    txt='💱 CURRENCY (May 2026)\n';
+    txt+='USD/BDT: 119.50 | USD/CNY: 7.24 | BDT/CNY: 16.51\n\n';
+    txt+='🧪 RAW MATERIALS\n';
+    txt+='Stearic Acid TP: $1,180/t (Wilmar/KLK) — 📈 Up $45\n';
+    txt+='Triethanolamine: $1,450/t (BASF) — 📉 Down $30\n';
+    txt+='PDMS Silicone Oil: $3,200/t (Dow/Wacker) — 📈 Up $120\n';
+    txt+='Dimethyl Sulfate: $890/t (Nantong) — ➡ Stable\n\n';
+    txt+='⚠ BDT depreciation risk: every 1 BDT = $8/ton margin loss on CWAS';
+    mod='currency';
+  }
+
+  // --- REGULATORY ---
+  else if(lc.includes('regul')||lc.includes('iecsc')||lc.includes('compliance')||lc.includes('certif')||lc.includes('gots')||lc.includes('zdhc')||lc.includes('oeko')){
+    txt='📋 CERTIFICATIONS & COMPLIANCE\n\n';
+    txt+='✅ GOTS 7.0 — Active (expires Jan 2027, renew Oct 2026)\n';
+    txt+='✅ ZDHC MRSL Level 3 — Active (expires Mar 2027)\n';
+    txt+='⚠ OEKO-TEX Eco Passport — RENEW NOW (expires Jun 2026!)\n\n';
+    txt+='🇨🇳 CHINA REQUIREMENTS\n';
+    txt+='• IECSC Listing — Filing Q3 2026\n';
+    txt+='• MEE Order 12 — 60-90 day processing ⚠ CRITICAL PATH\n';
+    txt+='• GB 38508-2020 VOC — Testing Q3 2026\n';
+    txt+='• Chinese SDS (GB 15258) — 7 products done, 26 pending\n\n';
+    txt+='🔴 URGENT: OEKO-TEX expires June 2026. Start renewal NOW.';
+    mod='regulatory';
+  }
+
+  // --- PIPELINE / CRM ---
+  else if(lc.includes('pipeline')||lc.includes('crm')||lc.includes('prospect')||lc.includes('deal')||lc.includes('lead')){
+    txt='📊 SALES PIPELINE\n\n';
+    txt+='🔍 Prospecting: 80 accounts ($48M potential)\n';
+    txt+='📞 Contacted: 40 ($24M) → 50% conversion\n';
+    txt+='🤝 Qualified: 20 ($12M) → 50% conversion\n';
+    txt+='📋 Proposal Sent: 8 ($5M) → 40% conversion\n';
+    txt+='🔐 Negotiation: 3 ($2M) → 38% conversion\n';
+    txt+='✅ Closed Won: 1 ($0.5M) — Shaoxing Yongli\n\n';
+    txt+='🔥 HOT: Shaoxing Yongli (500t/yr) — send final quote\n';
+    txt+='🔥 HOT: Changzhou Jialong (350t/yr) — technical visit\n';
+    txt+='🔥 HOT: Foshan Nanhai (420t/yr) — sample ETA May 28';
+    mod='crm';
+  }
+
+  // --- SAMPLE STATUS ---
+  else if(lc.includes('sample')){
+    txt='🧪 SAMPLE TRACKING\n\n';
+    txt+='✅ Shaoxing Yongli — CWAS Flakes — Tested, positive feedback\n';
+    txt+='🟡 Changzhou Jialong — CHEMISIL MASC — Testing, results Jun 1\n';
+    txt+='🟡 Foshan Nanhai — CWAS Cold Prill — In transit, ETA May 28\n';
+    txt+='🔵 Hangzhou Fuchun — HS 200 + CWAS — Shipped May 22, COSCO\n\n';
+    txt+='📊 Conversion: 200 samples → 60 trials → 15 customers (target)';
+    mod='crm';
+  }
+
+  // --- RISKS ---
+  else if(lc.includes('risk')){
+    txt='⚠ TOP 5 RISKS\n\n';
+    txt+=fmtList(KB.risks);
+    txt+='\n\n🟢 Mitigation plans in place for all risks. See Action Plan for details.';
+    mod='timeline';
+  }
+
+  // --- ACTION PLAN / TIMELINE ---
+  else if(lc.includes('timeline')||lc.includes('action plan')||lc.includes('phase')||lc.includes('milestone')){
+    txt='🗺 CHINA ENTRY TIMELINE\n\n';
+    txt+='Phase 0 (M1-M2): Foundation — 80% complete ✅\n';
+    txt+='Phase 1 (M2-M5): Registration — 15% complete 🟡\n';
+    txt+='Phase 2 (M4-M7): Commercial Prep — 0% ⬜\n';
+    txt+='Phase 3 (M6-M10): Market Entry — $1M target\n';
+    txt+='Phase 4 (M9-M18): Scale — $12M run-rate\n';
+    txt+='Phase 5 (M18-M30): Dominate — $120M revenue 🎯\n\n';
+    txt+='⚠ Critical Path: MEE Order 12 filing (60-90d). Start Phase 1 immediately.';
+    mod='timeline';
+  }
+
+  // --- PRODUCTION ---
+  else if(lc.includes('production')||lc.includes('manufacturing')||lc.includes('batch')||lc.includes('yield')||lc.includes('capacity')){
+    txt='🏭 PRODUCTION STATUS\n\n';
+    txt+='Annual Capacity: 8,040 tons | Utilization: 72%\n';
+    txt+='3 Production Lines: Softeners (350t/mo), Silicones (180t/mo), Aux (140t/mo)\n';
+    txt+='Yield Rate: 85% | Avg Lead Time: 14 days\n';
+    txt+='QC Pass Rate: 98.2% (last 30 days)\n\n';
+    txt+='⚠ Stearic Acid: 62t stock (need 85t) — ORDER NOW\n';
+    txt+='⚠ PDMS Silicone: 28t stock (need 32t) — ORDER\n\n';
+    txt+='June Plan: 235 tons scheduled across 4 weeks';
+    mod='production';
+  }
+
+  // --- R&D ---
+  else if(lc.includes('r&d')||lc.includes('research')||lc.includes('development')||lc.includes('innovation')||lc.includes('new product')){
+    txt='🔬 R&D PIPELINE — 8 Active Projects\n\n';
+    txt+='🔴 CRITICAL: China-Localized CWAS (30°C variant) — Formulation Q2-Q3\n';
+    txt+='🟡 HIGH: Ultra-Concentrate Silicone (3:1) — Trial, stability testing\n';
+    txt+='🟡 HIGH: VOC-Free Softener (GB 38508) — Formulation, solvent screening\n';
+    txt+='🟡 HIGH: Cold-Water Soaping (40°C) — 3 surfactants shortlisted\n';
+    txt+='🔵 MED: Bio-Based Ester Quat — Research phase\n';
+    txt+='🔵 MED: One-Pack Pretreatment — Compatibility testing\n';
+    txt+='⚪ LOW: Anti-Pilling Silicone — Patent search\n';
+    txt+='⚪ LOW: Recycled PET Softener — Ideation\n\n';
+    txt+='💰 R&D Budget: $450K (Year 1)';
+    mod='randd';
+  }
+
+  // --- QUALITY CONTROL ---
+  else if(lc.includes('quality')||lc.includes('qc')||lc.includes('coa')||lc.includes('test')||lc.includes('spec')){
+    txt='🔬 QUALITY CONTROL\n\n';
+    txt+='Pass Rate: 98.2% (last 30 days, 247 batches)\n';
+    txt+='Failed Batches: 4 | Customer Complaints: 0\n';
+    txt+='12 QC parameters tested per product category\n\n';
+    txt+='Key Specs — CWAS: Active 88-92%, pH 4.5-5.5\n';
+    txt+='Key Specs — MASC: Active 30-35%, Viscosity 200-800 cP\n';
+    txt+='Key Specs — LMF: Active 95-98%, pH 6.5-7.5\n\n';
+    txt+='Latest Batch: B-2026-0525-01 CWAS Flakes — PASS ✅';
+    mod='quality';
+  }
+
+  // --- SUPPLIERS ---
+  else if(lc.includes('supplier')||lc.includes('evonik')||lc.includes('stepan')||lc.includes('kao')||lc.includes('galaxy')){
+    txt='🏗 SUPPLIER COMPARISON — Ester Quat\n\n';
+    txt+='1. Galaxy Surfactants (India): $1,900/t — 82% score ⭐ BEST VALUE\n';
+    txt+='2. KLK Oleo (Malaysia): $1,850/t — 80% score\n';
+    txt+='3. Kao (Japan): $2,500/t — 78% score (premium quality)\n';
+    txt+='4. Evonik (Germany): $2,800/t — 76% score (top quality)\n';
+    txt+='5. Stepan (USA): $2,600/t — 72% score\n\n';
+    txt+='💡 Recommendation: Galaxy for cost leadership + Kao for premium segment. Dual-source strategy.';
+    mod='suppliers';
+  }
+
+  // --- NAVIGATION COMMANDS ---
+  else if(lc.includes('navigate')||lc.includes('go to')||lc.includes('open')||lc.includes('show me')){
+    const modules={exec:'Executive',products:'Products',market:'Market',competitors:'Competitors',pricing:'Pricing',financials:'Financials',regulatory:'Regulatory',timeline:'Action Plan',sales:'Sales & Marketing',logistics:'Logistics',currency:'Currency',suppliers:'Suppliers',crm:'CRM',livemetrics:'Live Metrics',production:'Production',quality:'QC',randd:'R&D',certifications:'Certs',documents:'Documents',chat:'Chat',terminal:'Terminal',kanban:'Kanban',health:'Health'};
+    for(const[key,name]of Object.entries(modules)){
+      if(lc.includes(key)||lc.includes(name.toLowerCase())){
+        txt='Navigating to '+name+'...';
+        mod=key;break;
+      }
+    }
+    if(!mod){txt='Available modules: Executive, Products, Market, Competitors, Pricing, Financials, Regulatory, Action Plan, Sales, Logistics, Currency, Suppliers, CRM, Live Metrics, Production, QC, R&D, Certifications, Documents, Chat, Terminal, Kanban';}
+  }
+
+  // --- TASK MANAGEMENT ---
+  else if(lc.includes('add task')||lc.includes('new task')||lc.includes('create task')){
+    const tt=cmd.replace(/add (a |new |create |)task[: ]*/i,'').trim();
+    if(tt.length>2){tsk={txt:tt,st:'pending'};txt='✅ Task added: "'+tt+'"\n📋 View tasks with "show tasks"';}
+    else{txt='What task should I add? Example: "add task Follow up with Foshan Nanhai on sample results"';}
+  }
+  else if(lc.match(/show (my |)task/)){
+    if(!tasks||!tasks.length){txt='No tasks yet. Create one with "add task [description]"';}
+    else{txt='📋 YOUR TASKS ('+tasks.length+')\n\n';tasks.forEach((t,i)=>{txt+=(i+1)+'. ['+(t.st||'pending')+'] '+t.txt+'\n';});}
+  }
+
+  // --- INVESTOR ---
+  else if(lc.includes('investor')||lc.includes('brief')||lc.includes('pitch')||lc.includes('deck')){
+    txt='📄 INVESTOR BRIEF — Chemicon China Expansion\n\n';
+    txt+='Target: $120M textile softener revenue in China by Year 3\n';
+    txt+='Investment: $16M | IRR: 38% | Payback: 3 years\n';
+    txt+='Products: 33 textile chemicals, 18 categories\n';
+    txt+='Market: $3.2B China softener market, 7.2% growth\n';
+    txt+='Position: Value Leader — GOTS/ZDHC certified at 22-25% below EU\n';
+    txt+='Customers: 200+ globally, targeting 15+ in China\n';
+    txt+='\n📁 Full pitch deck: /docs/investor/china_pitch_v3.pdf';
+    mod='financials';
+  }
+
+  // --- CATCH-ALL WITH SMART FALLBACK ---
+  else{
+    // Try to find ANY relevant data
+    const results=searchKB(lc);
+    if(results.length>0){
+      txt='🔍 Found relevant data:\n\n';
+      results.slice(0,5).forEach(r=>{
+        if(r.name)txt+='• '+r.name+': '+((r.cat||r.share)?(r.cat||r.share+'% share'):'')+'\n';
+      });
+      txt+='\n💡 Try being more specific — "product CWAS", "competitor Wacker", "margin calc"';
+    }
+    else{
+      txt='🤔 I can help with:\n\n';
+      txt+='📦 Products: "product CWAS", "list all products", "search silicone"\n';
+      txt+='💰 Finance: "financial summary", "margin CWAS", "pricing"\n';
+      txt+='🕵️ Intel: "competitor analysis", "market data", "suppliers"\n';
+      txt+='🏭 Ops: "production status", "quality report", "pipeline"\n';
+      txt+='📋 Plans: "risks", "action plan", "certifications"\n';
+      txt+='🔧 "help" for full command list';
+    }
+  }
+
+  return {txt,mod,tsk};
+}
 // === BOTTOM CMD ===
 function bCmd(){const i=document.getElementById('binp'),c=i.value.trim();if(!c)return;i.value='';document.getElementById('suggestBox').style.display='none';const r=resp(c);addM(c,'user');addM(r.txt);if(r.mod)nav(r.mod);document.getElementById('bfb').textContent='Ready'}
 function autoSuggest(){
   const i=document.getElementById('binp'),v=i.value.toLowerCase().trim(),sb=document.getElementById('suggestBox');
   if(v.length<2){sb.style.display='none';return}
-  const all=['analyze competitors','competitor weaknesses','show financials','update pricing','import duty','recalculate margin','add task','show tasks','generate investor brief','show market data','iecsc status','regulatory checklist','product portfolio','executive overview','revenue ramp','cost structure','system health','activity logs','kanban board','agent fleet','channel config','model management','theme','voice notes','ester quat','cationic softener'];
+  const all=['analyze competitors','competitor weaknesses','show financials','update pricing','import duty','recalculate margin','add task','show tasks','generate investor brief','show market data','iecsc status','regulatory checklist','product portfolio','executive overview','revenue ramp','cost structure','system health','activity logs','kanban board','agent fleet','channel config','model management','theme','voice notes','ester quat','cationic softener','product CWAS','margin CWAS','financial summary','pipeline status','shipping cost','currency rates','raw material prices','certification status','supplier comparison','production schedule','quality report','R&D pipeline','sample status','risk analysis','landed cost','competitor Wacker','compare margins','help','navigate to products'];
   const matches=all.filter(s=>s.includes(v)||v.split(' ').some(w=>s.includes(w))).slice(0,8);
   if(!matches.length){sb.style.display='none';return}
   sb.innerHTML=matches.map(m=>'<div style="padding:8px 14px;cursor:pointer;border-bottom:1px solid var(--brd)" onclick="document.getElementById(\'binp\').value=\''+m+'\';document.getElementById(\'suggestBox\').style.display=\'none\';document.getElementById(\'binp\').focus()" onmouseover="this.style.background=\'var(--surf)\'" onmouseout="this.style.background=\'transparent\'">💡 '+m+'</div>').join('');
