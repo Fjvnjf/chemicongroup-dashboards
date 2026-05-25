@@ -286,6 +286,7 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="mh" style="margin-top:12px">📋 Operations</div>
 <button class="mi2" onclick="mobNav('regulatory')">📋 Regulatory Playbook</button>
 <button class="mi2" onclick="mobNav('timeline')">🗂 Action Plan</button>
+<button class="mi2" onclick="mobNav('sales')">📢 Sales & Marketing</button>
 <button class="mi2" onclick="mobNav('kanban')">📋 Kanban Board</button>
 <div class="mh" style="margin-top:12px">⚡ System</div>
 <button class="mi2" onclick="mobNav('terminal')">🖥 Terminal</button>
@@ -338,6 +339,7 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="ni" onclick="nav('financials')" data-v="financials">📈 Financials</div>
 <div class="ni" onclick="nav('regulatory')" data-v="regulatory">📋 Regulatory</div>
 <div class="ni" onclick="nav('timeline')" data-v="timeline">🗂 Action Plan</div>
+<div class="ni" onclick="nav('sales')" data-v="sales">📢 Sales & Marketing</div>
 </div>
 
 <div class="sh op" onclick="this.classList.toggle('op')"><span class="ar">▶</span>🤖 HERMES AGENT</div>
@@ -780,7 +782,37 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <tr><td>🇩🇪 Germany</td><td>88</td><td>92</td><td>+4.5%</td></tr>
 <tr><td>🇧🇩 Bangladesh</td><td>38</td><td>44</td><td style="color:var(--grn)">+15.8%</td></tr>
 <tr><td>🇻🇳 Vietnam</td><td>31</td><td>35</td><td>+12.9%</td></tr>
-<tr class="tt"><td>World Total</td><td>1,546</td><td>1,655</td><td>+7.0%</td></tr></table></div></div>
+<tr class="tt"><td>World Total</td><td>1,546</td><td>1,655</td><td>+7.0%</td></tr></table><div class="card"><h3>🏢 Major Chinese Textile Chemical Importers/Distributors</h3>
+<p style="font-size:12px;color:var(--mut);margin-bottom:8px">Publicly known major players in China textile chemical distribution. Exact import volumes require China Customs DB (paid).</p>
+<table class="tb"><tr class="hd"><td>Company</td><td>HQ</td><td>Focus</td><td>Scale</td><td>Relevance</td></tr>
+<tr><td><strong>Transfar Group</strong> 传化</td><td>Hangzhou, Zhejiang</td><td>Textile aux, surfactants</td><td>$5B+ revenue</td><td><span class="bg g">#1 Target</span></td></tr>
+<tr><td><strong>Zhejiang Longsheng</strong> 龙盛</td><td>Shaoxing, Zhejiang</td><td>Dyes, intermediates</td><td>$3B+ revenue</td><td><span class="bg g">Key Partner</span></td></tr>
+<tr><td><strong>Zhejiang Runtu</strong> 闰土</td><td>Shangyu, Zhejiang</td><td>Dyes, textile chem</td><td>$1.5B+ revenue</td><td><span class="bg g">Key Partner</span></td></tr>
+<tr><td><strong>Dymatic Chemicals</strong> 德美</td><td>Foshan, Guangdong</td><td>Textile auxiliaries</td><td>$500M+ revenue</td><td><span class="bg y">GTM Partner</span></td></tr>
+<tr><td><strong>Shanghai Anoky</strong> 安诺其</td><td>Shanghai</td><td>Dyes, specialty chem</td><td>$200M+ revenue</td><td><span class="bg y">Potential</span></td></tr>
+<tr><td><strong>HT Fine Chemicals</strong> 宏图</td><td>Dongguan, Guangdong</td><td>Silicone, softeners</td><td>Mid-tier</td><td><span class="bg b">Competitor</span></td></tr>
+<tr><td><strong>NICCA Chemical (China)</strong></td><td>Shanghai</td><td>Japanese JV, surfactants</td><td>$100M+ in China</td><td><span class="bg b">Competitor</span></td></tr>
+</table>
+<div style="font-size:11px;color:var(--amb);margin-top:8px">⚠ Company-specific import data (exact volumes, supplier names, prices per shipment) requires China Customs Database subscription. Recommended providers: Panjiva ($5K/yr), ImportGenius ($3K/yr), Descartes Datamyne ($8K/yr). These have Bill of Lading records showing Chinese importer → overseas shipper details.</div></div>
+
+<div class="card" style="border:2px solid var(--gold)"><h3>🌏 China Import Data: Quaternary Ammonium Textile Agents (HS 3809.91)</h3>
+<p style="font-size:13px;color:var(--mut);margin-bottom:10px">Source: UN Comtrade | China imports of ester quats & related quaternary ammonium finishing agents</p>
+<table class="tb"><tr class="hd"><td>Rank</td><td>Country</td><td>2022 (t)</td><td>2023 (t)</td><td>2024 (t)</td><td>2024 Value</td><td>$/kg</td></tr>
+<tr><td>1</td><td>🇰🇷 South Korea</td><td>13,102</td><td>13,763</td><td><strong>16,175</strong></td><td>$46.6M</td><td>$2.88</td></tr>
+<tr><td>2</td><td>🇮🇳 India</td><td>7,358</td><td>10,264</td><td><strong>11,483</strong></td><td>$12.3M</td><td>$1.07</td></tr>
+<tr><td>3</td><td>🇯🇵 Japan</td><td>7,171</td><td>6,800</td><td><strong>8,198</strong></td><td>$51.5M</td><td>$6.28</td></tr>
+<tr><td>4</td><td>🇲🇾 Malaysia</td><td>3,003</td><td>3,199</td><td><strong>4,807</strong></td><td>$3.7M</td><td>$0.77</td></tr>
+<tr><td>5</td><td>🇹🇭 Thailand ⬆</td><td>941</td><td>965</td><td><strong>3,985</strong></td><td>$9.1M</td><td>$2.29</td></tr>
+<tr><td>6</td><td>🇩🇪 Germany</td><td>3,312</td><td>2,649</td><td><strong>3,567</strong></td><td>$25.8M</td><td>$7.23</td></tr>
+<tr><td>7</td><td>🇹🇼 Taiwan</td><td>3,860</td><td>2,773</td><td><strong>3,497</strong></td><td>$14.2M</td><td>$4.07</td></tr>
+<tr><td>8</td><td>🇻🇳 Vietnam</td><td>3,805</td><td>2,949</td><td><strong>2,924</strong></td><td>$3.5M</td><td>$1.20</td></tr>
+<tr><td>9</td><td>🇺🇸 USA</td><td>2,655</td><td>2,476</td><td><strong>2,674</strong></td><td>$22.0M</td><td>$8.23</td></tr>
+<tr><td>10</td><td>🇮🇹 Italy</td><td>1,009</td><td>627</td><td><strong>1,811</strong></td><td>$4.7M</td><td>$2.62</td></tr>
+<tr class="tt"><td></td><td>🌍 Global Total</td><td><strong>51,425</strong></td><td><strong>51,661</strong></td><td><strong>65,409</strong></td><td><strong>$237M</strong></td><td>$3.62</td></tr>
+</table>
+<div style="font-size:12px;color:var(--mut);margin-top:8px">💡 Total imports grew 27% in 3 years (51K→65K tons). India (+56%) and Thailand (+323%) fastest growing. South Korea dominates at 25% volume share but mid-tier pricing. Japan commands premium at $6.28/kg — 6× India's price.</div></div>
+
+</div></div>
 
 <!-- COMPETITORS -->
 <div id="v-competitors" class="vw">
@@ -866,6 +898,102 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <span style="color:var(--mut)">M9-12</span> <strong>Phase 3:</strong> Validate — $1M revenue, feedback loop<br>
 <span style="color:var(--mut)">M12-18</span> <strong>Phase 4:</strong> Scale — $4.75M run-rate, China office<br>
 <span style="color:var(--blue)">M18-30</span> <strong>Phase 5:</strong> $120M Achieved 🎯</div></div></div>
+
+
+<!-- SALES & MARKETING -->
+<div id="v-sales" class="vw">
+<div class="kr"><div class="kpi"><div class="v">$120M</div><div class="l">Sales Target</div></div><div class="kpi"><div class="v">12,500t</div><div class="l">Local Sales</div></div><div class="kpi"><div class="v">12,500t</div><div class="l">Export Sales</div></div><div class="kpi"><div class="v">5</div><div class="l">Target Provinces</div></div><div class="kpi"><div class="v">8</div><div class="l">Distributors</div></div><div class="kpi"><div class="v">24 mo</div><div class="l">Ramp Period</div></div></div>
+
+<div class="g2">
+<!-- SALES PIPELINE -->
+<div class="card"><h3>📊 Sales Pipeline (China Market)</h3>
+<table class="tb"><tr class="hd"><td>Stage</td><td>Accounts</td><td>Value</td><td>Conv %</td></tr>
+<tr><td>🔍 Prospecting</td><td>80</td><td>$48M</td><td>—</td></tr>
+<tr><td>📞 Contacted</td><td>40</td><td>$24M</td><td>50%</td></tr>
+<tr><td>🤝 Qualified</td><td>20</td><td>$12M</td><td>25%</td></tr>
+<tr><td>📋 Proposal Sent</td><td>8</td><td>$5M</td><td>10%</td></tr>
+<tr><td>🔐 Negotiation</td><td>3</td><td>$2M</td><td>4%</td></tr>
+<tr class="tt"><td>✅ Closed Won</td><td style="color:var(--grn)">1</td><td style="color:var(--grn)">$0.5M</td><td>1%</td></tr>
+</table></div>
+
+<!-- MARKETING CAMPAIGNS -->
+<div class="card"><h3>📣 Marketing Campaigns</h3>
+<table class="tb"><tr class="hd"><td>Campaign</td><td>Channel</td><td>Timeline</td><td>Status</td></tr>
+<tr><td>China Textile Expo 2026</td><td>Trade Show</td><td>Q3 2026</td><td><span class="bg y">Planning</span></td></tr>
+<tr><td>WeChat B2B Launch</td><td>Social</td><td>Q3 2026</td><td><span class="bg y">Drafting</span></td></tr>
+<tr><td>Sample Distribution — Zhejiang</td><td>Direct</td><td>Q2 2026</td><td><span class="bg g">Active</span></td></tr>
+<tr><td>Technical Seminar Series</td><td>Events</td><td>Q3-Q4 2026</td><td><span class="bg y">Planning</span></td></tr>
+<tr><td>Alibaba Chem B2B Listing</td><td>Digital</td><td>Q3 2026</td><td><span class="bg b">Pending</span></td></tr>
+<tr><td>Chinese SDS + Brochure</td><td>Content</td><td>Q2 2026</td><td><span class="bg g">In Progress</span></td></tr>
+</table></div>
+</div>
+
+<div class="g22">
+<!-- TERRITORY MANAGEMENT -->
+<div class="card"><h3>🗺 Territory Plan — 5 Chinese Provinces</h3>
+<table class="tb"><tr class="hd"><td>Province</td><td>City</td><td>Target (t)</td><td>Distributor</td><td>Status</td></tr>
+<tr><td>🏭 Zhejiang</td><td>Shaoxing</td><td>4,375</td><td>TBD</td><td><span class="bg y">Identifying</span></td></tr>
+<tr><td>🏭 Jiangsu</td><td>Changzhou</td><td>3,125</td><td>TBD</td><td><span class="bg y">Identifying</span></td></tr>
+<tr><td>🏭 Guangdong</td><td>Foshan</td><td>2,500</td><td>TBD</td><td><span class="bg y">Researching</span></td></tr>
+<tr><td>🏭 Fujian</td><td>Quanzhou</td><td>1,500</td><td>TBD</td><td><span style="color:var(--mut)">Not Started</span></td></tr>
+<tr><td>🏭 Shandong</td><td>Qingdao</td><td>1,000</td><td>TBD</td><td><span style="color:var(--mut)">Not Started</span></td></tr>
+<tr class="tt"><td><strong>Total</strong></td><td></td><td><strong>12,500</strong></td><td></td><td></td></tr>
+</table></div>
+
+<!-- DISTRIBUTOR SCORECARD -->
+<div class="card"><h3>🤝 Distributor Scorecard</h3>
+<table class="tb"><tr class="hd"><td>Criterion</td><td>Weight</td><td>Target</td></tr>
+<tr><td>Existing textile chem portfolio</td><td>25%</td><td>Must have</td></tr>
+<tr><td>Warehouse in target province</td><td>20%</td><td>Must have</td></tr>
+<tr><td>50+ active mill customers</td><td>15%</td><td>Preferred</td></tr>
+<tr><td>Technical service team</td><td>15%</td><td>Preferred</td></tr>
+<tr><td>Import license & customs exp</td><td>15%</td><td>Must have</td></tr>
+<tr><td>Financial stability (3yr+)</td><td>10%</td><td>Must have</td></tr>
+</table></div>
+</div>
+
+<div class="g3">
+<!-- CUSTOMER ACQUISITION -->
+<div class="card"><h3>🎯 Customer Acquisition Funnel</h3>
+<table class="tb"><tr class="hd"><td>Metric</td><td>Target</td><td>Cost</td></tr>
+<tr><td>Leads Generated</td><td>500/yr</td><td>$20/lead</td></tr>
+<tr><td>Samples Sent</td><td>200/yr</td><td>$50/sample</td></tr>
+<tr><td>Trials Started</td><td>60/yr</td><td>$200/trial</td></tr>
+<tr><td>Customers Converted</td><td>15/yr</td><td>$2,000/customer</td></tr>
+<tr class="tt"><td>CAC (Customer Acq Cost)</td><td></td><td style="color:var(--gold)">$8,000</td></tr>
+</table></div>
+
+<!-- PRICING STRATEGY -->
+<div class="card"><h3>💰 Pricing Strategy</h3>
+<table class="tb"><tr class="hd"><td>Product</td><td>Our Price</td><td>Market</td><td>Edge</td></tr>
+<tr><td>Cationic Softener</td><td>$24/kg</td><td>$30-42</td><td>-25%</td></tr>
+<tr><td>Silicone Softener</td><td>$28/kg</td><td>$34-42</td><td>-22%</td></tr>
+<tr><td>LMF Multifunctional</td><td>$18/kg</td><td>$22-28</td><td>-22%</td></tr>
+<tr><td>Anti-Creasing</td><td>$12/kg</td><td>$15-20</td><td>-25%</td></tr>
+</table></div>
+
+<!-- MONTHLY TARGETS -->
+<div class="card"><h3>📅 12-Month Sales Ramp</h3>
+<table class="tb"><tr class="hd"><td>Quarter</td><td>Volume (t)</td><td>Revenue</td><td>Milestone</td></tr>
+<tr><td>Q1</td><td>100</td><td>$0.4M</td><td>Samples to 20 mills</td></tr>
+<tr><td>Q2</td><td>350</td><td>$1.5M</td><td>First distributor signed</td></tr>
+<tr><td>Q3</td><td>900</td><td>$3.8M</td><td>3 provinces active</td></tr>
+<tr><td>Q4</td><td>1,650</td><td>$7.0M</td><td>5+ repeat customers</td></tr>
+<tr class="tt"><td>Year 1</td><td><strong>3,000</strong></td><td><strong>$12.7M</strong></td><td></td></tr>
+</table></div>
+</div>
+
+<div class="card"><h3>📋 90-Day Action Plan</h3>
+<div style="font-size:14px;line-height:2.2">
+<span class="bg g">Week 1-2</span> Finalize Chinese SDS (GB 15258 compliant) + product brochures in Mandarin<br>
+<span class="bg g">Week 3-4</span> Identify top 5 distributor candidates per province via trade associations<br>
+<span class="bg y">Week 5-6</span> Ship 50 kg samples to each shortlisted distributor for mill trials<br>
+<span class="bg y">Week 7-8</span> Attend China Interdye (Shanghai) — booth or walk the floor<br>
+<span class="bg y">Week 9-10</span> Follow up on trials, collect technical feedback, adjust formulations<br>
+<span style="color:var(--mut)">Week 11-12</span> Negotiate first commercial contract — target 20-ton trial order<br>
+<span style="color:var(--mut)">Week 13</span> Sign distributor agreement + plan first container shipment 🚢
+</div></div>
+</div>
 
 <!-- THEMES -->
 <div id="v-themes" class="vw"><div class="card"><h3>🎨 Theme Selector (6 Built-in)</h3>
