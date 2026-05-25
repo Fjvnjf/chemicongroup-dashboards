@@ -299,8 +299,10 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 <div class="logo">🧠</div>
 <h2>CHEMICON CHINA — COMMAND CENTER</h2>
 <p>AI-Powered Expansion Dashboard | Target: $10M</p>
-<input id="pw" type="password" placeholder="Access Code" onkeydown="if(event.key==='Enter')auth()">
-<button onclick="auth()">Enter Command Center</button>
+<form onsubmit="auth();return false" style="display:flex;flex-direction:column;align-items:center;gap:14px">
+<input id="pw" type="password" placeholder="Access Code" style="width:260px">
+<button type="submit" style="min-width:220px">Enter Command Center</button>
+</form>
 <p class="err" id="pe"></p>
 </div>
 
