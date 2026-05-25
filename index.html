@@ -818,10 +818,19 @@ body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behav
 // === AUTH ===
 function auth(){
   const pw=document.getElementById('pw').value;
+  document.getElementById('pe').textContent='Checking...';
   if(['chemicongroup2026','chemicon2026','investor2026','china2026','hermes2026'].includes(pw)){
-    sessionStorage.setItem('hx','1');document.getElementById('gate').style.display='none';document.getElementById('app').style.display='flex';init()
-  }else{document.getElementById('pe').textContent='Invalid. Try: chemicongroup2026'}
+    sessionStorage.setItem('hx','1');
+    document.getElementById('gate').style.display='none';
+    document.getElementById('app').style.display='flex';
+    init();
+  }else{
+    document.getElementById('pe').textContent='Invalid. Try: chemicongroup2026';
+    document.getElementById('pw').value='';
+    document.getElementById('pw').focus();
+  }
 }
+// Auto-check stored session
 if(sessionStorage.getItem('hx')==='1'){document.getElementById('gate').style.display='none';document.getElementById('app').style.display='flex';setTimeout(init,100)}
 
 // === STATE ===
