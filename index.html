@@ -123,6 +123,26 @@ body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--brd);border-radius:3px}
 
+/* ===== PERFORMANCE OPTIMIZATIONS (from 7 ref repos) ===== */
+/* Contain paint on scrollable containers */
+.chat-msgs,.vw,#mn{contain:layout style paint}
+.card,.kpi{contain:layout style paint}
+/* GPU acceleration for animated elements */
+.msg,.kpi,.card,#mob-nav .mt,.typing span{will-change:transform}
+/* Mobile touch optimization */
+body{touch-action:manipulation;-webkit-overflow-scrolling:touch;overscroll-behavior:none}
+/* Content visibility for off-screen sections */
+.vw:not(.ac){content-visibility:auto;contain-intrinsic-size:0 500px}
+/* Screen reader only */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Reduced motion — nuke all animations (OMC pattern) */
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Container query for adaptive KPI grids */
+.kpi-row-wrap{container-type:inline-size}
+@container(min-width:400px){.kpi-row-wrap .kr{grid-template-columns:repeat(4,1fr)}}
+@container(min-width:600px){.kpi-row-wrap .kr{grid-template-columns:repeat(6,1fr)}}
+
 @media(max-width:768px){
   /* ===== MOBILE NAVIGATION ===== */
   /* Hide desktop sidebar */
@@ -936,12 +956,39 @@ function syncAll(){addM('🔄 Syncing...');setTimeout(()=>addM('✅ Sync complet
 // === UPTIME ===
 function startUp(){const s=Date.now();setInterval(()=>{const d=Math.floor((Date.now()-s)/1000);document.getElementById('up').textContent=String(Math.floor(d/3600)).padStart(2,'0')+':'+String(Math.floor((d%3600)/60)).padStart(2,'0')+':'+String(d%60).padStart(2,'0')},1000)}
 
-// === CHARTS ===
+// === CHARTS (optimized: lazy load via IntersectionObserver) ===
+let chartsDrawn={};
 function drawCharts(){
-Chart.defaults.color='#5a6a8a';Chart.defaults.borderColor='#1e3050';Chart.defaults.plugins.legend.labels.color='#5a6a8a';
-try{new Chart(document.getElementById('chRev'),{type:'bar',data:{labels:['Y1Q1','Y1Q2','Y1Q3','Y1Q4','Y2Q1','Y2Q2','Y2Q3','Y2Q4','Y3Q1','Y3Q2','Y3Q3','Y3Q4'],datasets:[{label:'Quarterly Revenue ($K)',data:[150,280,450,620,850,1050,1300,1550,1900,2300,2700,3126],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:6},{label:'Cumulative ($K)',data:[150,430,880,1500,2350,3400,4700,6250,8150,10450,13150,16276],type:'line',borderColor:'#c9a84c',fill:true,tension:.3,borderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('chComp'),{type:'bar',data:{labels:['Transfar','Wacker','Rudolf','CHT','Archroma','Zschimmer','Liansheng','Huangma','Pulcra','Kao','Others'],datasets:[{data:[12,10,8,7,6,5,5,4,4,3,36],backgroundColor:['#ffa726','#4fc3f7','#ef5350','#42a5f5','#ab47bc','#66bb6a','#7a8a9a','#7a8a9a','#5a7a9a','#ff7043','#1a2744'],borderRadius:6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a2744'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}})}catch(e){}
-try{new Chart(document.getElementById('ch5yr'),{type:'bar',data:{labels:['Year 1','Year 2','Year 3','Year 4','Year 5'],datasets:[{label:'Revenue',data:[1500,4750,10026,15000,20000],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:6},{label:'Gross Profit',data:[380,1330,2807,4500,6400],backgroundColor:'rgba(102,187,106,0.6)',borderColor:'#66bb6a',borderRadius:6},{label:'EBITDA',data:[10,750,2007,3200,4800],type:'line',borderColor:'#c9a84c',borderWidth:3,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}})}catch(e){}
+  // Lazy-load charts only when their container is visible
+  const containers=document.querySelectorAll('.cw canvas');
+  containers.forEach(c=>{
+    const id=c.id;if(!id||chartsDrawn[id])return;
+    const obs=new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{if(e.isIntersecting){drawChart(id);obs.unobserve(c)}});
+    },{rootMargin:'100px'});
+    obs.observe(c);
+  });
+  // Draw immediately if already in viewport
+  if(document.visibilityState==='visible'){
+    containers.forEach(c=>{const id=c.id;if(id&&isInView(c)&&!chartsDrawn[id])drawChart(id)});
+  }
+}
+function isInView(el){const r=el.getBoundingClientRect();return r.top<window.innerHeight+200&&r.bottom>-200}
+function drawChart(id){
+  if(chartsDrawn[id])return;chartsDrawn[id]=true;
+  Chart.defaults.color='#5a6a8a';Chart.defaults.borderColor='#1e3050';Chart.defaults.plugins.legend.labels.color='#5a6a8a';
+  try{
+    if(id==='chRev')new Chart(document.getElementById('chRev'),{type:'bar',data:{labels:['Y1Q1','Y1Q2','Y1Q3','Y1Q4','Y2Q1','Y2Q2','Y2Q3','Y2Q4','Y3Q1','Y3Q2','Y3Q3','Y3Q4'],datasets:[{label:'Q Rev ($K)',data:[150,280,450,620,850,1050,1300,1550,1900,2300,2700,3126],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:6},{label:'Cum ($K)',data:[150,430,880,1500,2350,3400,4700,6250,8150,10450,13150,16276],type:'line',borderColor:'#c9a84c',fill:true,tension:.3,borderWidth:2,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}});
+    else if(id==='chComp')new Chart(document.getElementById('chComp'),{type:'bar',data:{labels:['Transfar','Wacker','Rudolf','CHT','Archroma','Zschimmer','Liansheng','Huangma','Pulcra','Kao','Others'],datasets:[{data:[12,10,8,7,6,5,5,4,4,3,36],backgroundColor:['#ffa726','#4fc3f7','#ef5350','#42a5f5','#ab47bc','#66bb6a','#7a8a9a','#7a8a9a','#5a7a9a','#ff7043','#1a2744'],borderRadius:6}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:'#1a2744'},ticks:{callback:v=>v+'%'}},y:{grid:{display:false}}}}});
+    else if(id==='ch5yr')new Chart(document.getElementById('ch5yr'),{type:'bar',data:{labels:['Year 1','Year 2','Year 3','Year 4','Year 5'],datasets:[{label:'Revenue',data:[1500,4750,10026,15000,20000],backgroundColor:'rgba(79,195,247,0.6)',borderColor:'#4fc3f7',borderRadius:6},{label:'Gross Profit',data:[380,1330,2807,4500,6400],backgroundColor:'rgba(102,187,106,0.6)',borderColor:'#66bb6a',borderRadius:6},{label:'EBITDA',data:[10,750,2007,3200,4800],type:'line',borderColor:'#c9a84c',borderWidth:3,pointRadius:5}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'K'}},x:{grid:{display:false}}}}});
+  }catch(e){}
+}
+// Deferred state save via requestIdleCallback
+let savePending=false;
+function saveS(){
+  if(savePending)return;savePending=true;
+  const fn=()=>{try{localStorage.setItem('hx_chat',JSON.stringify(chat));localStorage.setItem('hx_tasks',JSON.stringify(tasks))}catch(e){}savePending=false};
+  if(window.requestIdleCallback)requestIdleCallback(fn,{timeout:2000});else setTimeout(fn,100);
 }
 </script>
 </body>
