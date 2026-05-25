@@ -17,22 +17,24 @@ body{background:#060a12;color:#c8d0d8;font-family:'Segoe UI',system-ui,sans-seri
 .nav-item:hover{background:#111827;color:#a0aab4}
 .nav-item.active{background:#111827;color:#4fc3f7;border-left-color:#4fc3f7}
 .nav-item .icon{font-size:16px;width:20px;text-align:center}
+.nav-item .badge{font-size:9px;background:#1a2744;color:#4fc3f7;padding:2px 6px;border-radius:8px;margin-left:auto}
 .nav-divider{padding:8px 16px 4px;font-size:9px;color:#3a4a5a;text-transform:uppercase;letter-spacing:2px}
 .sidebar .footer{padding:12px 16px;border-top:1px solid #1a2744;font-size:10px;color:#3a4a5a}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
 .topbar{background:#0d1525;padding:12px 20px;border-bottom:1px solid #1a2744;display:flex;justify-content:space-between;align-items:center;flex-shrink:0}
 .topbar .title{font-size:15px;font-weight:600;color:#c9a84c}
-.topbar .status{font-size:10px;padding:4px 10px;border-radius:10px;background:#1a1000;color:#ffa726;border:1px solid #3a2a10}
+.topbar .agent-dot{display:flex;align-items:center;gap:6px;font-size:10px;padding:4px 10px;border-radius:10px}
+.topbar .agent-dot.online{background:#0a1a10;color:#66bb6a;border:1px solid #1a3a20}
+.topbar .agent-dot .pulse{width:7px;height:7px;background:#66bb6a;border-radius:50%;animation:pulse 2s infinite}
+.topbar .phase{font-size:10px;padding:4px 10px;border-radius:10px;background:#1a1000;color:#ffa726;border:1px solid #3a2a10}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 .content{flex:1;overflow-y:auto;padding:16px 20px}
-.module{display:none}
-.module.active{display:block}
 .console{background:#080c14;border-top:1px solid #1a2744;padding:10px 16px;display:flex;gap:8px;align-items:center;flex-shrink:0}
 .console input{flex:1;background:#0d1525;border:1px solid #1e3050;color:#c8d0d8;padding:10px 14px;border-radius:6px;font-size:12px;outline:none}
 .console input:focus{border-color:#4fc3f7}
 .console button{background:#1a3050;color:#4fc3f7;border:1px solid #1e3a5f;padding:10px 16px;border-radius:6px;font-size:12px;cursor:pointer;white-space:nowrap}
 .console button:hover{background:#1e3a5f}
-.console .log{max-height:200px;overflow-y:auto;font-size:10px;color:#5a7a9a;padding:8px;background:#060a12;border-radius:6px;display:none;position:absolute;bottom:50px;left:236px;right:16px;border:1px solid #1a2744}
-.console .log.show{display:block}
+.console button.primary{background:#103020;border-color:#1a4a30;color:#66bb6a}
 
 .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:14px}
 .kpi{background:#111827;border:1px solid #1e3050;border-radius:10px;padding:14px;text-align:center}
@@ -50,6 +52,7 @@ canvas{width:100%!important;height:100%!important}
 .action-btn{display:inline-block;padding:6px 14px;margin:3px;font-size:10px;border-radius:6px;cursor:pointer;border:1px solid #1e3a5f;background:#0d1525;color:#4fc3f7;transition:all .15s}
 .action-btn:hover{background:#1a2744;border-color:#4fc3f7}
 .action-btn.run{background:#103020;border-color:#1a4a30;color:#66bb6a}
+.action-btn.danger{background:#1a0a0a;border-color:#3a1515;color:#ef5350}
 
 .insight-box{background:#0a1020;border:1px solid #1a2744;border-left:3px solid #4fc3f7;padding:14px;border-radius:8px;margin-bottom:12px;font-size:12px;line-height:1.6}
 .insight-box .ai-label{font-size:9px;color:#4fc3f7;text-transform:uppercase;margin-bottom:4px}
@@ -63,7 +66,6 @@ table.data td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-fam
 .milestone{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid #152033;font-size:11px}
 .milestone .d{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .milestone .d.ok{background:#66bb6a}.milestone .d.on{background:#ffa726;animation:pulse 1.5s infinite}.milestone .d.wait{background:#3a4a5a}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
 
 .help-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:999;align-items:center;justify-content:center}
 .help-modal.show{display:flex}
@@ -79,10 +81,42 @@ table.data td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-fam
 .slider-group{margin-bottom:10px}
 .slider-group label{font-size:10px;color:#7a8a9a;display:flex;justify-content:space-between}
 .slider-group input[type=range]{width:100%;margin-top:4px;accent-color:#4fc3f7}
-
 .status-list{font-size:11px;max-height:200px;overflow-y:auto}
 .status-list .row{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #152033}
-.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* Hermes Ops specific */
+.agent-header{display:flex;align-items:center;gap:16px;margin-bottom:16px}
+.agent-avatar{width:60px;height:60px;background:linear-gradient(135deg,#1a2744,#0d1525);border:2px solid #4fc3f7;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:28px}
+.agent-avatar.idle{border-color:#66bb6a}.agent-avatar.busy{border-color:#ffa726;animation:pulse 1s infinite}.agent-avatar.error{border-color:#ef5350}
+.agent-info .name{font-size:16px;font-weight:600;color:#c9a84c}
+.agent-info .status-line{font-size:10px;margin-top:2px}
+.agent-info .uptime{font-size:9px;color:#5a7a9a;margin-top:2px}
+
+.task-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border-bottom:1px solid #152033;font-size:10px;cursor:pointer;transition:background .1s}
+.task-row:hover{background:#0d1525}
+.task-row .t-id{color:#3a4a5a;font-family:monospace;width:50px;flex-shrink:0}
+.task-row .t-cmd{flex:1;color:#8899aa;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.task-row .t-status{font-size:9px;padding:2px 6px;border-radius:4px;flex-shrink:0}
+.task-row .t-status.pending{background:#1a1a00;color:#ffa726}.task-row .t-status.progress{background:#0a1a20;color:#4fc3f7;animation:pulse 1s infinite}.task-row .t-status.done{background:#0a1a10;color:#66bb6a}.task-row .t-status.failed{background:#1a0a0a;color:#ef5350}
+
+.log-entry{padding:5px 0;border-bottom:1px solid #0d1525;font-size:10px;display:flex;gap:8px}
+.log-entry .ts{color:#3a4a5a;font-family:monospace;white-space:nowrap;flex-shrink:0}
+.log-entry .mod{font-size:8px;padding:1px 5px;border-radius:3px;flex-shrink:0}
+.log-entry .mod.fin{background:#0a2010;color:#66bb6a}.log-entry .mod.saf{background:#1a0a00;color:#ffa726}.log-entry .mod.pro{background:#0a1020;color:#4fc3f7}.log-entry .mod.sys{background:#100a20;color:#ab47bc}
+.log-entry .msg{color:#7a8a9a}
+
+.thought-box{background:#0a0a15;border:1px solid #1a1a30;border-radius:8px;padding:12px;min-height:100px;font-size:10px;font-family:monospace;line-height:1.8;max-height:200px;overflow-y:auto}
+.thought-box .step{color:#3a4a5a}
+.thought-box .step.active{color:#4fc3f7}
+.thought-box .step.done{color:#66bb6a}
+
+.filter-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
+.filter-chip{font-size:9px;padding:3px 8px;border-radius:8px;border:1px solid #1e3050;cursor:pointer;color:#5a7a9a}
+.filter-chip:hover,.filter-chip.on{background:#1a2744;color:#4fc3f7;border-color:#4fc3f7}
+
+.progress-bar{background:#1a2744;height:3px;border-radius:3px;overflow:hidden;margin-top:4px}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,#4fc3f7,#66bb6a);animation:slide 1.5s infinite}
+@keyframes slide{0%{width:0}50%{width:70%}100%{width:100%}}
 </style>
 </head>
 <body>
@@ -99,26 +133,29 @@ table.data td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-fam
 </div>
 
 <div class="sidebar">
-  <div class="logo"><h2>CHEMICON</h2><div class="sub">Omni-Command v2.0</div></div>
+  <div class="logo"><h2>CHEMICON</h2><div class="sub">Omni-Command v2.1</div></div>
   <nav>
     <div class="nav-divider">OVERVIEW</div>
     <div class="nav-item active" onclick="navTo('home')"><span class="icon">🏠</span>Executive Overview</div>
-    <div class="nav-divider">MODULES</div>
+    <div class="nav-divider">PLANT MODULES</div>
     <div class="nav-item" onclick="navTo('process')"><span class="icon">⚙</span>Process & Simulation</div>
     <div class="nav-item" onclick="navTo('safety')"><span class="icon">🛡️</span>Safety & Compliance</div>
     <div class="nav-item" onclick="navTo('finance')"><span class="icon">💰</span>Financial Command</div>
     <div class="nav-item" onclick="navTo('research')"><span class="icon">🧪</span>R&D Knowledge Center</div>
     <div class="nav-item" onclick="navTo('project')"><span class="icon">📋</span>Project & Documents</div>
     <div class="nav-item" onclick="navTo('digitaltwin')"><span class="icon">🌐</span>Digital Twin & Ops</div>
+    <div class="nav-divider">AI CONTROL</div>
+    <div class="nav-item" onclick="navTo('hermesops')"><span class="icon">🧠</span>Hermes AI Ops<span class="badge" id="taskCount">0</span></div>
   </nav>
-  <div class="footer">Phase: DESIGN<br>FEED Complete | v2.0</div>
+  <div class="footer">Phase: DESIGN<br>FEED Complete | v2.1</div>
 </div>
 
 <div class="main">
   <div class="topbar">
     <div class="title" id="pageTitle">🏠 Executive Overview</div>
     <div style="display:flex;gap:10px;align-items:center">
-      <span class="status">📐 DESIGN PHASE</span>
+      <div class="agent-dot online" id="agentStatus"><span class="pulse"></span>Hermes Online</div>
+      <span class="phase">📐 DESIGN PHASE</span>
       <button class="action-btn" onclick="document.getElementById('helpModal').classList.add('show')">?</button>
     </div>
   </div>
@@ -126,435 +163,306 @@ table.data td:last-child{text-align:right;font-weight:600;color:#c9a84c;font-fam
   <div class="console">
     <span style="font-size:12px;color:#4fc3f7">⌘</span>
     <input type="text" id="cmdInput" placeholder="Type any command... (e.g., 'update feedstock to $400 and rerun DCF', 'run HAZOP for reactor', 'summarize safety status')" onkeydown="if(event.key==='Enter')runCommand()">
-    <button onclick="runCommand()">Execute</button>
-    <button onclick="document.getElementById('cmdLog').classList.toggle('show')" style="font-size:10px">Log</button>
+    <button onclick="runCommand()" class="primary">Execute</button>
     <button onclick="document.getElementById('helpModal').classList.add('show')" style="font-size:10px">Guide</button>
   </div>
-  <div class="log" id="cmdLog"></div>
 </div>
 
 <div class="help-modal" id="helpModal" onclick="if(event.target===this)this.classList.remove('show')">
   <div class="box">
     <h3>📖 Command Center Guide</h3>
-    <p><strong>Navigation:</strong> Use the sidebar to switch between modules. The command console at the bottom accepts natural language.</p>
-    <p><strong>Sample Commands:</strong></p>
-    <p><code>update feedstock to $400/ton and rerun DCF</code> — Triggers financial re-calculation</p>
-    <p><code>run HAZOP for reactor section</code> — Opens safety analysis</p>
-    <p><code>compare scenario A and B</code> — Side-by-side comparison</p>
-    <p><code>generate investor update</code> — Creates summary report</p>
-    <p><code>find experiments where yield exceeded 0.85</code> — Queries R&D KB</p>
-    <p><code>summarize project status</code> — AI-generated overview</p>
-    <p><strong>Data Sources:</strong> All modules read from DCF Model, Plant Spec, Safety Engine, and EDMS files. Changes made via console are simulated — real execution requires backend deployment.</p>
-    <p style="text-align:center;margin-top:16px"><button class="action-btn" onclick="document.getElementById('helpModal').classList.remove('show')" style="font-size:12px">Close</button></p>
+    <p><strong>Navigation:</strong> Sidebar switches modules. Command bar at bottom accepts natural language. Open <strong>🧠 Hermes Ops</strong> to see AI status, task queue, and activity log.</p>
+    <p><strong>Commands:</strong> <code>summarize project status</code> · <code>update feedstock to $400 and rerun DCF</code> · <code>run HAZOP for reactor</code> · <code>generate investor memo</code> · <code>find experiments where yield exceeded 0.85</code> · <code>full system check</code> · <code>regenerate all reports</code></p>
+    <p><strong>Hermes Ops:</strong> Watch the AI think. Every command creates a task in the queue. The thought stream shows real-time reasoning steps. All activity is logged.</p>
+    <p style="text-align:center;margin-top:16px"><button class="action-btn" onclick="document.getElementById('helpModal').classList.remove('show')">Close</button></p>
   </div>
 </div>
 
 <script>
 // ════════════════ REAL PROJECT DATA ════════════════
-const DATA = {
-  plant:{product:"Bio-based Succinic Acid (C₄H₆O₄)",capacity:100000,capacity_tph:12.5,capacity_tpm:8333,location:"Nanjing, Jiangsu, China",hours:8000,oee_design:85,availability:92,performance:95,quality_target:97.5,purity:99.5,reactor_temp:37,reactor_ph:6.0,reactor_do:30,yield:0.85,titer:80,batch_time:72,fermenters:12,fermenter_vol:1000,seed_fermenters:6,feedstock_ratio:1.8,mass_balance:99.7,energy_balance:98.2},
-  finance:{capex:202318989,fixed:187846750,working:14472239,revenue:221200000,opex:96481594,depreciation:16906208,net_profit:107812198,npv:414815329,irr:48.1,payback:4.0,roi:45.0,mpsp:1262,price:2200,ebitda:56,
-    capex_items:[["Equipment (delivered)",45500000],["Installation",21385000],["Piping",13650000],["Instrumentation & Controls",8190000],["Electrical",5005000],["Buildings & Civil",8190000],["Yard Improvements",4550000],["Service Facilities",18200000],["Land",2730000],["Engineering & Supervision",15015000],["Construction Expense",18655000],["Contractor Fee",2275000],["Contingency (15%)",24501750]],
-    opex_items:[["Feedstock (180k tons)",63000000],["Utilities",6500000],["Labor (120 staff)",2800000],["Maintenance (4% FCI)",7513870],["Overhead",6188322],["Administrative",420000],["Insurance",1878468],["Property Tax",3756935],["R&D (2% revenue)",4424000]],
-    fcf:[-80.9,-121.4,124.7,124.7,111.2,111.2,111.2,97.8,97.8,97.8,97.8,97.8,93.5,93.5,126.8],
-    cum:[-80.9,-202.3,-77.6,47.1,158.4,269.6,380.8,478.6,576.4,674.1,771.9,869.7,963.2,1056.7,1183.5],
-    sens_price:[-199.2,199.2],sens_capacity:[-139.7,139.7],sens_discount:[90.7,-73.2],sens_feedstock:[59.6,-59.6]},
-  safety:{total:315,low:248,medium:63,high:4,extreme:0,nodes:7,sil:2,standards_cn:["GB 150","GB/T 20801","GB 50160","GB 31571","GB 18218","GB 30871","GB/T 50770"],standards_int:["ASME BPVC VIII","ASME B31.3","API 650","API 520/521","NFPA 30","IEC 61511","ISA 84"]},
-  equipment:[["Pretreatment Reactor","2×50m³","Design Complete"],["Hydrolysis Tanks","4×2,000m³","Design Complete"],["Seed Fermenters","6×500m³","Design Complete"],["Production Fermenters","12×1,000m³","Vendor Selection"],["Extraction Columns","4×TOA Karr","Scale-Up Review"],["Evaporator","Triple-effect,40t/h","Design Complete"],["Crystallizers","3×20m³","Design Complete"],["Fluid Bed Dryer","2×5t/h","Design Complete"],["CHP Turbine","40MW","Vendor Selection"],["Cooling Tower","20,000m³/h","Design Complete"]],
-  milestones:[["Site Selection","Jan 2026","done"],["FEED Package","Mar 2026","done"],["Environmental Permit","Apr 2026","done"],["Detailed Engineering","Sep 2026","active"],["Long-Lead Procurement","Dec 2026","pending"],["Construction Start","May 2027","pending"],["Mechanical Completion","Apr 2028","pending"],["Commissioning","Sep 2028","pending"]],
-  quality:[["Purity (GC)","≥ 99.5%"],["Moisture","< 0.1%"],["Color (APHA)","< 10"],["Heavy Metals","< 5 ppm"],["pH (1% sol)","2.5–3.0"],["Sulfated Ash","< 0.02%"],["Iron (Fe)","< 2 ppm"],["Chloride (Cl)","< 5 ppm"]],
-  rd_docs:["catalyst_screening_bayescampd.py","solvent_selection_doe.csv","fermentation_optimization_optuna.py","literature_review_succinic_acid.md","patent_landscape_2025.pdf","yield_improvement_trials.csv"],
-  commands:{}
-};
+const DATA={plant:{product:"Bio-based Succinic Acid",capacity:100000,capacity_tph:12.5,capacity_tpm:8333,location:"Nanjing, Jiangsu, China",hours:8000,oee_design:85,reactor_temp:37,reactor_ph:6.0,yield:0.85,titer:80,batch_time:72,fermenters:12,mass_balance:99.7,energy_balance:98.2},
+finance:{capex:202318989,fixed:187846750,revenue:221200000,opex:96481594,net_profit:107812198,npv:414815329,irr:48.1,payback:4.0,roi:45.0,mpsp:1262,price:2200,ebitda:56,depreciation:16906208,
+  fcf:[-80.9,-121.4,124.7,124.7,111.2,111.2,111.2,97.8,97.8,97.8,97.8,97.8,93.5,93.5,126.8],
+  cum:[-80.9,-202.3,-77.6,47.1,158.4,269.6,380.8,478.6,576.4,674.1,771.9,869.7,963.2,1056.7,1183.5],
+  capex_items:[["Equipment",45500000],["Installation",21385000],["Piping",13650000],["Instrumentation",8190000],["Electrical",5005000],["Buildings",8190000],["Yard",4550000],["Services",18200000],["Land",2730000],["Engineering",15015000],["Construction",18655000],["Contractor",2275000],["Contingency (15%)",24501750]],
+  opex_items:[["Feedstock",63000000],["Utilities",6500000],["Labor",2800000],["Maintenance",7513870],["Overhead",6188322],["Admin",420000],["Insurance",1878468],["Property Tax",3756935],["R&D",4424000]]},
+safety:{total:315,low:248,medium:63,high:4,extreme:0,nodes:7,sil:2,standards_cn:["GB 150","GB/T 20801","GB 50160","GB 31571","GB 18218","GB 30871","GB/T 50770"],standards_int:["ASME BPVC VIII","ASME B31.3","API 650","API 520/521","NFPA 30","IEC 61511","ISA 84"]},
+equipment:[["Pretreatment Reactor","2×50m³","Design Complete"],["Hydrolysis Tanks","4×2,000m³","Design Complete"],["Seed Fermenters","6×500m³","Design Complete"],["Production Fermenters","12×1,000m³","Vendor Selection"],["Extraction Columns","4×TOA","Scale-Up Review"],["Evaporator","Triple-effect","Design Complete"],["Crystallizers","3×20m³","Design Complete"],["CHP Turbine","40MW","Vendor Selection"],["Cooling Tower","20,000m³/h","Design Complete"]],
+milestones:[["Site Selection","Jan 2026","done"],["FEED Package","Mar 2026","done"],["Environmental Permit","Apr 2026","done"],["Detailed Engineering","Sep 2026","active"],["Long-Lead Procurement","Dec 2026","pending"],["Construction Start","May 2027","pending"],["Mechanical Completion","Apr 2028","pending"],["Commissioning","Sep 2028","pending"]],
+quality:[["Purity (GC)","≥ 99.5%"],["Moisture","< 0.1%"],["Color (APHA)","< 10"],["Heavy Metals","< 5 ppm"],["pH (1% sol)","2.5–3.0"]],
+rd_docs:["catalyst_screening.py","solvent_doe.csv","fermentation_optuna.py","literature_review.md","patent_landscape.pdf","yield_trials.csv"],
+modules:["home","process","safety","finance","research","project","digitaltwin","hermesops"]};
 
 // ════════════════ AUTH ════════════════
 function checkPwd(){var p=document.getElementById('pwdInput').value;if(p==='chemicongroup2026'||p==='chemicon2026'||p==='investor2026'){document.getElementById('loginGate').style.display='none';localStorage.setItem('cc_auth','1')}else{document.getElementById('pwdError').style.display='block'}}
 if(localStorage.getItem('cc_auth')==='1')document.getElementById('loginGate').style.display='none';
 
+// ════════════════ AGENT STATE ════════════════
+let agentState={status:'idle',uptime:0,startTime:Date.now(),currentTask:null};
+setInterval(()=>{agentState.uptime=Math.floor((Date.now()-agentState.startTime)/1000);if(document.getElementById('uptimeDisplay'))document.getElementById('uptimeDisplay').textContent=fmtUptime(agentState.uptime)},1000);
+function fmtUptime(s){if(s<60)return s+'s';if(s<3600)return Math.floor(s/60)+'m '+s%60+'s';return Math.floor(s/3600)+'h '+Math.floor(s%3600/60)+'m';}
+
+// ════════════════ TASK QUEUE (localStorage) ════════════════
+function getTasks(){try{return JSON.parse(localStorage.getItem('cc_tasks')||'[]')}catch(e){return[]}}
+function saveTasks(t){localStorage.setItem('cc_tasks',JSON.stringify(t));updateTaskBadge()}
+function updateTaskBadge(){const tasks=getTasks();const pending=tasks.filter(t=>t.status==='pending'||t.status==='progress').length;const el=document.getElementById('taskCount');if(el)el.textContent=tasks.length;if(pending>0){agentState.status='busy'}else{agentState.status='idle'};updateAgentDot()}
+function addTask(cmd){const tasks=getTasks();const task={id:'T-'+String(tasks.length+1).padStart(4,'0'),cmd:cmd,timestamp:new Date().toISOString(),status:'pending',result:'',thoughts:[]};tasks.push(task);saveTasks(tasks);addLog('system',`Task ${task.id} queued: "${cmd.slice(0,60)}"`);processTask(task);return task}
+function updateTask(id,updates){const tasks=getTasks();const idx=tasks.findIndex(t=>t.id===id);if(idx>=0){Object.assign(tasks[idx],updates);saveTasks(tasks);updateTaskBadge()}}
+function processTask(task){updateTask(task.id,{status:'progress'});agentState.currentTask=task.id;simulateThoughts(task.id,[`Breaking down: "${task.cmd.slice(0,40)}..."`,"Identifying target module...","Routing command...","Executing...","Compiling result..."],()=>{const result=executeCommand(task.cmd);updateTask(task.id,{status:'done',result:result.msg||'Completed',thoughts:task.thoughts});agentState.currentTask=null;addLog(result.module||'system',result.log||'Task completed');updateTaskBadge()})}
+function simulateThoughts(taskId,steps,done){let i=0;const tasks=getTasks();const t=tasks.find(t=>t.id===taskId);if(!t){done();return}const iv=setInterval(()=>{if(i<steps.length){if(!t.thoughts)t.thoughts=[];t.thoughts.push(steps[i]);saveTasks(tasks);i++}else{clearInterval(iv);done()}},400)}
+
+// ════════════════ ACTIVITY LOG ════════════════
+function getLogs(){try{return JSON.parse(localStorage.getItem('cc_logs')||'[]')}catch(e){return[]}}
+function saveLogs(l){const logs=l.slice(-500);localStorage.setItem('cc_logs',JSON.stringify(logs))}
+function addLog(module,msg){const logs=getLogs();logs.push({ts:new Date().toISOString(),module:module,msg:msg});saveLogs(logs)}
+
+// ════════════════ COMMAND EXECUTION ════════════════
+function runCommand(){const input=document.getElementById('cmdInput').value.trim();if(!input)return;document.getElementById('cmdInput').value='';const task=addTask(input);addLog('system','Command received via console');}
+function executeCommand(cmd){const c=cmd.toLowerCase();let response='',mod='system',log='';
+  if(c.includes('overview')||c.includes('summarize')||c.includes('status')||c.includes('health check')){
+    response='📊 PROJECT HEALTH: FEED complete. NPV $414.8M, IRR 48.1%, Payback 4.0yr. Safety: 315 HAZOP cleared. Next: Long-Lead Procurement (Dec 2026).';mod='home';log='Generated project health summary';
+  }else if(c.includes('feedstock')||c.includes('dcf')||c.includes('rerun')){
+    const m=c.match(/\$?(\d+)\s*\/?\s*ton/);const p=m?parseInt(m[1]):350;
+    response=`💰 Feedstock updated to $${p}/ton. NPV impact recalculated. For exact numbers, run full DCF model. Current MPSP: $1,262/ton.`;mod='finance';log=`Updated feedstock cost to $${p}/ton`;
+  }else if(c.includes('hazop')||c.includes('safety case')||(c.includes('reactor')&&c.includes('run'))){
+    response='🛡️ HAZOP Reactor: 4 High scenarios — MORE Temp/Pressure/Reaction, OTHER THAN Reaction. All mitigated with SIS, PSV, quench. SIL-2 recommended.';mod='safety';log='Generated HAZOP for reactor section';
+  }else if(c.includes('investor')||c.includes('memo')||c.includes('board')||c.includes('presentation')){
+    response='📄 Investor memo ready. $202.3M CAPEX, $414.8M NPV, 48.1% IRR. Sensitivity: product price ±$199M. Full memo in EDMS.';mod='finance';log='Generated investor memorandum';
+  }else if(c.includes('compare')||c.includes('scenario')){
+    response='⚖️ Scenario A (Base): NPV $414.8M, IRR 48.1%\nScenario B (+20% feedstock): NPV $355.2M, IRR 38.3%\nScenario C (-10% price): NPV $315.2M, IRR 32.1%\nBase case robust within ±20% band.';mod='finance';log='Ran scenario comparison';
+  }else if(c.includes('yield')||c.includes('experiment')||c.includes('0.85')){
+    response='🧪 Yield > 0.85: Run#47 (0.87g/g, 37°C, pH6.0), Run#52 (0.86g/g, 37°C, pH5.8). Lab best: 0.87 (+2.4% above design).';mod='research';log='Queried R&D experiments';
+  }else if(c.includes('digital twin')||c.includes('simulate')||c.includes('centrifuge')){
+    response='🌐 P-203A centrifuge: vibration 4.2→8.7mm/s over 30d. Predicted failure in 14d at 12.4mm/s. Recommend maintenance within 10d.';mod='digitaltwin';log='Simulated centrifuge failure scenario';
+  }else if(c.includes('compliance')||c.includes('asme')||c.includes('gb')||c.includes('standard')){
+    response='✅ ASME B31.3 + GB 150 compliant. All 7 Chinese GB standards verified. IEC 61511 SIL assessment complete.';mod='safety';log='Ran compliance check';
+  }else if(c.includes('purchase')||c.includes('vendor')||c.includes('upload')||c.includes('edms')){
+    response='📋 Document action logged. EDMS path: 06_References/vendor_quotes/. Template ready.';mod='project';log='Registered document action';
+  }else if(c.includes('system check')||c.includes('regenerate')||c.includes('all reports')){
+    response='🔧 FULL SYSTEM CHECK:\n✅ DCF Model: online (npv $414.8M, irr 48.1%)\n✅ Safety Engine: online (315 HAZOP items)\n✅ Knowledge Base: online (4,340 docs)\n✅ Plant Spec: online\n✅ EDMS: 22 documents registered\nAll systems nominal.';mod='system';log='Ran full system check — all systems nominal';
+  }else if(c.includes('pause')||c.includes('stop auto')){
+    response='⏸ Agent paused. Auto-tasks suspended. Command bar remains active for manual commands.';mod='system';log='Agent paused';
+  }else{
+    response=`🤖 "${cmd}" — I can help with: summarize status, update feedstock $X, run HAZOP, generate memo, compare scenarios, find experiments, simulate failure, check compliance, system check, pause agent.`;mod='system';log='Unknown command — provided help';
+  }
+  return {msg:response,module:mod,log:log};
+}
+
 // ════════════════ NAVIGATION ════════════════
 function navTo(mod){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.querySelector(`.nav-item[onclick="navTo('${mod}')"]`).classList.add('active');
-  const titles={home:'🏠 Executive Overview',process:'⚙ Process & Simulation Center',safety:'🛡️ Safety & Compliance Command',finance:'💰 Financial & Investor Command',research:'🧪 R&D & Knowledge Center',project:'📋 Project & Document Management',digitaltwin:'🌐 Digital Twin & Operations'};
+  const el=document.querySelector(`.nav-item[onclick="navTo('${mod}')"]`);
+  if(el)el.classList.add('active');
+  const titles={home:'🏠 Executive Overview',process:'⚙ Process & Simulation Center',safety:'🛡️ Safety & Compliance Command',finance:'💰 Financial & Investor Command',research:'🧪 R&D & Knowledge Center',project:'📋 Project & Document Management',digitaltwin:'🌐 Digital Twin & Operations',hermesops:'🧠 Hermes AI Ops — Agent Command Center'};
   document.getElementById('pageTitle').innerHTML=titles[mod]||mod;
   document.getElementById('mainContent').innerHTML=renderModule(mod);
-  if(mod==='home')renderHomeCharts();
-  if(mod==='process')renderProcessCharts();
-  if(mod==='finance')renderFinanceCharts();
-  if(mod==='digitaltwin')renderDTCharts();
+  if(mod==='home')setTimeout(renderHomeCharts,100);
+  if(mod==='process')setTimeout(renderProcessCharts,100);
+  if(mod==='finance')setTimeout(renderFinanceCharts,100);
+  if(mod==='digitaltwin')setTimeout(renderDTCharts,100);
+  if(mod==='hermesops')setTimeout(refreshHermesOps,100);
 }
 
-// ════════════════ MODULE RENDERERS ════════════════
-function renderModule(m){
-  const D=DATA;
-  switch(m){
-    case 'home':return renderHome(D);
-    case 'process':return renderProcess(D);
-    case 'safety':return renderSafety(D);
-    case 'finance':return renderFinance(D);
-    case 'research':return renderResearch(D);
-    case 'project':return renderProject(D);
-    case 'digitaltwin':return renderDigitalTwin(D);
-    default:return renderHome(D);
+function renderModule(m){const D=DATA;switch(m){
+  case 'home':return renderHome(D);case 'process':return renderProcess(D);case 'safety':return renderSafety(D);
+  case 'finance':return renderFinance(D);case 'research':return renderResearch(D);case 'project':return renderProject(D);
+  case 'digitaltwin':return renderDigitalTwin(D);case 'hermesops':return renderHermesOps();
+  default:return renderHome(D);
+}}
+
+// ════════════════ MODULE RENDERERS (unchanged core) ════════════════
+function renderHome(D){return `<div class="insight-box"><div class="ai-label">🤖 AI EXECUTIVE SUMMARY</div>Chemicon 100,000 TPA bio-succinic acid plant in <strong>Detailed Engineering</strong> (P&IDs 65%). NPV $414.8M, IRR 48.1%, 4.0yr payback. Safety: 315 HAZOP items, 4 high-risk mitigated. Next: Long-Lead Procurement (Dec 2026).</div>
+<div class="kpi-row">${[['$414.8M','NPV @ 12%'],['48.1%','IRR'],['4.0yr','Payback'],['$202.3M','CAPEX'],['315','HAZOP Items'],['8/36m','Progress']].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('')}</div>
+<div class="grid-2"><div class="card"><h3>Project Health</h3><div class="chart-wrap"><canvas id="homeGauge"></canvas></div></div>
+<div class="card"><h3>Top Risks</h3><div style="font-size:11px;line-height:1.6"><p><span class="s-y">⚠ MEDIUM</span> Extraction scale-up</p><p><span class="s-y">⚠ MEDIUM</span> Feedstock volatility</p><p><span class="s-g">✓ LOW</span> Construction overrun (15% contingency)</p><p><span class="s-g">✓ LOW</span> Market (China PBS mandate)</p>
+<p style="margin-top:10px"><button class="action-btn run" onclick="navTo('finance')">Financial Details →</button><button class="action-btn run" onclick="navTo('safety')">Safety Report →</button></p></div></div></div>
+<div class="grid-3"><div class="card"><h3>Milestones</h3>${D.milestones.slice(0,5).map(m=>`<div class="milestone"><div class="d ${m[2]}"></div><div style="flex:1">${m[0]}</div><div style="font-size:10px;color:#5a7a9a">${m[1]}</div></div>`).join('')}</div>
+<div class="card"><h3>Financial Snapshot</h3><table class="data">${[['Revenue','$221.2M/yr'],['OPEX','$96.5M/yr'],['Net Profit','$107.8M/yr'],['MPSP','$1,262/ton']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+<div class="card"><h3>Safety</h3><table class="data">${[['Total','315'],['Low','248'],['Medium','63'],['High (mitigated)','4']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div></div>`;}
+
+function renderProcess(D){return `<div class="kpi-row">${[['12.5 t/h','Design Rate'],[D.plant.yield,'Yield (g/g)'],[D.plant.titer,'Titer (g/L)'],['99.7%','Mass Balance'],['99.2%','Energy Balance'],['12×1000m³','Fermenters']].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('')}</div>
+<div class="grid-2"><div class="card"><h3>Process Flowsheet</h3><div class="chart-wrap" style="height:280px"><canvas id="flowsheetChart"></canvas></div></div>
+<div class="card"><h3>DWSIM Status</h3><table class="data">${[['Model','NRTL Thermodynamic'],['Unit Ops','1,204'],['Streams','847'],['MPSP','$1,262/ton'],['LCA','-0.5 kg CO₂/kg']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table>
+<p style="margin-top:8px"><button class="action-btn run" onclick="document.getElementById('cmdInput').value='Run DWSIM with new feedstock ratio';runCommand()">Run DWSIM</button><button class="action-btn" onclick="document.getElementById('cmdInput').value='Compare scenario A and B';runCommand()">Compare</button></p></div></div>
+<div class="grid-3"><div class="card"><h3>Reactor Design</h3><table class="data">${[['Temp','37.0°C'],['pH','6.0'],['DO','30% microaerobic'],['Volume','1,000 m³'],['Batch','72 hours']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+<div class="card"><h3>Stream Summary</h3><table class="data">${[['Biomass','180,000 tpy'],['Sugars','115,000 tpy'],['Broth','107,000 tpy'],['Product','100,000 tpy']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+<div class="card"><h3>Equipment</h3><div class="status-list">${D.equipment.map(e=>`<div class="row"><span>${e[0]}</span><span class="${e[2].includes('Complete')?'s-g':'s-y'}">${e[2]}</span></div>`).join('')}</div></div></div>`;}
+
+function renderSafety(D){return `<div class="kpi-row">${[['315','Total Deviations'],['4','High Risk (Mitigated)'],['0','Extreme Risk'],['2','SIL Required'],['7','Nodes'],['IEC 61511','Standard']].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('')}</div>
+<div class="grid-2"><div class="card"><h3>Risk Distribution</h3><div class="chart-wrap"><canvas id="riskPie"></canvas></div></div>
+<div class="card"><h3>Top Findings</h3><div style="font-size:11px;line-height:1.6"><p><span class="s-r">🔴 HIGH</span> Reactor MORE Temp — runaway. <em>Mitigated: SIS, PSV, quench.</em></p><p><span class="s-r">🔴 HIGH</span> Reactor MORE Pressure — overpressure. <em>Mitigated: 2oo3 voting, rupture disk.</em></p><p style="margin-top:8px"><button class="action-btn run" onclick="navTo('process')">View Reactor →</button></p></div></div></div>
+<div class="grid-2"><div class="card"><h3>🇨🇳 Chinese GB</h3><div class="status-list">${D.safety.standards_cn.map(s=>`<div class="row"><span>${s}</span><span class="s-g">Compliant</span></div>`).join('')}</div></div>
+<div class="card"><h3>🌐 International</h3><div class="status-list">${D.safety.standards_int.map(s=>`<div class="row"><span>${s}</span><span class="s-g">Compliant</span></div>`).join('')}</div></div></div>
+<p style="font-size:11px;color:#5a7a9a;margin-top:10px"><button class="action-btn run" onclick="document.getElementById('cmdInput').value='Run HAZOP for reactor section';runCommand()">Run HAZOP</button><button class="action-btn run" onclick="document.getElementById('cmdInput').value='Generate safety case';runCommand()">Safety Case</button></p>`;}
+
+function renderFinance(D){const F=D.finance;return `<div class="kpi-row">${[['$'+((F.capex/1e6).toFixed(1))+'M','Investment'],[F.irr+'%','IRR'],['$'+((F.npv/1e6).toFixed(1))+'M','NPV'],[F.payback+'yr','Payback'],['$'+((F.revenue/1e6).toFixed(1))+'M','Revenue/yr'],['$'+F.mpsp,'MPSP/ton']].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('')}</div>
+<div class="grid-2"><div class="card"><h3>15-Year Cash Flow</h3><div class="chart-wrap tall"><canvas id="cfChart"></canvas></div></div>
+<div class="card"><h3>Sensitivity</h3><div class="chart-wrap"><canvas id="sensChart"></canvas></div></div></div>
+<div class="grid-3"><div class="card"><h3>CAPEX</h3><table class="data">${F.capex_items.map(r=>`<tr><td>${r[0]}</td><td>$${(r[1]/1e6).toFixed(1)}M</td></tr>`).join('')}<tr style="border-top:2px solid #c9a84c"><td><strong>TOTAL</strong></td><td style="color:#4fc3f7"><strong>$${(F.capex/1e6).toFixed(1)}M</strong></td></tr></table></div>
+<div class="card"><h3>OPEX</h3><table class="data">${F.opex_items.map(r=>`<tr><td>${r[0]}</td><td>$${(r[1]/1e6).toFixed(1)}M</td></tr>`).join('')}<tr style="border-top:2px solid #c9a84c"><td><strong>TOTAL</strong></td><td style="color:#ef5350"><strong>$${(F.opex/1e6).toFixed(1)}M</strong></td></tr></table></div>
+<div class="card"><h3>What-If</h3><div class="slider-group"><label>Feedstock <span id="fsVal">$350/ton</span></label><input type="range" min="200" max="500" value="350" step="10" oninput="updateSlider()" id="fsSlider"></div><div class="slider-group"><label>Price <span id="ppVal">$2,200/ton</span></label><input type="range" min="1500" max="3000" value="2200" step="50" oninput="updateSlider()" id="ppSlider"></div><div class="slider-group"><label>Capacity <span id="capVal">100k tpy</span></label><input type="range" min="60000" max="140000" value="100000" step="5000" oninput="updateSlider()" id="capSlider"></div><p style="font-size:10px;margin-top:6px">Est NPV: <strong style="color:#c9a84c" id="estNpv">$414.8M</strong></p></div></div>`;}
+
+function updateSlider(){const fs=parseInt(document.getElementById('fsSlider').value);const pp=parseInt(document.getElementById('ppSlider').value);const cap=parseInt(document.getElementById('capSlider').value);document.getElementById('fsVal').textContent='$'+fs+'/ton';document.getElementById('ppVal').textContent='$'+pp+'/ton';document.getElementById('capVal').textContent=Math.round(cap/1000)+'k tpy';const base=414.8;const est=base+(350-fs)/350*0.14*base+(pp-2200)/2200*base+(cap-100000)/100000*0.7*base;document.getElementById('estNpv').textContent='$'+(est>0?est.toFixed(1):'0')+'M';}
+
+function renderResearch(D){return `<div class="insight-box"><div class="ai-label">🧪 R&D SUMMARY</div>Active projects: extraction solvent (BayesCAMPD), fermentation yield (lab 0.87 g/g vs design 0.85), catalyst lifetime. KB: 4,340 docs indexed.</div>
+<div class="grid-2"><div class="card"><h3>KB Query</h3><input type="text" id="kbQuery" placeholder="e.g., best catalyst at 37°C?" style="width:100%;background:#0d1525;border:1px solid #1e3050;color:#c8d0d8;padding:10px;border-radius:6px;font-size:12px;margin-bottom:8px" onkeydown="if(event.key==='Enter')queryKB()"><button class="action-btn run" onclick="queryKB()" style="width:100%">Search</button><div id="kbResult" style="margin-top:8px;font-size:11px;color:#7a8a9a;line-height:1.6"></div></div>
+<div class="card"><h3>Documents</h3><div class="status-list">${D.rd_docs.map(d=>`<div class="row"><span>📄 ${d}</span><span class="s-b">Indexed</span></div>`).join('')}</div></div></div>`;}
+function queryKB(){const q=document.getElementById('kbQuery').value.toLowerCase();let r=[];if(q.includes('catalyst')||q.includes('37'))r.push('📄 TOA/1-octanol. Kd=8.2 at pH 2.5, 37°C.');if(q.includes('yield')||q.includes('0.85'))r.push('📄 Best: 0.87 g/g (Run#47, 37°C, pH6.0). Design: 0.85.');if(q.includes('solvent'))r.push('📄 12 solvents screened. TOA selected. Selectivity >95% over acetic.');if(!r.length)r.push('📚 Try: catalyst performance, best yield, solvent selection. 4,340 docs indexed.');document.getElementById('kbResult').innerHTML=r.join('<br><br>');}
+
+function renderProject(D){return `<div class="kpi-row">${[['3 Done','Milestones'],['1 Active','In Progress'],['Sep 2028','First Product'],['65%','P&IDs'],['22','EDMS Docs'],['8/36m','Elapsed']].map(k=>`<div class="kpi"><div class="v">${k[0]}</div><div class="l">${k[1]}</div></div>`).join('')}</div>
+<div class="grid-2"><div class="card"><h3>Gantt</h3><div class="chart-wrap" style="height:280px"><canvas id="ganttChart"></canvas></div></div>
+<div class="card"><h3>Milestones</h3><div style="max-height:280px;overflow-y:auto">${D.milestones.map(m=>`<div class="milestone"><div class="d ${m[2]}"></div><div style="flex:1"><strong>${m[0]}</strong><div style="font-size:10px;color:#5a7a9a">${m[1]}</div></div></div>`).join('')}</div></div></div>
+<div class="grid-2"><div class="card"><h3>EDMS Tree</h3><div style="font-size:10px;line-height:1.8;font-family:monospace">📁 plant/<br> ├ 01_Simulation/<br> ├ 02_Safety/ (315 items)<br> ├ 03_Economics/ (DCF)<br> ├ 04_Investor/<br> ├ 05_R&D/<br> ├ 06_References/<br> ├ 07_Digital_Twin/<br> ├ 08_KB/ (4,340 docs)<br> └ MASTER_INDEX.md</div></div>
+<div class="card"><h3>Actions</h3><p><button class="action-btn run" style="width:100%;margin:3px 0" onclick="document.getElementById('cmdInput').value='Upload vendor quote to EDMS';runCommand()">Upload vendor quote</button></p><p><button class="action-btn" style="width:100%;margin:3px 0" onclick="document.getElementById('cmdInput').value='Send weekly report';runCommand()">Send weekly report</button></p></div></div>`;}
+
+function renderDigitalTwin(D){return `<div class="insight-box"><div class="ai-label">🌐 DIGITAL TWIN</div>Purdue Model L0-L5 architecture. Data diode L2↔L3. ML: anomaly detection (Isolation Forest+LSTM), predictive maintenance (XGBoost RUL), soft sensors (PLS). Deployment: Phase 3 (M13-18). IEC 62443 compliant.</div>
+<div class="grid-3"><div class="card"><h3>OEE</h3><div class="chart-wrap"><canvas id="oeeGauge"></canvas></div></div>
+<div class="card"><h3>Predictive Maintenance</h3><table class="data">${[['P-203A Centrifuge','RUL: 14d ⚠'],['HX-112','Fouling -12% ⚠'],['M-107 Agitator','Normal ✓'],['GT-601 CHP','Normal ✓']].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
+<div class="card"><h3>Network</h3><div style="font-size:10px;font-family:monospace;line-height:1.6">L5 Enterprise<br>L4 Site Business<br>L3 Operations<br><span style="color:#ef5350">══ Data Diode ══</span><br>L2 Supervisory<br>L1 Basic Control<br>L0 Process</div></div></div>`;}
+
+// ════════════════ HERMES AI OPS MODULE ════════════════
+function renderHermesOps(){
+  const tasks=getTasks(),logs=getLogs();
+  const statusLabels={idle:'🟢 Idle',busy:'🟡 Executing Task',error:'🔴 Error'};
+  const statusClass={idle:'idle',busy:'busy',error:'error'};
+  const pendingTasks=tasks.filter(t=>t.status==='pending'||t.status==='progress');
+  
+  let html=`<div class="grid-2">
+  <div class="card">
+    <h3>Agent Status</h3>
+    <div class="agent-header">
+      <div class="agent-avatar ${statusClass[agentState.status]}">🧠</div>
+      <div class="agent-info">
+        <div class="name">Hermes Agent</div>
+        <div class="status-line" style="color:${agentState.status==='idle'?'#66bb6a':'#ffa726'}">${statusLabels[agentState.status]}</div>
+        <div class="uptime">Uptime: <span id="uptimeDisplay">${fmtUptime(agentState.uptime)}</span></div>
+      </div>
+    </div>
+    <div style="margin-top:12px">
+      <p style="font-size:10px;color:#5a7a9a">Connection: <span class="s-g">● Healthy</span> | Model: DeepSeek V4 | Provider: DeepSeek</p>
+      <p style="font-size:10px;color:#5a7a9a">Total Tasks: ${tasks.length} | Active: ${pendingTasks.length} | Completed: ${tasks.filter(t=>t.status==='done').length}</p>
+    </div>
+  </div>
+  <div class="card">
+    <h3>Agent Controls</h3>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">
+      <button class="action-btn run" onclick="document.getElementById('cmdInput').value='Run full system check';runCommand()">🔧 System Check</button>
+      <button class="action-btn run" onclick="document.getElementById('cmdInput').value='Regenerate all reports';runCommand()">📄 Regenerate All</button>
+      <button class="action-btn" onclick="pauseAgent()">⏸ Pause</button>
+      <button class="action-btn" onclick="resumeAgent()">▶ Resume</button>
+      <button class="action-btn danger" onclick="clearTasks()">🗑 Clear Queue</button>
+      <button class="action-btn" onclick="forceSync()">🔄 Force Sync</button>
+      <button class="action-btn" onclick="exportLogs()">📥 Export Log</button>
+    </div>
+    <div id="opsFeedback" style="margin-top:8px;font-size:10px;color:#4fc3f7"></div>
+  </div></div>
+
+<div class="grid-2">
+  <div class="card">
+    <h3>Live Thought Stream ${agentState.currentTask?'<span style="font-size:9px;color:#ffa726;animation:pulse 1s infinite"> ● Active</span>':''}</h3>
+    <div class="thought-box" id="thoughtStream">
+      ${agentState.currentTask ? renderThoughtsForTask(agentState.currentTask) : '<div class="step">Awaiting command...</div>'}
+    </div>
+    ${agentState.currentTask?`<div class="progress-bar"><div class="fill"></div></div>`:''}
+  </div>
+  <div class="card">
+    <h3>Task Queue (${tasks.length} total)</h3>
+    <div style="max-height:300px;overflow-y:auto" id="taskList">
+      ${tasks.length===0?'<div style="font-size:10px;color:#5a7a9a;text-align:center;padding:20px">No tasks yet. Type a command below.</div>':tasks.slice().reverse().map(t=>`
+      <div class="task-row" onclick="showTaskDetail('${t.id}')" title="${t.cmd}">
+        <span class="t-id">${t.id}</span>
+        <span class="t-cmd">${t.cmd.slice(0,55)}</span>
+        <span class="t-status ${t.status}">${t.status==='progress'?'In Progress':t.status}</span>
+      </div>`).join('')}
+    </div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:12px">
+  <h3>Activity Log (${logs.length} entries) 
+    <span style="font-size:9px;font-weight:400;margin-left:8px">Filter:</span>
+    <span class="filter-chip on" onclick="filterLog('all',this)">All</span>
+    <span class="filter-chip" onclick="filterLog('system',this)">System</span>
+    <span class="filter-chip" onclick="filterLog('finance',this)">Finance</span>
+    <span class="filter-chip" onclick="filterLog('safety',this)">Safety</span>
+    <span class="filter-chip" onclick="filterLog('research',this)">R&D</span>
+    <input type="text" id="logSearch" placeholder="Search logs..." style="background:#0d1525;border:1px solid #1e3050;color:#c8d0d8;padding:4px 8px;border-radius:4px;font-size:9px;width:120px;margin-left:8px" oninput="filterLog('all',null)">
+  </h3>
+  <div style="max-height:250px;overflow-y:auto" id="logContainer">
+    ${logs.slice().reverse().slice(0,50).map(l=>{
+      const dt=new Date(l.ts);const ts=dt.toLocaleTimeString();
+      return `<div class="log-entry" data-mod="${l.module}">
+        <span class="ts">${ts}</span>
+        <span class="mod ${l.module==='finance'?'fin':l.module==='safety'?'saf':l.module==='research'?'pro':l.module==='system'?'sys':''}">${l.module}</span>
+        <span class="msg">${l.msg}</span>
+      </div>`;
+    }).join('')}
+  </div>
+</div>
+
+<div id="taskDetail" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:998;align-items:center;justify-content:center" onclick="if(event.target===this)this.style.display='none'">
+  <div class="help-modal show" style="position:static"><div class="box" id="taskDetailContent"></div></div>
+</div>`;
+  
+  return html;
+}
+
+function renderThoughtsForTask(taskId){
+  const tasks=getTasks();const t=tasks.find(t=>t.id===taskId);
+  if(!t||!t.thoughts||t.thoughts.length===0)return '<div class="step">Processing...</div>';
+  return t.thoughts.map((th,i)=>`<div class="step ${i===t.thoughts.length-1&&t.status==='progress'?'active':t.status==='done'?'done':''}">${i===t.thoughts.length-1?'▶ ':'✓ '}${th}</div>`).join('');
+}
+
+function refreshHermesOps(){
+  const thoughtStream=document.getElementById('thoughtStream');
+  if(thoughtStream&&agentState.currentTask){
+    thoughtStream.innerHTML=renderThoughtsForTask(agentState.currentTask);
   }
 }
 
-function renderHome(D){
-  return `<div class="insight-box"><div class="ai-label">🤖 AI EXECUTIVE SUMMARY — Generated from all modules</div>
-    Chemicon Group's 100,000 TPA bio-succinic acid plant in Nanjing is in <strong>Detailed Engineering phase</strong> (P&IDs 65% complete). 
-    Financial outlook remains strong: NPV $414.8M, IRR 48.1%, 4.0-year payback at 12% WACC. 
-    Safety analysis complete — 315 HAZOP deviations reviewed, 4 high-risk scenarios mitigated. 
-    Key near-term action: Finalize extraction column scale-up review before procurement gate (Dec 2026). 
-    Next milestone: Long-Lead Procurement (fermenters, CHP turbine) in Q4 2026.</div>
-  <div class="kpi-row">
-    <div class="kpi"><div class="v">$414.8M</div><div class="l">NPV @ 12%</div></div>
-    <div class="kpi"><div class="v">48.1%</div><div class="l">IRR</div></div>
-    <div class="kpi"><div class="v">4.0yr</div><div class="l">Payback</div></div>
-    <div class="kpi"><div class="v">$202.3M</div><div class="l">CAPEX</div></div>
-    <div class="kpi"><div class="v">315</div><div class="l">HAZOP Items</div></div>
-    <div class="kpi"><div class="v">8/36m</div><div class="l">Project Progress</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><h3>Project Health Dashboard</h3><div class="chart-wrap"><canvas id="homeGauge"></canvas></div></div>
-    <div class="card"><h3>Top Risks & Actions</h3>
-      <div style="font-size:11px;line-height:1.6">
-        <p><span class="s-y">⚠ MEDIUM</span> — Reactive extraction scale-up. <span style="color:#5a7a9a">Demo-scale (50m³) recommended</span></p>
-        <p><span class="s-y">⚠ MEDIUM</span> — Feedstock price volatility. <span style="color:#5a7a9a">Multi-source contract strategy</span></p>
-        <p><span class="s-g">✓ LOW</span> — Construction overrun. <span style="color:#5a7a9a">15% contingency included</span></p>
-        <p><span class="s-g">✓ LOW</span> — Market adoption. <span style="color:#5a7a9a">China PBS mandate creates demand</span></p>
-        <p style="margin-top:10px"><button class="action-btn run" onclick="navTo('finance')">View Financial Details →</button>
-        <button class="action-btn run" onclick="navTo('safety')">Open Safety Report →</button></p>
-      </div>
-    </div>
-  </div>
-  <div class="grid-3">
-    <div class="card"><h3>Key Milestones</h3>${D.milestones.slice(0,5).map(m=>`<div class="milestone"><div class="d ${m[2]}"></div><div style="flex:1">${m[0]}</div><div style="font-size:10px;color:#5a7a9a">${m[1]}</div></div>`).join('')}</div>
-    <div class="card"><h3>Financial Snapshot</h3><table class="data">${[["Revenue","$221.2M/yr"],["OPEX","$96.5M/yr"],["Net Profit","$107.8M/yr"],["MPSP","$1,262/ton"],["Product Price","$2,200/ton"]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
-    <div class="card"><h3>Safety Status</h3><table class="data">${[["HAZOP Deviations","315 total"],["Low Risk","248 (79%)"],["Medium Risk","63 (20%)"],["High Risk","4 (mitigated)"],["SIL Required","2 functions"]].map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
-  </div>`;
+function showTaskDetail(id){const tasks=getTasks();const t=tasks.find(t=>t.id===id);if(!t)return;
+  document.getElementById('taskDetailContent').innerHTML=`<h3>Task ${t.id}</h3>
+    <p><strong>Command:</strong> <code>${t.cmd}</code></p>
+    <p><strong>Status:</strong> <span style="color:${t.status==='done'?'#66bb6a':t.status==='progress'?'#4fc3f7':t.status==='failed'?'#ef5350':'#ffa726'}">${t.status}</span></p>
+    <p><strong>Time:</strong> ${new Date(t.timestamp).toLocaleString()}</p>
+    ${t.thoughts&&t.thoughts.length?`<p><strong>Thoughts:</strong><br>${t.thoughts.map(th=>'• '+th).join('<br>')}</p>`:''}
+    ${t.result?`<p><strong>Result:</strong><br><span style="color:#c9a84c">${t.result}</span></p>`:''}
+    <p style="text-align:center;margin-top:16px"><button class="action-btn" onclick="document.getElementById('taskDetail').style.display='none'">Close</button></p>`;
+  document.getElementById('taskDetail').style.display='flex';
 }
 
-function renderProcess(D){
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">${D.plant.capacity_tph}</div><div class="l">Design Rate (t/h)</div></div>
-    <div class="kpi"><div class="v">${D.plant.yield}</div><div class="l">Yield (g/g)</div></div>
-    <div class="kpi"><div class="v">${D.plant.titer}</div><div class="l">Titer (g/L)</div></div>
-    <div class="kpi"><div class="v">${D.plant.mass_balance}%</div><div class="l">Mass Balance</div></div>
-    <div class="kpi"><div class="v">${D.plant.energy_balance}%</div><div class="l">Energy Balance</div></div>
-    <div class="kpi"><div class="v">${D.plant.fermenters}×${D.plant.fermenter_vol}m³</div><div class="l">Fermenters</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><h3>Process Flowsheet — Bio-Succinic Acid</h3><div class="chart-wrap" style="height:280px"><canvas id="flowsheetChart"></canvas></div></div>
-    <div class="card">
-      <h3>DWSIM Simulation Status</h3>
-      <table class="data">
-        <tr><td>Model</td><td>NRTL Thermodynamic</td></tr>
-        <tr><td>Unit Operations</td><td>1,204</td></tr>
-        <tr><td>Streams</td><td>847</td></tr>
-        <tr><td>Convergence Tolerance</td><td>0.001</td></tr>
-        <tr><td>Mass Balance Closure</td><td style="color:#66bb6a">99.7%</td></tr>
-        <tr><td>Energy Balance Closure</td><td style="color:#66bb6a">98.2%</td></tr>
-        <tr><td>BioSTEAM MPSP</td><td style="color:#c9a84c">$1,262/ton</td></tr>
-        <tr><td>LCA: Carbon Footprint</td><td style="color:#66bb6a">-0.5 kg CO₂/kg SA</td></tr>
-      </table>
-      <p style="margin-top:8px"><button class="action-btn run" onclick="runCommand()">Run DWSIM with new ratio</button>
-      <button class="action-btn" onclick="runCommand()">Compare Scenarios</button></p>
-    </div>
-  </div>
-  <div class="grid-3">
-    <div class="card"><h3>Reactor Design Conditions</h3><table class="data">${[["Temperature","37.0°C ±0.5"],["pH","6.0 ±0.1"],["DO","30% (microaerobic)"],["Organism","E. coli (engineered)"],["Volume","1,000 m³ each"],["Batch Time","72 hours"],["CO₂ Sparging","0.2 vvm"]] .map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
-    <div class="card"><h3>Stream Summary (Design Case)</h3><table class="data">${[["Biomass Feed","180,000 tpy"],["Sugar Stream","115,000 tpy"],["Fermentation Broth","107,000 tpy crude"],["Purified SA","102,000 tpy"],["Product (99.5%+)","100,000 tpy"],["Byproduct (AMS)","12,000 tpy"]] .map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}</table></div>
-    <div class="card"><h3>Equipment Status</h3><div class="status-list">${D.equipment.map(e=>`<div class="row"><span>${e[0]}</span><span class="${e[2].includes('Complete')?'s-g':'s-y'}">${e[2]}</span></div>`).join('')}</div></div>
-  </div>`;
+function filterLog(mod,el){
+  if(el){document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('on'));el.classList.add('on')}
+  const search=document.getElementById('logSearch')?.value.toLowerCase()||'';
+  document.querySelectorAll('#logContainer .log-entry').forEach(e=>{
+    const m=e.getAttribute('data-mod');const txt=e.textContent.toLowerCase();
+    e.style.display=(mod==='all'||m===mod)&&(!search||txt.includes(search))?'':'none';
+  });
 }
 
-function renderSafety(D){
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">${D.safety.total}</div><div class="l">HAZOP Deviations</div></div>
-    <div class="kpi"><div class="v">${D.safety.high}</div><div class="l">High Risk (Mitigated)</div></div>
-    <div class="kpi"><div class="v">${D.safety.extreme}</div><div class="l">Extreme Risk</div></div>
-    <div class="kpi"><div class="v">${D.safety.sil}</div><div class="l">SIL Functions Required</div></div>
-    <div class="kpi"><div class="v">${D.safety.nodes}</div><div class="l">Nodes Analyzed</div></div>
-    <div class="kpi"><div class="v">IEC 61511</div><div class="l">Standard</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><h3>Risk Distribution — HAZOP Results</h3><div class="chart-wrap"><canvas id="riskPie"></canvas></div></div>
-    <div class="card"><h3>Top HAZOP Findings</h3>
-      <div style="font-size:11px;line-height:1.6">
-        <p><span class="s-r">🔴 HIGH</span> — Reactor: MORE Temperature → thermal runaway potential. <em>Mitigated: Independent shutdown, rupture disk, quench system.</em></p>
-        <p><span class="s-r">🔴 HIGH</span> — Reactor: MORE Pressure → vessel overpressure. <em>Mitigated: PSV sized for runaway, 2oo3 voting.</em></p>
-        <p><span class="s-r">🔴 HIGH</span> — Reactor: MORE Reaction → runaway. <em>Mitigated: Catalyst feed interlock, emergency quench.</em></p>
-        <p><span class="s-r">🔴 HIGH</span> — Reactor: OTHER THAN Reaction → wrong chemistry. <em>Mitigated: Feed analysis + diversion valve.</em></p>
-        <p style="margin-top:8px"><button class="action-btn run" onclick="navTo('process')">View Reactor Details →</button></p>
-      </div>
-    </div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><h3>🇨🇳 Chinese GB Standards</h3><div class="status-list">${D.safety.standards_cn.map(s=>`<div class="row"><span>${s}</span><span class="s-g">Compliant</span></div>`).join('')}</div></div>
-    <div class="card"><h3>🌐 International Standards</h3><div class="status-list">${D.safety.standards_int.map(s=>`<div class="row"><span>${s}</span><span class="s-g">Compliant</span></div>`).join('')}</div></div>
-  </div>
-  <p style="font-size:11px;color:#5a7a9a;margin-top:10px">
-    <button class="action-btn run" onclick="runCommand()">Run HAZOP for reactor section</button>
-    <button class="action-btn run" onclick="runCommand()">Generate safety case document</button>
-    <button class="action-btn" onclick="runCommand()">Check ASME B31.3 compliance</button>
-  </p>`;
-}
-
-function renderFinance(D){
-  const F=D.finance;
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">$${(F.capex/1e6).toFixed(1)}M</div><div class="l">Total Investment</div></div>
-    <div class="kpi"><div class="v">${F.irr}%</div><div class="l">IRR</div></div>
-    <div class="kpi"><div class="v">$${(F.npv/1e6).toFixed(1)}M</div><div class="l">NPV</div></div>
-    <div class="kpi"><div class="v">${F.payback}yr</div><div class="l">Payback</div></div>
-    <div class="kpi"><div class="v">$${(F.revenue/1e6).toFixed(1)}M</div><div class="l">Revenue/yr</div></div>
-    <div class="kpi"><div class="v">$${F.mpsp}</div><div class="l">MPSP/ton</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card"><h3>15-Year Cash Flow</h3><div class="chart-wrap tall"><canvas id="cfChart"></canvas></div></div>
-    <div class="card"><h3>Sensitivity Analysis</h3><div class="chart-wrap"><canvas id="sensChart"></canvas></div></div>
-  </div>
-  <div class="grid-3">
-    <div class="card"><h3>CAPEX Breakdown</h3><table class="data">${F.capex_items.map(r=>`<tr><td>${r[0]}</td><td>$${(r[1]/1e6).toFixed(1)}M</td></tr>`).join('')}<tr class="total"><td>TOTAL</td><td style="color:#4fc3f7">$${(F.capex/1e6).toFixed(1)}M</td></tr></table></div>
-    <div class="card"><h3>OPEX Breakdown</h3><table class="data">${F.opex_items.map(r=>`<tr><td>${r[0]}</td><td>$${(r[1]/1e6).toFixed(1)}M</td></tr>`).join('')}<tr class="total"><td>TOTAL</td><td style="color:#ef5350">$${(F.opex/1e6).toFixed(1)}M</td></tr></table></div>
-    <div class="card">
-      <h3>Interactive What-If</h3>
-      <div class="slider-group"><label>Feedstock Cost <span id="fsVal">$350/ton</span></label><input type="range" min="200" max="500" value="350" step="10" oninput="updateSlider()" id="fsSlider"></div>
-      <div class="slider-group"><label>Product Price <span id="ppVal">$2,200/ton</span></label><input type="range" min="1500" max="3000" value="2200" step="50" oninput="updateSlider()" id="ppSlider"></div>
-      <div class="slider-group"><label>Capacity <span id="capVal">100,000 tpy</span></label><input type="range" min="60000" max="140000" value="100000" step="5000" oninput="updateSlider()" id="capSlider"></div>
-      <p style="font-size:10px;color:#5a7a9a;margin-top:6px">Estimated NPV: <strong style="color:#c9a84c" id="estNpv">$414.8M</strong></p>
-      <p style="margin-top:4px"><button class="action-btn run" onclick="runCommand()">Rerun Full DCF Model</button>
-      <button class="action-btn run" onclick="runCommand()">Generate Investor Memo PDF</button></p>
-    </div>
-  </div>`;
-}
-
-function updateSlider(){
-  const fs=parseInt(document.getElementById('fsSlider').value);
-  const pp=parseInt(document.getElementById('ppSlider').value);
-  const cap=parseInt(document.getElementById('capSlider').value);
-  document.getElementById('fsVal').textContent='$'+fs+'/ton';
-  document.getElementById('ppVal').textContent='$'+pp+'/ton';
-  document.getElementById('capVal').textContent=cap.toLocaleString()+' tpy';
-  const baseNpv=414.8;
-  const fsImpact=(350-fs)/350*0.14*baseNpv;
-  const ppImpact=(pp-2200)/2200*baseNpv;
-  const capImpact=(cap-100000)/100000*0.7*baseNpv;
-  const est=baseNpv+fsImpact+ppImpact+capImpact;
-  document.getElementById('estNpv').textContent='$'+(est>0?est.toFixed(1):'0')+'M';
-}
-
-function renderResearch(D){
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">6</div><div class="l">Active Projects</div></div>
-    <div class="kpi"><div class="v">4,340</div><div class="l">Docs Indexed (KB)</div></div>
-    <div class="kpi"><div class="v">BayesCAMPD</div><div class="l">Optimization Engine</div></div>
-    <div class="kpi"><div class="v">OptiML</div><div class="l">Surrogate Model</div></div>
-    <div class="kpi"><div class="v">0.87</div><div class="l">Best Yield (Lab)</div></div>
-    <div class="kpi"><div class="v">FTS5</div><div class="l">Search Engine</div></div>
-  </div>
-  <div class="insight-box"><div class="ai-label">🧪 R&D SUMMARY</div>
-    Current research focuses on: (1) Extraction solvent optimization using BayesCAMPD — TOA/1-octanol showing best partition coefficient at pH 2.5. 
-    (2) Fermentation yield improvement — lab scale achieved 0.87 g/g vs design target of 0.85. 
-    (3) Catalyst lifetime studies for pretreatment — ongoing at Nanjing University collaboration. 
-    Knowledge base contains 4,340 indexed documents across all project repositories.</div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>Knowledge Base — Natural Language Query</h3>
-      <input type="text" id="kbQuery" placeholder="e.g., 'What was our best catalyst performance at 37°C?'" style="width:100%;background:#0d1525;border:1px solid #1e3050;color:#c8d0d8;padding:10px;border-radius:6px;font-size:12px;margin-bottom:8px" onkeydown="if(event.key==='Enter')queryKB()">
-      <button class="action-btn run" onclick="queryKB()" style="width:100%">Search Knowledge Base</button>
-      <div id="kbResult" style="margin-top:8px;font-size:11px;color:#7a8a9a;line-height:1.6"></div>
-    </div>
-    <div class="card">
-      <h3>R&D Document Index</h3>
-      <div class="status-list">${D.rd_docs.map(d=>`<div class="row"><span>📄 ${d}</span><span class="s-b">Indexed</span></div>`).join('')}</div>
-      <p style="margin-top:8px"><button class="action-btn run" onclick="runCommand()">Design BayesCAMPD experiment</button>
-      <button class="action-btn" onclick="runCommand()">Summarize R&D progress</button></p>
-    </div>
-  </div>`;
-}
-
-function queryKB(){
-  const q=document.getElementById('kbQuery').value.toLowerCase();
-  const D=DATA;
-  let results=[];
-  if(q.includes('catalyst')||q.includes('37'))results.push("📄 catalyst_screening_bayescampd.py — TOA/1-octanol identified as optimal solvent. Partition coefficient: 8.2 at pH 2.5, 37°C.");
-  if(q.includes('yield')||q.includes('0.85'))results.push("📄 yield_improvement_trials.csv — Best lab yield: 0.87 g/g (Run #47, glucose feed 180 g/L, pH 6.0, 37°C). Design target: 0.85 g/g.");
-  if(q.includes('solvent')||q.includes('extraction'))results.push("📄 solvent_selection_doe.csv — 12 solvents screened. TOA/1-octanol selected. Kd=8.2. Selectivity > 95% over acetic acid.");
-  if(!results.length)results.push("📚 No direct match. Try: 'catalyst performance', 'best yield', 'solvent selection'. Indexed: 4,340 documents.");
-  document.getElementById('kbResult').innerHTML=results.join('<br><br>');
-}
-
-function renderProject(D){
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">8/36</div><div class="l">Months Elapsed</div></div>
-    <div class="kpi"><div class="v">3 Done</div><div class="l">Milestones Complete</div></div>
-    <div class="kpi"><div class="v">1 Active</div><div class="l">In Progress</div></div>
-    <div class="kpi"><div class="v">Sep 28</div><div class="l">First Product Target</div></div>
-    <div class="kpi"><div class="v">65%</div><div class="l">P&ID Completion</div></div>
-    <div class="kpi"><div class="v">22</div><div class="l">EDMS Documents</div></div>
-  </div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>Project Timeline — Gantt View</h3>
-      <div class="chart-wrap" style="height:280px"><canvas id="ganttChart"></canvas></div>
-    </div>
-    <div class="card">
-      <h3>Milestone Status</h3>
-      <div style="max-height:280px;overflow-y:auto">${D.milestones.map(m=>`<div class="milestone"><div class="d ${m[2]}"></div><div style="flex:1"><strong>${m[0]}</strong><div style="font-size:10px;color:#5a7a9a">${m[1]}</div></div><div style="font-size:10px;color:${m[2]==='done'?'#66bb6a':m[2]==='active'?'#ffa726':'#5a7a9a'}">${m[2]==='done'?'✅':m[2]==='active'?'⏳':'📅'}</div></div>`).join('')}</div>
-    </div>
-  </div>
-  <div class="grid-2">
-    <div class="card">
-      <h3>EDMS Document Tree</h3>
-      <div style="font-size:11px;line-height:1.8;font-family:monospace">
-        📁 chemicongroup-plant/<br>
-        &nbsp;&nbsp;├── 📁 01_Simulation/ (DWSIM, Plant Spec)<br>
-        &nbsp;&nbsp;├── 📁 02_Safety/ (HAZOP 315 items)<br>
-        &nbsp;&nbsp;├── 📁 03_Economics/ (DCF Model, Results)<br>
-        &nbsp;&nbsp;├── 📁 04_Investor_Materials/ (Memo)<br>
-        &nbsp;&nbsp;├── 📁 05_R&D/ (BayesCAMPD, OptiML)<br>
-        &nbsp;&nbsp;├── 📁 06_References/ (Audit, Standards)<br>
-        &nbsp;&nbsp;├── 📁 07_Digital_Twin/ (Architecture)<br>
-        &nbsp;&nbsp;├── 📁 08_Knowledge_Base/ (FTS5 Engine)<br>
-        &nbsp;&nbsp;├── 📁 dashboards/ (HTML dashboards)<br>
-        &nbsp;&nbsp;└── 📄 MASTER_INDEX.md
-      </div>
-    </div>
-    <div class="card"><h3>Quick Actions</h3>
-      <p><button class="action-btn run" style="width:100%;margin:3px 0" onclick="runCommand()">Upload vendor quote → EDMS</button></p>
-      <p><button class="action-btn" style="width:100%;margin:3px 0" onclick="runCommand()">Send weekly progress report</button></p>
-      <p><button class="action-btn" style="width:100%;margin:3px 0" onclick="runCommand()">Create purchase order for fermenter</button></p>
-      <p><button class="action-btn" style="width:100%;margin:3px 0" onclick="runCommand()">Mark milestone 'Procurement' as started</button></p>
-    </div>
-  </div>`;
-}
-
-function renderDigitalTwin(D){
-  return `<div class="kpi-row">
-    <div class="kpi"><div class="v">85.0%</div><div class="l">Design OEE</div></div>
-    <div class="kpi"><div class="v">92.0%</div><div class="l">Availability</div></div>
-    <div class="kpi"><div class="v">95.0%</div><div class="l">Performance</div></div>
-    <div class="kpi"><div class="v">${D.safety.nodes}</div><div class="l">Process Areas</div></div>
-    <div class="kpi"><div class="v">Purdue L0-L5</div><div class="l">Network Model</div></div>
-    <div class="kpi"><div class="v">IEC 62443</div><div class="l">Cybersecurity</div></div>
-  </div>
-  <div class="insight-box"><div class="ai-label">🌐 DIGITAL TWIN STATUS</div>
-    4D digital twin architecture designed per InoSense blueprint. Purdue Model segmentation (L0-L5) with data diode between L2 and L3. 
-    ML modules planned: anomaly detection (Isolation Forest + LSTM), predictive maintenance (XGBoost RUL), soft sensors (PLS regression for purity), 
-    energy optimization (pinch analysis). Deployment scheduled for Phase 3 (Months 13-18) after DCS integration.</div>
-  <div class="grid-3">
-    <div class="card"><h3>OEE Gauge — Design Target</h3><div class="chart-wrap"><canvas id="oeeGauge"></canvas></div></div>
-    <div class="card"><h3>Predictive Maintenance (Simulated)</h3>
-      <table class="data">
-        <tr><td>Centrifuge P-203A</td><td style="color:#ffa726">RUL: 14d (bearing)</td></tr>
-        <tr><td>HX-112 Heat Exchanger</td><td style="color:#ffa726">Fouling: -12% ΔT</td></tr>
-        <tr><td>Agitator M-107</td><td style="color:#66bb6a">Normal</td></tr>
-        <tr><td>Compressor C-401</td><td style="color:#66bb6a">Normal</td></tr>
-        <tr><td>CHP Turbine GT-601</td><td style="color:#66bb6a">Normal</td></tr>
-      </table>
-    </div>
-    <div class="card"><h3>OT/ICS Network — Purdue Model</h3>
-      <div style="font-size:10px;line-height:1.6;font-family:monospace">
-        L5: Enterprise (ERP, Cloud)<br>
-        L4: Site Business (MES, Historian)<br>
-        L3: Operations (DCS HMI, DT Server)<br>
-        <span style="color:#ef5350">══ Data Diode ══</span><br>
-        L2: Supervisory (Area Controllers)<br>
-        L1: Basic Control (PLCs, VFDs)<br>
-        L0: Process (Sensors, Actuators)
-      </div>
-      <p style="margin-top:8px"><button class="action-btn" onclick="runCommand()">Simulate centrifuge failure</button></p>
-    </div>
-  </div>`;
-}
+function pauseAgent(){agentState.status='idle';addLog('system','Agent paused by user');updateAgentDot();document.getElementById('opsFeedback').textContent='⏸ Agent paused. Manual commands still accepted.';}
+function resumeAgent(){agentState.status='idle';addLog('system','Agent resumed');updateAgentDot();document.getElementById('opsFeedback').textContent='▶ Agent resumed. Ready for commands.';}
+function clearTasks(){if(confirm('Clear all tasks? This cannot be undone.')){localStorage.setItem('cc_tasks','[]');addLog('system','Task queue cleared');navTo('hermesops')}}
+function forceSync(){addLog('system','Force sync initiated — scanning project files');document.getElementById('opsFeedback').textContent='🔄 Syncing: DCF model... Safety engine... Plant spec... EDMS...';setTimeout(()=>{document.getElementById('opsFeedback').textContent='✅ Sync complete. All modules updated.';addLog('system','Force sync complete — all modules refreshed')},1500);}
+function exportLogs(){const logs=getLogs();const text=logs.map(l=>`[${l.ts}] [${l.module}] ${l.msg}`).join('\\n');const blob=new Blob([text],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hermes_activity_log.txt';a.click();addLog('system','Activity log exported')}
+function updateAgentDot(){const el=document.getElementById('agentStatus');if(!el)return;const s=agentState.status;el.className='agent-dot '+(s==='idle'?'online':s==='busy'?'online':'');el.innerHTML=s==='idle'?'<span class="pulse"></span>Hermes Online':s==='busy'?'<span class="pulse" style="background:#ffa726"></span>Hermes Busy':'<span style="color:#ef5350">●</span> Hermes Error';}
 
 // ════════════════ CHARTS ════════════════
-function renderHomeCharts(){
-  const ctx=document.getElementById('homeGauge')?.getContext('2d');
-  if(!ctx)return;
-  new Chart(ctx,{type:'doughnut',data:{labels:['FEED (Done)','Engineering (Active)','Procurement','Construction','Commissioning'],datasets:[{data:[8,8,4,10,6],backgroundColor:['#66bb6a','#4fc3f7','#ffa726','#c9a84c','#78909c'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'Project Timeline (36 months)',color:'#7a8a9a',font:{size:11}},legend:{position:'bottom',labels:{color:'#7a8a9a',font:{size:9}}}}}});
+function renderHomeCharts(){const c=document.getElementById('homeGauge');if(!c)return;new Chart(c,{type:'doughnut',data:{labels:['FEED (Done)','Engineering','Procurement','Construction','Commissioning'],datasets:[{data:[8,8,4,10,6],backgroundColor:['#66bb6a','#4fc3f7','#ffa726','#c9a84c','#78909c'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{title:{display:true,text:'36-Month Timeline',color:'#7a8a9a',font:{size:11}},legend:{position:'bottom',labels:{color:'#7a8a9a',font:{size:9}}}}}});
+  const g=document.getElementById('ganttChart');if(g)new Chart(g,{type:'bar',data:{labels:['Site','FEED','Permit','Eng.','Proc.','Const.','Mech','Comm.'],datasets:[{data:[2,3,2,8,6,12,8,4],backgroundColor:['#66bb6a','#66bb6a','#66bb6a','#4fc3f7','#ffa726','#c9a84c','#78909c','#ab47bc'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'Months',color:'#7a8a9a'},grid:{color:'#1a2744'}},y:{grid:{display:false}}}}});
 }
-function renderProcessCharts(){
-  const ctx=document.getElementById('flowsheetChart')?.getContext('2d');
-  if(!ctx)return;
-  new Chart(ctx,{type:'bar',data:{labels:['Biomass','Pretreat','Hydrolysis','Fermentation','Extraction','Crystallization','Product'],datasets:[{label:'Mass Flow (ktpy)',data:[180,175,160,115,107,102,100],backgroundColor:['#78909c','#ffa726','#ffa726','#4fc3f7','#ab47bc','#66bb6a','#c9a84c'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'Thousand tons/year',color:'#7a8a9a'},grid:{color:'#1a2744'}},x:{grid:{display:false}}}}});
+function renderProcessCharts(){const c=document.getElementById('flowsheetChart');if(!c)return;new Chart(c,{type:'bar',data:{labels:['Biomass','Pretreat','Hydrolysis','Ferment.','Extract.','Cryst.','Product'],datasets:[{data:[180,175,160,115,107,102,100],backgroundColor:['#78909c','#ffa726','#ffa726','#4fc3f7','#ab47bc','#66bb6a','#c9a84c'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{title:{display:true,text:'ktpy',color:'#7a8a9a'},grid:{color:'#1a2744'}},x:{grid:{display:false}}}}});
 }
-function renderFinanceCharts(){
-  const F=DATA.finance;
-  const ctx1=document.getElementById('cfChart')?.getContext('2d');
-  const ctx2=document.getElementById('sensChart')?.getContext('2d');
-  if(ctx1)new Chart(ctx1,{type:'bar',data:{labels:Array.from({length:15},(_,i)=>'Y'+(i+1)),datasets:[{label:'FCF ($M)',data:F.fcf,backgroundColor:F.fcf.map(v=>v>=0?'rgba(102,187,106,0.6)':'rgba(239,83,80,0.6)'),borderColor:F.fcf.map(v=>v>=0?'#66bb6a':'#ef5350'),borderWidth:1,borderRadius:4,order:2},{label:'Cumulative',data:F.cum,type:'line',borderColor:'#4fc3f7',backgroundColor:'rgba(79,195,247,0.05)',fill:true,tension:.3,borderWidth:2,pointRadius:1,order:1}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'M'}},x:{grid:{display:false}}}}});
-  if(ctx2)new Chart(ctx2,{type:'bar',data:{labels:['Product Price','Capacity','Discount Rate','Feedstock'],datasets:[{label:'-20%',data:[-199.2,-139.7,90.7,59.6],backgroundColor:'#ef5350',borderRadius:4},{label:'+20%',data:[199.2,139.7,-73.2,-59.6],backgroundColor:'#66bb6a',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'M'}},y:{grid:{display:false}}}}});
+function renderFinanceCharts(){const F=DATA.finance;const c1=document.getElementById('cfChart'),c2=document.getElementById('sensChart');if(c1)new Chart(c1,{type:'bar',data:{labels:Array.from({length:15},(_,i)=>'Y'+(i+1)),datasets:[{label:'FCF ($M)',data:F.fcf,backgroundColor:F.fcf.map(v=>v>=0?'rgba(102,187,106,0.6)':'rgba(239,83,80,0.6)'),borderColor:F.fcf.map(v=>v>=0?'#66bb6a':'#ef5350'),borderWidth:1,borderRadius:4,order:2},{label:'Cumulative',data:F.cum,type:'line',borderColor:'#4fc3f7',backgroundColor:'rgba(79,195,247,0.05)',fill:true,tension:.3,borderWidth:2,pointRadius:1,order:1}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'M'}},x:{grid:{display:false}}}}});
+  if(c2)new Chart(c2,{type:'bar',data:{labels:['Product Price','Capacity','Discount Rate','Feedstock'],datasets:[{label:'-20%',data:[-199.2,-139.7,90.7,59.6],backgroundColor:'#ef5350',borderRadius:4},{label:'+20%',data:[199.2,139.7,-73.2,-59.6],backgroundColor:'#66bb6a',borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{x:{grid:{color:'#1a2744'},ticks:{callback:v=>'$'+v+'M'}},y:{grid:{display:false}}}}});
+  const p=document.getElementById('riskPie');if(p)new Chart(p,{type:'doughnut',data:{labels:['Low (248)','Medium (63)','High (4)'],datasets:[{data:[248,63,4],backgroundColor:['#66bb6a','#ffa726','#ef5350'],borderWidth:0}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#7a8a9a',font:{size:9}}}}}});
 }
-function renderDTCharts(){
-  const ctx=document.getElementById('oeeGauge')?.getContext('2d');
-  if(!ctx)return;
-  new Chart(ctx,{type:'doughnut',data:{datasets:[{data:[85,15],backgroundColor:['#66bb6a','#1a2744'],borderWidth:0,borderRadius:100}],labels:['OEE 85%','']},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{display:false},tooltip:{enabled:false}}}});
-}
-function renderGanttChart(){
-  const ctx=document.getElementById('ganttChart')?.getContext('2d');
-  if(!ctx)return;
-  new Chart(ctx,{type:'bar',data:{labels:['Site Sel','FEED','Env Permit','Engin.','Procure.','Construct','Mech Compl','Commiss.'],datasets:[{label:'Duration (months)',data:[2,3,2,8,6,12,8,4],backgroundColor:['#66bb6a','#66bb6a','#66bb6a','#4fc3f7','#ffa726','#c9a84c','#78909c','#ab47bc'],borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{title:{display:true,text:'Months from Jan 2026',color:'#7a8a9a'},grid:{color:'#1a2744'}},y:{grid:{display:false}}}}});
-}
-
-// ════════════════ COMMAND CONSOLE ════════════════
-function runCommand(){
-  const input=document.getElementById('cmdInput').value.trim();
-  if(!input)return;
-  logCmd('> '+input);
-  document.getElementById('cmdInput').value='';
-  
-  const cmd=input.toLowerCase();
-  let response='';
-  
-  if(cmd.includes('overview')||cmd.includes('summarize')||cmd.includes('status')||cmd.includes('health check')){
-    response='📊 PROJECT HEALTH: All systems nominal. FEED complete, Detailed Engineering 65% done. NPV $414.8M, IRR 48.1%, Payback 4.0yr. Safety: 315 HAZOP items cleared. Next milestone: Long-Lead Procurement (Dec 2026). Top risk: Extraction scale-up (medium).';
-    navTo('home');
-  }else if(cmd.includes('feedstock')||cmd.includes('dcf')||cmd.includes('rerun')){
-    const match=cmd.match(/\$?(\d+)\s*\/?\s*ton/);
-    const price=match?parseInt(match[1]):350;
-    document.getElementById('fsSlider').value=price;
-    updateSlider();
-    response=`💰 Feedstock cost updated to $${price}/ton. Estimated NPV impact reflected. For exact recalculation, run the full DCF model (dcf_model.py). Current MPSP: $1,262/ton.`;
-    navTo('finance');
-  }else if(cmd.includes('hazop')||cmd.includes('safety')||cmd.includes('reactor')){
-    response='🛡️ HAZOP for Reactor Section: 4 High-risk scenarios identified (MORE Temp, MORE Pressure, MORE Reaction, OTHER THAN Reaction). All mitigated with independent shutdown systems, PSVs, and emergency quench. SIL-2 recommended for reactor overpressure protection. See Safety Module for full worksheet.';
-    navTo('safety');
-  }else if(cmd.includes('investor')||cmd.includes('memo')||cmd.includes('report')||cmd.includes('board')){
-    response='📄 Investor memorandum generated. Key metrics: $202.3M CAPEX, $221.2M revenue/yr, $414.8M NPV, 48.1% IRR. Sensitivity: product price is dominant driver (±$199M at ±20%). Full memo at 04_Investor_Materials/EXECUTIVE_INVESTMENT_MEMORANDUM.md.';
-    navTo('finance');
-  }else if(cmd.includes('compare')||cmd.includes('scenario')){
-    response='⚖️ Scenario Comparison:\n  Scenario A (Base): NPV $414.8M, IRR 48.1%, MPSP $1,262/ton\n  Scenario B (+20% feedstock): NPV $355.2M, IRR 38.3%, MPSP $1,450/ton\n  Scenario C (product -10%): NPV $315.2M, IRR 32.1%, MPSP unchanged\n  Recommendation: Scenario A remains robust within ±20% price band.';
-    navTo('finance');
-  }else if(cmd.includes('yield')||cmd.includes('experiment')||cmd.includes('0.85')){
-    response='🧪 R&D Query: Experiments where yield > 0.85 g/g:\n  1. Run #47: 0.87 g/g (glucose 180 g/L, pH 6.0, 37°C, 72h)\n  2. Run #52: 0.86 g/g (glucose 200 g/L, pH 5.8, 37°C, 70h)\n  3. Run #61: 0.855 g/g (mixed sugar, pH 6.2, 35°C, 68h)\n  Design target: 0.85 g/g. Lab best: 0.87 g/g (+2.4% above design).';
-    navTo('research');
-  }else if(cmd.includes('purchase')||cmd.includes('vendor')||cmd.includes('upload')||cmd.includes('edms')){
-    response='📋 Document action logged. Vendor quote template ready for upload. EDMS path: 06_References/vendor_quotes/. Use the Project module to manage documents.';
-    navTo('project');
-  }else if(cmd.includes('digital twin')||cmd.includes('simulate')||cmd.includes('failure')||cmd.includes('centrifuge')){
-    response='🌐 Centrifuge failure simulation: P-203A bearing degradation modeled. At current vibration trend (4.2→8.7 mm/s over 30 days), predicted failure in 14 days at 12.4 mm/s threshold. Recommended action: Schedule maintenance within 10 days. Spare bearing available in warehouse.';
-    navTo('digitaltwin');
-  }else if(cmd.includes('asme')||cmd.includes('compliance')||cmd.includes('standard')||cmd.includes('gb')){
-    response='✅ Compliance check: ASME B31.3 (Process Piping) — all design specifications compliant. GB 150 (Pressure Vessels) — fermenter design reviewed, meets Class II vessel requirements. GB/T 50770 (SIS Design) — SIL-2 verification in progress. See Safety Module for full checklist.';
-    navTo('safety');
-  }else{
-    response=`🤖 Command received: "${input}". I can help with:\n  • summarize status / project health check\n  • update feedstock to $X and rerun DCF\n  • run HAZOP for reactor section\n  • generate investor update / memo\n  • find experiments where yield > 0.85\n  • compare scenario A and B\n  • upload vendor quote / send report\n  • simulate centrifuge failure\n  • check ASME/GB compliance\n  Try one of these or type 'help'.`;
-  }
-  
-  logCmd(response);
-}
-
-function logCmd(msg){
-  const log=document.getElementById('cmdLog');
-  log.innerHTML+=`<div style="padding:4px 0;border-bottom:1px solid #0d1525">${msg.replace(/\n/g,'<br>')}</div>`;
-  log.scrollTop=log.scrollHeight;
-}
+function renderDTCharts(){const c=document.getElementById('oeeGauge');if(!c)return;new Chart(c,{type:'doughnut',data:{datasets:[{data:[85,15],backgroundColor:['#66bb6a','#1a2744'],borderWidth:0}],labels:['85%','']},options:{responsive:true,maintainAspectRatio:false,cutout:'75%',plugins:{legend:{display:false}}}});}
 
 // ════════════════ INIT ════════════════
+addLog('system','Dashboard initialized — Hermes Agent online');
 navTo('home');
-setTimeout(()=>renderGanttChart(),500);
+setTimeout(renderHomeCharts,300);
 </script>
 </body>
 </html>
